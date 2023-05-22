@@ -78,10 +78,10 @@ export class Virtual implements ScreenReader {
   async previous() {
     this.#checkContainer();
 
-    const world = this.#getAccessibilityTree();
-    const currentIndex = world.indexOf(this.#activeElement);
+    const tree = this.#getAccessibilityTree();
+    const currentIndex = tree.indexOf(this.#activeElement);
     const nextIndex = currentIndex === -1 ? 0 : currentIndex - 1;
-    const newActiveElement = world.at(nextIndex);
+    const newActiveElement = tree.at(nextIndex);
 
     this.#updateState(newActiveElement);
 
@@ -91,13 +91,13 @@ export class Virtual implements ScreenReader {
   async next() {
     this.#checkContainer();
 
-    const world = this.#getAccessibilityTree();
-    const currentIndex = world.indexOf(this.#activeElement);
+    const tree = this.#getAccessibilityTree();
+    const currentIndex = tree.indexOf(this.#activeElement);
     const nextIndex =
-      currentIndex === -1 || currentIndex === world.length - 1
+      currentIndex === -1 || currentIndex === tree.length - 1
         ? 0
         : currentIndex + 1;
-    const newActiveElement = world.at(nextIndex);
+    const newActiveElement = tree.at(nextIndex);
 
     this.#updateState(newActiveElement);
 
