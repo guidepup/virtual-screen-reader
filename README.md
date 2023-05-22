@@ -6,5 +6,5 @@
   Reliable unit testing for your screen reader a11y workflows through JavaScript.
 </p>
 <p align="center">
-  🚧🚧🚧 **WIP** 🚧🚧🚧
+  🚧🚧🚧 <b>WIP</b> 🚧🚧🚧
 </p>
