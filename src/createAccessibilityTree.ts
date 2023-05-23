@@ -1,5 +1,4 @@
-import { getAccessibleName } from "./getAccessibleName";
-import { getRole } from "./getRole";
+import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
@@ -59,14 +58,14 @@ function growTree(
       return;
     }
 
-    const accessibleName = getAccessibleName(childNode);
+    const { role, accessibleName } = getNodeAccessibilityData(childNode);
 
     tree.children.push(
       growTree(childNode, {
         accessibleName,
         children: [],
         node: childNode,
-        role: getRole(childNode, accessibleName),
+        role,
       })
     );
   });
@@ -79,13 +78,13 @@ export function createAccessibilityTree(node: Node) {
     return [];
   }
 
-  const accessibleName = getAccessibleName(node);
+  const { role, accessibleName } = getNodeAccessibilityData(node);
 
   const tree = growTree(node, {
     accessibleName,
     children: [],
-    node: node,
-    role: getRole(node, accessibleName),
+    node,
+    role,
   });
 
   return flattenTree(tree);

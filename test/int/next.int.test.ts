@@ -9,11 +9,12 @@ describe("next", () => {
   it("should move through the next elements", async () => {
     await virtual.start({ container: document.body });
 
-    while ((await virtual.lastSpokenPhrase()) !== "end of contentinfo") {
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
       await virtual.next();
     }
 
     expect(await virtual.itemTextLog()).toEqual([
+      "",
       "",
       "Nav Text",
       "",
@@ -31,8 +32,10 @@ describe("next", () => {
       "",
       "Footer",
       "",
+      "",
     ]);
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "navigation",
       "Nav Text",
       "end of navigation",
@@ -50,6 +53,7 @@ describe("next", () => {
       "contentinfo",
       "Footer",
       "end of contentinfo",
+      "end of document",
     ]);
 
     await virtual.stop();

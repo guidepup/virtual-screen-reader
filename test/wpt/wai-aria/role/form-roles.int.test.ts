@@ -22,6 +22,7 @@ describe("Form Role Verification Tests", () => {
     await virtual.next();
     await virtual.next();
     await virtual.next();
+    await virtual.next();
   });
 
   afterEach(async () => {
@@ -32,6 +33,7 @@ describe("Form Role Verification Tests", () => {
 
   test("verifies roles", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "navigation",
       "x",
       "end of navigation",

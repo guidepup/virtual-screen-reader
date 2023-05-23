@@ -16,11 +16,7 @@ describe("Invalid Role Verification Tests", () => {
 
     await virtual.start({ container: document.body });
 
-    for (
-      let i = 0;
-      i < document.body.querySelectorAll("nav").length * 3 - 1;
-      i++
-    ) {
+    for (let i = 0; i < document.body.querySelectorAll("nav").length * 3; i++) {
       await virtual.next();
     }
   });
@@ -36,6 +32,6 @@ describe("Invalid Role Verification Tests", () => {
       ...new Array(document.body.querySelectorAll("nav").length),
     ].flatMap(() => ["navigation", "x", "end of navigation"]);
 
-    expect(await virtual.spokenPhraseLog()).toEqual(expected);
+    expect(await virtual.spokenPhraseLog()).toEqual(["document", ...expected]);
   });
 });

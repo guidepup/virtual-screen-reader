@@ -25,6 +25,7 @@ describe("List-related Role Verification Tests", () => {
     await virtual.next();
     await virtual.next();
     await virtual.next();
+    await virtual.next();
   });
 
   afterEach(async () => {
@@ -35,6 +36,7 @@ describe("List-related Role Verification Tests", () => {
 
   test("verifies roles", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "list",
       "listitem",
       "x",

@@ -11,11 +11,12 @@ describe("previous", () => {
 
     await virtual.previous();
 
-    while ((await virtual.lastSpokenPhrase()) !== "navigation") {
+    while ((await virtual.lastSpokenPhrase()) !== "document") {
       await virtual.previous();
     }
 
     expect(await virtual.itemTextLog()).toEqual([
+      "",
       "",
       "",
       "Footer",
@@ -34,9 +35,11 @@ describe("previous", () => {
       "",
       "Nav Text",
       "",
+      "",
     ]);
     expect(await virtual.spokenPhraseLog()).toEqual([
-      "navigation",
+      "document",
+      "end of document",
       "end of contentinfo",
       "Footer",
       "contentinfo",
@@ -54,6 +57,7 @@ describe("previous", () => {
       "end of navigation",
       "Nav Text",
       "navigation",
+      "document",
     ]);
 
     await virtual.stop();

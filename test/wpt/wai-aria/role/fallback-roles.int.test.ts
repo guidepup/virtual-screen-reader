@@ -15,6 +15,7 @@ describe("Fallback Role Verification Tests", () => {
     `;
 
     await virtual.start({ container: document.body });
+    await virtual.next();
 
     // Group
     await virtual.next();
@@ -32,6 +33,7 @@ describe("Fallback Role Verification Tests", () => {
 
   test("verifies roles", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "group",
       "x",
       "end of group",

@@ -18,6 +18,7 @@ describe("Region Role Verification Tests", () => {
     `;
 
     await virtual.start({ container: document.body });
+    await virtual.next();
 
     // Navigation
     await virtual.next();
@@ -35,6 +36,7 @@ describe("Region Role Verification Tests", () => {
 
   test("verifies roles", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "navigation",
       "x",
       "end of navigation",

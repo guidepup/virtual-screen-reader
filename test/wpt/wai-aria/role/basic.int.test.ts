@@ -12,6 +12,7 @@ describe("Basic Tests", () => {
     `;
 
     await virtual.start({ container: document.body });
+    await virtual.next();
   });
 
   afterEach(async () => {

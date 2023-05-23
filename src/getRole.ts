@@ -1,4 +1,5 @@
 import { getRole as getImplicitRole } from "dom-accessibility-api";
+import { getRoles } from "@testing-library/dom";
 import { isElement } from "./isElement";
 import { roles } from "aria-query";
 
@@ -11,15 +12,57 @@ const allowedNonAbstractRoles = roles
 
 const rolesRequiringName = ["form", "region"];
 
-function getExplicitRole(node: HTMLElement, accessibleName: string) {
-  const rawRole = node.getAttribute("role")?.trim();
+const globalStatesAndProperties = [
+  "aria-atomic",
+  "aria-braillelabel",
+  "aria-brailleroledescription",
+  "aria-busy",
+  "aria-controls",
+  "aria-describedby",
+  "aria-description",
+  "aria-details",
+  "aria-dropeffect",
+  "aria-flowto",
+  "aria-grabbed",
+  "aria-hidden",
+  "aria-keyshortcuts",
+  "aria-label",
+  "aria-labelledby",
+  "aria-live",
+  "aria-owns",
+  "aria-relevant",
+  "aria-roledescription",
+];
 
-  if (!rawRole) {
+const FOCUSABLE_SELECTOR = [
+  "input:not([type=hidden]):not([disabled])",
+  "button:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[contenteditable=""]',
+  '[contenteditable="true"]',
+  "a[href]",
+  "[tabindex]:not([disabled])",
+].join(", ");
+
+function isFocusable(node: HTMLElement) {
+  return node.matches(FOCUSABLE_SELECTOR);
+}
+
+function hasGlobalStateOrProperty(node: HTMLElement) {
+  return globalStatesAndProperties.some((global) => node.hasAttribute(global));
+}
+
+function getExplicitRole(node: HTMLElement, accessibleName: string) {
+  const rawRoles = node.getAttribute("role")?.trim().split(" ");
+
+  if (!rawRoles?.length) {
     return "";
   }
 
-  const filteredRoles = rawRole
-    .split(" ")
+  // TODO: focus and allowed child element exceptions for
+  // https://w3c.github.io/aria/#conflict_resolution_presentation_none
+  const filteredRoles = rawRoles
     /**
      * As stated in the Definition of Roles section, it is considered an
      * authoring error to use abstract roles in content.
@@ -43,18 +86,38 @@ function getExplicitRole(node: HTMLElement, accessibleName: string) {
      *
      * https://w3c.github.io/aria/#document-handling_author-errors_roles
      */
-    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
+    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role))
+    /**
+     * If an element has global WAI-ARIA states or properties, user agents MUST
+     * ignore the presentation role and instead expose the element's implicit
+     * role. However, if an element has only non-global, role-specific WAI-ARIA
+     * states or properties, the element MUST NOT be exposed unless the
+     * presentational role is inherited and an explicit non-presentational role
+     * is applied.
+     *
+     * https://w3c.github.io/aria/#conflict_resolution_presentation_none
+     */
+    .filter((role) => {
+      if (!ignoredRoles.includes(role)) {
+        return true;
+      }
+
+      if (hasGlobalStateOrProperty(node) || isFocusable(node)) {
+        return false;
+      }
+
+      return true;
+    });
 
   return filteredRoles?.[0] ?? "";
 }
 
-// TODO: https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
 export function getRole(node: Node, accessibleName: string) {
   if (!isElement(node)) {
     return "";
   }
 
-  const target = node.cloneNode(true) as HTMLElement;
+  const target = node.cloneNode() as HTMLElement;
   const explicitRole = getExplicitRole(target, accessibleName);
 
   if (explicitRole) {
@@ -63,7 +126,13 @@ export function getRole(node: Node, accessibleName: string) {
     target.removeAttribute("role");
   }
 
-  const role = getImplicitRole(target) ?? "";
+  let role = getImplicitRole(target) ?? "";
+
+  if (!role) {
+    // TODO: decide if we just replace dom-accessibility-api above with
+    // @testing-library/dom here rather than doing this fallback
+    role = Object.keys(getRoles(target))?.[0] ?? "";
+  }
 
   return ignoredRoles.includes(role) ? "" : role;
 }
