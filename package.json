@@ -1,18 +1,18 @@
 {
-  "name": "@guidepup/virtualsr",
+  "name": "@guidepup/virtual-screen-reader",
   "version": "0.1.0",
-  "description": "Virtual screen reader driver for test automation.",
+  "description": "Virtual screen reader driver for unit test automation.",
   "main": "lib/index.js",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/guidepup/virtualsr"
+    "url": "https://github.com/guidepup/virtual-screen-reader"
   },
   "bugs": {
-    "url": "https://github.com/guidepup/virtualsr/issues"
+    "url": "https://github.com/guidepup/virtual-screen-reader/issues"
   },
-  "homepage": "https://github.com/guidepup/virtualsr",
+  "homepage": "https://github.com/guidepup/virtual-screen-reader",
   "keywords": [
     "screen-reader",
     "accessibility",
@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "yarn clean && yarn compile",
-    "ci": "yarn clean && yarn lint && yarn test:coverage && yarn build",
+    "ci": "yarn clean && yarn lint && yarn test && yarn build",
     "clean": "rimraf lib",
     "compile": "tsc",
     "lint": "eslint . --ext .ts --cache",
