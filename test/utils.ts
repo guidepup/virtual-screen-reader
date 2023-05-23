@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 export function setupBasicPage() {
   document.body.innerHTML = `
   <nav>Nav Text</nav>
@@ -21,12 +23,17 @@ export function setupButtonPage() {
 
   const button = document.createElement("button");
 
-  button.onclick = () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    document.getElementById("status")!.innerHTML = "Clicked";
-  };
+  button.addEventListener("click", function (event) {
+    document.getElementById(
+      "status"
+    )!.innerHTML = `Clicked ${event.detail} Time(s)`;
+  });
 
   button.innerHTML = "Click Me";
 
   document.body.appendChild(button);
+
+  document.body.addEventListener("contextmenu", () => {
+    document.getElementById("status")!.innerHTML = `Right Clicked`;
+  });
 }

@@ -1,11 +1,12 @@
+import {
+  AccessibilityNode,
+  createAccessibilityTree,
+} from "./createAccessibilityTree";
 import type { CommandOptions, ScreenReader } from "@guidepup/guidepup";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
-import { getAccessibleName } from "./getAccessibleName";
-import { getRole } from "./getRole";
-import { isInAccessibilityTree } from "./isInAccessibilityTree";
 import { notImplemented } from "./notImplemented";
 import userEvent from "@testing-library/user-event";
 
@@ -17,8 +18,8 @@ export interface StartOptions extends CommandOptions {
 // TODO: handle aria-live, role="polite", role="alert", and other interruptions
 
 export class Virtual implements ScreenReader {
-  #activeElement: HTMLElement | null = null;
-  #container: HTMLElement | null = null;
+  #activeNode: AccessibilityNode | null = null;
+  #container: Node | null = null;
   #itemTextLog: string[] = [];
   #spokenPhraseLog: string[] = [];
 
@@ -29,22 +30,25 @@ export class Virtual implements ScreenReader {
   }
 
   #getAccessibilityTree() {
-    // TODO: flatten DOM rather than querySelector?
-    // E.g. see https://github.com/testing-library/dom-testing-library/blob/main/src/role-helpers.js#L156
-    return [this.#container, ...this.#container.querySelectorAll("*")].filter(
-      (element) => isInAccessibilityTree(element)
-    ) as HTMLElement[];
+    return createAccessibilityTree(this.#container);
   }
 
-  #updateState(newActiveElement: HTMLElement) {
-    this.#activeElement = newActiveElement;
-
-    const role = getRole(this.#activeElement);
-    const accessibleName = getAccessibleName(this.#activeElement);
+  #updateState(accessibilityNode: AccessibilityNode) {
+    const { role, accessibleName } = accessibilityNode;
     const spokenPhrase = [role, accessibleName].filter(Boolean).join(", ");
 
+    this.#activeNode = accessibilityNode;
     this.#itemTextLog.push(accessibleName);
     this.#spokenPhraseLog.push(spokenPhrase);
+  }
+
+  #getCurrentIndex(tree: AccessibilityNode[]) {
+    return tree.findIndex(
+      ({ accessibleName, node, role }) =>
+        accessibleName === this.#activeNode.accessibleName &&
+        node === this.#activeNode.node &&
+        role === this.#activeNode.role
+    );
   }
 
   async detect() {
@@ -60,14 +64,15 @@ export class Virtual implements ScreenReader {
       throw new Error(ERR_VIRTUAL_MISSING_CONTAINER);
     }
 
-    this.#activeElement = container;
     this.#container = container;
+    const tree = this.#getAccessibilityTree();
+    this.#updateState(tree[0]);
 
     return;
   }
 
   async stop() {
-    this.#activeElement = null;
+    this.#activeNode = null;
     this.#container = null;
     this.#itemTextLog = [];
     this.#spokenPhraseLog = [];
@@ -79,11 +84,11 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
 
     const tree = this.#getAccessibilityTree();
-    const currentIndex = tree.indexOf(this.#activeElement);
+    const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex = currentIndex === -1 ? 0 : currentIndex - 1;
-    const newActiveElement = tree.at(nextIndex);
+    const newActiveNode = tree.at(nextIndex);
 
-    this.#updateState(newActiveElement);
+    this.#updateState(newActiveNode);
 
     return;
   }
@@ -92,14 +97,14 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
 
     const tree = this.#getAccessibilityTree();
-    const currentIndex = tree.indexOf(this.#activeElement);
+    const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex =
       currentIndex === -1 || currentIndex === tree.length - 1
         ? 0
         : currentIndex + 1;
-    const newActiveElement = tree.at(nextIndex);
+    const newActiveNode = tree.at(nextIndex);
 
-    this.#updateState(newActiveElement);
+    this.#updateState(newActiveNode);
 
     return;
   }
@@ -158,11 +163,9 @@ export class Virtual implements ScreenReader {
 
     const key = `[Mouse${button[0].toUpperCase()}${button.slice(1)}]`;
     const keys = key.repeat(clickCount);
+    const target = this.#activeNode.node as HTMLElement;
 
-    await userEvent.pointer([
-      { target: this.#activeElement },
-      { keys, target: this.#activeElement },
-    ]);
+    await userEvent.pointer([{ target }, { keys, target }]);
 
     return;
   }
