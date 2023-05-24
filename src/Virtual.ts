@@ -14,14 +14,48 @@ export interface StartOptions extends CommandOptions {
   container: HTMLElement;
 }
 
-// TODO: monitor focus change and update the screen reader active element
-// TODO: handle aria-live, role="polite", role="alert", and other interruptions
+// TODO: monitor focus change and update the screen reader active element.
+// TODO: handle aria-live, role="polite", role="alert", and other interruptions.
+
+const observeDOM = (function () {
+  const MutationObserver: typeof window.MutationObserver =
+    // @ts-expect-error WebKitMutationObserver is non-standard WebKit fallback for old implementations
+    window.MutationObserver || window.WebKitMutationObserver;
+
+  return function observeDOM(node: Node, onChange: () => void): () => void {
+    if (!node || node.nodeType !== 1) {
+      return;
+    }
+
+    const callback = () => onChange();
+
+    if (MutationObserver) {
+      const mutationObserver = new MutationObserver(callback);
+
+      mutationObserver.observe(node, { childList: true, subtree: true });
+
+      return () => {
+        mutationObserver.disconnect();
+      };
+    } else if (window.addEventListener) {
+      node.addEventListener("DOMNodeInserted", callback, false);
+      node.addEventListener("DOMNodeRemoved", callback, false);
+
+      return () => {
+        node.removeEventListener("DOMNodeInserted", callback, false);
+        node.removeEventListener("DOMNodeRemoved", callback, false);
+      };
+    }
+  };
+})();
 
 export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
   #container: Node | null = null;
   #itemTextLog: string[] = [];
   #spokenPhraseLog: string[] = [];
+  #treeCache: AccessibilityNode[] | null = null;
+  #disconnectDOMObserver: () => void | null = null;
 
   #checkContainer() {
     if (!this.#container) {
@@ -30,12 +64,22 @@ export class Virtual implements ScreenReader {
   }
 
   #getAccessibilityTree() {
-    return createAccessibilityTree(this.#container);
+    if (!this.#treeCache) {
+      this.#treeCache = createAccessibilityTree(this.#container);
+    }
+
+    return this.#treeCache;
+  }
+
+  #invalidateTreeCache() {
+    this.#treeCache = null;
   }
 
   #updateState(accessibilityNode: AccessibilityNode) {
-    const { role, accessibleName } = accessibilityNode;
-    const spokenPhrase = [role, accessibleName].filter(Boolean).join(", ");
+    const { accessibleDescription, accessibleName, role } = accessibilityNode;
+    const spokenPhrase = [role, accessibleName, accessibleDescription]
+      .filter(Boolean)
+      .join(", ");
 
     this.#activeNode = accessibilityNode;
     this.#itemTextLog.push(accessibleName);
@@ -68,10 +112,16 @@ export class Virtual implements ScreenReader {
     const tree = this.#getAccessibilityTree();
     this.#updateState(tree[0]);
 
+    const invalidateTreeCache = () => this.#invalidateTreeCache();
+    this.#disconnectDOMObserver = observeDOM(container, invalidateTreeCache);
+
     return;
   }
 
   async stop() {
+    this.#disconnectDOMObserver?.();
+    this.#invalidateTreeCache();
+
     this.#activeNode = null;
     this.#container = null;
     this.#itemTextLog = [];

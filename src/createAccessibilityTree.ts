@@ -3,7 +3,9 @@ import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
 export interface AccessibilityNode {
+  accessibleDescription: string;
   accessibleName: string;
+  childrenPresentational: boolean;
   node: Node;
   role: string;
 }
@@ -12,9 +14,7 @@ interface AccessibilityNodeTree extends AccessibilityNode {
   children: AccessibilityNodeTree[];
 }
 
-// TODO: This isn't fully compliant, see "Children Presentational" point
-// See https://www.w3.org/TR/wai-aria-1.2/#tree_exclusion
-export function isHiddenFromAccessibilityTree(node: Node) {
+function isHiddenFromAccessibilityTree(node: Node) {
   if (node.nodeType === Node.TEXT_NODE && !!node.textContent.trim()) {
     return false;
   }
@@ -22,13 +22,28 @@ export function isHiddenFromAccessibilityTree(node: Node) {
   return !isElement(node) || isInaccessible(node);
 }
 
+function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
+  const { accessibleName, node } = tree;
+
+  return (
+    // TODO: improve comparison on whether the children are superfluous
+    // to include.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    accessibleName === (node.textContent || (node as any).value)?.trim()
+  );
+}
+
 function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
   const { children, ...treeNode } = tree;
-
-  const flattenedTree = [...children.flatMap((child) => flattenTree(child))];
-
   const isAnnounced = treeNode.accessibleName || treeNode.role;
-  const isRoleContainer = !treeNode.accessibleName && treeNode.role;
+  const ignoreChildren = shouldIgnoreChildren(tree);
+
+  const flattenedTree = ignoreChildren
+    ? []
+    : [...children.flatMap((child) => flattenTree(child))];
+
+  const isRoleContainer =
+    flattenedTree.length && !ignoreChildren && treeNode.role;
 
   if (isAnnounced) {
     flattenedTree.unshift(treeNode);
@@ -36,7 +51,9 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 
   if (isRoleContainer) {
     flattenedTree.push({
-      accessibleName: "",
+      accessibleDescription: "",
+      accessibleName: treeNode.accessibleName,
+      childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
       role: `end of ${treeNode.role}`,
     });
@@ -49,21 +66,27 @@ function growTree(
   node: Node,
   tree: AccessibilityNodeTree
 ): AccessibilityNodeTree {
-  if (tree.accessibleName) {
-    return tree;
-  }
-
   node.childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
     }
 
-    const { role, accessibleName } = getNodeAccessibilityData(childNode);
+    const {
+      accessibleDescription,
+      accessibleName,
+      childrenPresentational,
+      role,
+    } = getNodeAccessibilityData({
+      node: childNode,
+      inheritedImplicitPresentational: tree.childrenPresentational,
+    });
 
     tree.children.push(
       growTree(childNode, {
+        accessibleDescription,
         accessibleName,
         children: [],
+        childrenPresentational,
         node: childNode,
         role,
       })
@@ -78,11 +101,21 @@ export function createAccessibilityTree(node: Node) {
     return [];
   }
 
-  const { role, accessibleName } = getNodeAccessibilityData(node);
+  const {
+    accessibleDescription,
+    accessibleName,
+    childrenPresentational,
+    role,
+  } = getNodeAccessibilityData({
+    node,
+    inheritedImplicitPresentational: false,
+  });
 
   const tree = growTree(node, {
+    accessibleDescription,
     accessibleName,
     children: [],
+    childrenPresentational,
     node,
     role,
   });

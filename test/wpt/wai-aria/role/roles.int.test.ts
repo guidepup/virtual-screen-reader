@@ -73,7 +73,7 @@ describe("Simple Core ARIA Role Verification Tests", () => {
     "feed",
     "figure",
     // form -> ./form-roles.html
-    "generic",
+    // "generic", -> FAIL. WONTFIX. Screen Readers don't announce the generic role.
     // graphics-* roles -> /graphics-aria
     // "grid" -> ./grid-roles.html
     // "gridcell" -> ./grid-roles.html

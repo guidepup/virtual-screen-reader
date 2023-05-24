@@ -3,11 +3,16 @@ import { getRoles } from "@testing-library/dom";
 import { isElement } from "./isElement";
 import { roles } from "aria-query";
 
-const ignoredRoles = ["presentation", "none"];
+export const presentationRoles = ["presentation", "none"];
 
 const allowedNonAbstractRoles = roles
   .entries()
   .filter(([, { abstract }]) => !abstract)
+  .map(([key]) => key) as string[];
+
+export const childrenPresentationalRoles = roles
+  .entries()
+  .filter(([, { childrenPresentational }]) => childrenPresentational)
   .map(([key]) => key) as string[];
 
 const rolesRequiringName = ["form", "region"];
@@ -53,14 +58,28 @@ function hasGlobalStateOrProperty(node: HTMLElement) {
   return globalStatesAndProperties.some((global) => node.hasAttribute(global));
 }
 
-function getExplicitRole(node: HTMLElement, accessibleName: string) {
-  const rawRoles = node.getAttribute("role")?.trim().split(" ");
+function getExplicitRole({
+  accessibleName,
+  inheritedImplicitPresentational,
+  node,
+}: {
+  accessibleName: string;
+  inheritedImplicitPresentational: boolean;
+  node: HTMLElement;
+}) {
+  const rawRoles = node.getAttribute("role")?.trim().split(" ") ?? [];
+
+  // "Children Presentational: True"
+  // https://w3c.github.io/aria/#tree_exclusion
+  if (inheritedImplicitPresentational) {
+    rawRoles.unshift("none");
+  }
 
   if (!rawRoles?.length) {
     return "";
   }
 
-  // TODO: focus and allowed child element exceptions for
+  // TODO: allowed child element exceptions for
   // https://w3c.github.io/aria/#conflict_resolution_presentation_none
   const filteredRoles = rawRoles
     /**
@@ -88,6 +107,10 @@ function getExplicitRole(node: HTMLElement, accessibleName: string) {
      */
     .filter((role) => !!accessibleName || !rolesRequiringName.includes(role))
     /**
+     * If an element is focusable, user agents MUST ignore the
+     * presentation/none role and expose the element with its implicit role, in
+     * order to ensure that the element is operable.
+     *
      * If an element has global WAI-ARIA states or properties, user agents MUST
      * ignore the presentation role and instead expose the element's implicit
      * role. However, if an element has only non-global, role-specific WAI-ARIA
@@ -98,7 +121,7 @@ function getExplicitRole(node: HTMLElement, accessibleName: string) {
      * https://w3c.github.io/aria/#conflict_resolution_presentation_none
      */
     .filter((role) => {
-      if (!ignoredRoles.includes(role)) {
+      if (!presentationRoles.includes(role)) {
         return true;
       }
 
@@ -112,13 +135,25 @@ function getExplicitRole(node: HTMLElement, accessibleName: string) {
   return filteredRoles?.[0] ?? "";
 }
 
-export function getRole(node: Node, accessibleName: string) {
+export function getRole({
+  accessibleName,
+  inheritedImplicitPresentational,
+  node,
+}: {
+  accessibleName: string;
+  inheritedImplicitPresentational: boolean;
+  node: Node;
+}) {
   if (!isElement(node)) {
     return "";
   }
 
   const target = node.cloneNode() as HTMLElement;
-  const explicitRole = getExplicitRole(target, accessibleName);
+  const explicitRole = getExplicitRole({
+    accessibleName,
+    inheritedImplicitPresentational,
+    node: target,
+  });
 
   if (explicitRole) {
     target.setAttribute("role", explicitRole);
@@ -134,5 +169,5 @@ export function getRole(node: Node, accessibleName: string) {
     role = Object.keys(getRoles(target))?.[0] ?? "";
   }
 
-  return ignoredRoles.includes(role) ? "" : role;
+  return role;
 }

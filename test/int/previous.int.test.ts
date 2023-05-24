@@ -2,13 +2,19 @@ import { setupBasicPage } from "../utils";
 import { virtual } from "../../src";
 
 describe("previous", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setupBasicPage();
+
+    await virtual.start({ container: document.body });
+  });
+
+  afterEach(async () => {
+    await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   it("should move through previous elements", async () => {
-    await virtual.start({ container: document.body });
-
     await virtual.previous();
 
     while ((await virtual.lastSpokenPhrase()) !== "document") {
@@ -37,6 +43,7 @@ describe("previous", () => {
       "",
       "",
     ]);
+
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "end of document",
@@ -59,7 +66,5 @@ describe("previous", () => {
       "navigation",
       "document",
     ]);
-
-    await virtual.stop();
   });
 });
