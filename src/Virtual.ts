@@ -7,6 +7,8 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
+import { aria } from "aria-query";
+import { isElement } from "./isElement";
 import { notImplemented } from "./notImplemented";
 import userEvent from "@testing-library/user-event";
 
@@ -14,16 +16,30 @@ export interface StartOptions extends CommandOptions {
   container: HTMLElement;
 }
 
+const observedAttributes = [
+  ...aria.keys(),
+  "type",
+  "control",
+  "for",
+  "labels",
+  "style",
+  "class",
+  "title",
+  "alt",
+  "label",
+  "value",
+  "hidden",
+  "disabled",
+];
+
 // TODO: monitor focus change and update the screen reader active element.
 // TODO: handle aria-live, role="polite", role="alert", and other interruptions.
 
 const observeDOM = (function () {
-  const MutationObserver: typeof window.MutationObserver =
-    // @ts-expect-error WebKitMutationObserver is non-standard WebKit fallback for old implementations
-    window.MutationObserver || window.WebKitMutationObserver;
+  const MutationObserver = window.MutationObserver;
 
   return function observeDOM(node: Node, onChange: () => void): () => void {
-    if (!node || node.nodeType !== 1) {
+    if (!isElement(node)) {
       return;
     }
 
@@ -32,20 +48,22 @@ const observeDOM = (function () {
     if (MutationObserver) {
       const mutationObserver = new MutationObserver(callback);
 
-      mutationObserver.observe(node, { childList: true, subtree: true });
+      mutationObserver.observe(node, {
+        attributes: true,
+        attributeFilter: observedAttributes,
+        childList: true,
+        subtree: true,
+      });
 
       return () => {
         mutationObserver.disconnect();
       };
-    } else if (window.addEventListener) {
-      node.addEventListener("DOMNodeInserted", callback, false);
-      node.addEventListener("DOMNodeRemoved", callback, false);
-
-      return () => {
-        node.removeEventListener("DOMNodeInserted", callback, false);
-        node.removeEventListener("DOMNodeRemoved", callback, false);
-      };
     }
+
+    return () => {
+      // gracefully fallback to not supporting Accessibility Tree refreshes if
+      // the DOM changes.
+    };
   };
 })();
 
