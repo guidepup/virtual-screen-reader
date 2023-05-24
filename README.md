@@ -34,7 +34,7 @@ This project is currently a work in progress, but here are some of the features 
 Install Guidepup to your project:
 
 ```bash
-npm install @guidepup/virtual-screen-reader
+npm install --save-dev @guidepup/virtual-screen-reader
 ```
 
 And get cracking with your first screen reader unit test automation code!
