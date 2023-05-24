@@ -41,14 +41,6 @@ And get cracking with your first screen reader unit test automation code!
 
 ```ts
 import { virtual } from "@guidepup/virtual-screen-reader";
-import {
-  getByLabelText,
-  getByText,
-  getByTestId,
-  queryByTestId,
-  waitFor,
-} from "@testing-library/dom";
-import "@testing-library/jest-dom";
 
 function setupBasicPage() {
   document.body.innerHTML = `
