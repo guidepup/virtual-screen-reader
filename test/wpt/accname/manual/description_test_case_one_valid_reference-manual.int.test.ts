@@ -1,16 +1,14 @@
 import { virtual } from "../../../../src";
 
 /**
- * https://github.com/web-platform-tests/wpt/blob/master/accname/manual/description_test_case_666-manual.html
+ * https://github.com/web-platform-tests/wpt/blob/master/accname/manual/description_test_case_one_valid_reference-manual.html
  */
 
-describe("Description test case 666", () => {
+describe("Description test case one valid reference", () => {
   beforeEach(async () => {
     document.body.innerHTML = `
-    <div>
-      <img id="test" aria-describedby="ID1" src="test.png">
-    </div>
-    <div id="ID1" role="presentation">foo</div>
+    <img src="foo.jpg" id="test" alt="test" aria-describedby="t1 t2 t3">
+    <div id="t2">foo</div>
     `;
 
     await virtual.start({ container: document.body });
@@ -29,7 +27,7 @@ describe("Description test case 666", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "img, foo",
+      "img, test, foo",
       "foo",
       "end of document",
     ]);

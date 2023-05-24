@@ -29,6 +29,7 @@ describe("Description test case 664", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
+      "img, foo",
       "foo",
       "end of document",
     ]);

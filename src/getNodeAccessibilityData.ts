@@ -30,9 +30,11 @@ export function getNodeAccessibilityData({
     childrenPresentationalRoles.includes(role);
 
   const amendedRole = isPresentational || isGeneric ? "" : role;
+  const amendedAccessibleDescription =
+    accessibleDescription === accessibleName ? "" : accessibleDescription;
 
   return {
-    accessibleDescription,
+    accessibleDescription: amendedAccessibleDescription,
     accessibleName,
     role: amendedRole,
     childrenPresentational,

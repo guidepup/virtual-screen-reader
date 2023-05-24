@@ -11,6 +11,10 @@ describe("Description test case 557", () => {
     `;
 
     await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
   });
 
   afterEach(async () => {
@@ -22,8 +26,8 @@ describe("Description test case 557", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      // "t", // TODO: FAIL it is ignoring the img altogether
-      // "end of document",
+      "img, 1, t",
+      "end of document",
     ]);
   });
 });

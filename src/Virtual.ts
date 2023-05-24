@@ -88,8 +88,9 @@ export class Virtual implements ScreenReader {
 
   #getCurrentIndex(tree: AccessibilityNode[]) {
     return tree.findIndex(
-      ({ accessibleName, node, role }) =>
+      ({ accessibleDescription, accessibleName, node, role }) =>
         accessibleName === this.#activeNode.accessibleName &&
+        accessibleDescription === this.#activeNode.accessibleDescription &&
         node === this.#activeNode.node &&
         role === this.#activeNode.role
     );

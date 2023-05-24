@@ -25,6 +25,10 @@ function isHiddenFromAccessibilityTree(node: Node) {
 function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
   const { accessibleName, node } = tree;
 
+  if (!accessibleName) {
+    return false;
+  }
+
   return (
     // TODO: improve comparison on whether the children are superfluous
     // to include.
@@ -35,7 +39,8 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
 
 function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
   const { children, ...treeNode } = tree;
-  const isAnnounced = treeNode.accessibleName || treeNode.role;
+  const isAnnounced =
+    treeNode.accessibleName || treeNode.accessibleDescription || treeNode.role;
   const ignoreChildren = shouldIgnoreChildren(tree);
 
   const flattenedTree = ignoreChildren
@@ -51,7 +56,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 
   if (isRoleContainer) {
     flattenedTree.push({
-      accessibleDescription: "",
+      accessibleDescription: treeNode.accessibleDescription,
       accessibleName: treeNode.accessibleName,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
