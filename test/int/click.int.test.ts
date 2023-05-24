@@ -23,6 +23,10 @@ describe("click", () => {
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Clicked 1 Time(s)")).toBeInTheDocument();
 
+    await virtual.previous();
+
+    expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 1 Time(s)");
+
     await virtual.stop();
   });
 
@@ -41,6 +45,10 @@ describe("click", () => {
 
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Clicked 2 Time(s)")).toBeInTheDocument();
+
+    await virtual.previous();
+
+    expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 2 Time(s)");
 
     await virtual.stop();
   });
@@ -61,6 +69,10 @@ describe("click", () => {
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Clicked 3 Time(s)")).toBeInTheDocument();
 
+    await virtual.previous();
+
+    expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 3 Time(s)");
+
     await virtual.stop();
   });
 
@@ -79,6 +91,24 @@ describe("click", () => {
 
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Right Clicked")).toBeInTheDocument();
+
+    await virtual.previous();
+
+    expect(await virtual.lastSpokenPhrase()).toEqual("Right Clicked");
+
+    await virtual.stop();
+  });
+
+  it("should handle requests to click on hidden container gracefully", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const container = document.querySelector("#hidden")! as HTMLElement;
+
+    await virtual.start({ container });
+
+    await virtual.click();
+
+    expect(await virtual.itemTextLog()).toEqual([]);
+    expect(await virtual.spokenPhraseLog()).toEqual([]);
 
     await virtual.stop();
   });

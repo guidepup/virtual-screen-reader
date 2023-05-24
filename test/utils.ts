@@ -19,7 +19,10 @@ export function setupBasicPage() {
 }
 
 export function setupButtonPage() {
-  document.body.innerHTML = `<p id="status">Not Clicked</p>`;
+  document.body.innerHTML = `
+  <p id="status">Not Clicked</p>
+  <div id="hidden" style="display: none;">Hidden</div>
+  `;
 
   const button = document.createElement("button");
 

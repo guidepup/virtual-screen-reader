@@ -89,10 +89,10 @@ export class Virtual implements ScreenReader {
   #getCurrentIndex(tree: AccessibilityNode[]) {
     return tree.findIndex(
       ({ accessibleDescription, accessibleName, node, role }) =>
-        accessibleName === this.#activeNode.accessibleName &&
-        accessibleDescription === this.#activeNode.accessibleDescription &&
-        node === this.#activeNode.node &&
-        role === this.#activeNode.role
+        accessibleName === this.#activeNode?.accessibleName &&
+        accessibleDescription === this.#activeNode?.accessibleDescription &&
+        node === this.#activeNode?.node &&
+        role === this.#activeNode?.role
     );
   }
 
@@ -110,11 +110,17 @@ export class Virtual implements ScreenReader {
     }
 
     this.#container = container;
-    const tree = this.#getAccessibilityTree();
-    this.#updateState(tree[0]);
 
     const invalidateTreeCache = () => this.#invalidateTreeCache();
     this.#disconnectDOMObserver = observeDOM(container, invalidateTreeCache);
+
+    const tree = this.#getAccessibilityTree();
+
+    if (!tree.length) {
+      return;
+    }
+
+    this.#updateState(tree[0]);
 
     return;
   }
@@ -135,6 +141,11 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
 
     const tree = this.#getAccessibilityTree();
+
+    if (!tree.length) {
+      return;
+    }
+
     const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex = currentIndex === -1 ? 0 : currentIndex - 1;
     const newActiveNode = tree.at(nextIndex);
@@ -148,6 +159,11 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
 
     const tree = this.#getAccessibilityTree();
+
+    if (!tree.length) {
+      return;
+    }
+
     const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex =
       currentIndex === -1 || currentIndex === tree.length - 1
@@ -211,6 +227,10 @@ export class Virtual implements ScreenReader {
    */
   async click({ button = "left", clickCount = 1 } = {}) {
     this.#checkContainer();
+
+    if (!this.#activeNode) {
+      return;
+    }
 
     const key = `[Mouse${button[0].toUpperCase()}${button.slice(1)}]`;
     const keys = key.repeat(clickCount);
