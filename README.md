@@ -69,12 +69,13 @@ describe("Screen Reader Tests", () => {
     await virtual.start({ container: document.body });
 
     // Navigate your environment with the virtual screen reader just as your users would
-    while ((await virtual.lastSpokenPhrase()) !== "end of contentinfo") {
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
       await virtual.next();
     }
 
     // Assert on what your users would really see and hear when using screen readers
     expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
       "navigation",
       "Nav Text",
       "end of navigation",
@@ -92,6 +93,7 @@ describe("Screen Reader Tests", () => {
       "contentinfo",
       "Footer",
       "end of contentinfo",
+      "end of document",
     ]);
 
     // Stop your virtual screen reader instance
