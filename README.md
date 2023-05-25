@@ -25,7 +25,8 @@ With Guidepup Virtual Screen Reader you can automate your screen reader unit tes
 This project is currently a work in progress, but here are some of the features you can expect from this package as it matures:
 
 - **Mirrors Real User Experience** - assert on what users really do and hear when using screen readers.
-- **Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
+- **Test Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
+- **UI Framework Agnostic** - want to use React, Vue, Solid, Svelte, etc.? All good here! Works with any UI framework, and plays nicely with the [Testing Library](https://testing-library.com/) suite.
 - **Fast Feedback** - avoid the cumbersome overhead of running an e2e test with a running screen reader by running virtually over the provided DOM.
 
 ## Getting Started
