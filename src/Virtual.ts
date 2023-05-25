@@ -2,7 +2,12 @@ import {
   AccessibilityNode,
   createAccessibilityTree,
 } from "./createAccessibilityTree";
-import type { CommandOptions, ScreenReader } from "@guidepup/guidepup";
+import {
+  CommandOptions,
+  MacOSModifiers,
+  ScreenReader,
+  WindowsModifiers,
+} from "@guidepup/guidepup";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -15,6 +20,11 @@ import userEvent from "@testing-library/user-event";
 export interface StartOptions extends CommandOptions {
   container: HTMLElement;
 }
+
+const defaultUserEventOptions = {
+  delay: null,
+  skipHover: true,
+};
 
 const observedAttributes = [
   ...aria.keys(),
@@ -34,7 +44,6 @@ const observedAttributes = [
 
 // TODO: handle aria-live, role="polite", role="alert", and other interruptions.
 // TODO: announce sensible attribute values, e.g. clicked, disabled, etc.
-// TODO: consider making the role, accessibleName, accessibleDescription, etc. available via their own APIs.
 
 const observeDOM = (function () {
   const MutationObserver = window.MutationObserver;
@@ -147,14 +156,29 @@ export class Virtual implements ScreenReader {
     );
   }
 
+  /**
+   * Detect whether the screen reader is supported for the current OS.
+   *
+   * @returns {Promise<boolean>}
+   */
   async detect() {
     return true;
   }
 
+  /**
+   * Detect whether the screen reader is the default screen reader for the current OS.
+   *
+   * @returns {Promise<boolean>}
+   */
   async default() {
     return false;
   }
 
+  /**
+   * Turn the screen reader on.
+   *
+   * @param {object} [options] Additional options.
+   */
   async start({ container }: StartOptions = { container: null }) {
     if (!container) {
       throw new Error(ERR_VIRTUAL_MISSING_CONTAINER);
@@ -176,6 +200,9 @@ export class Virtual implements ScreenReader {
     return;
   }
 
+  /**
+   * Turn the screen reader off.
+   */
   async stop() {
     this.#disconnectDOMObserver?.();
     this.#invalidateTreeCache();
@@ -188,6 +215,9 @@ export class Virtual implements ScreenReader {
     return;
   }
 
+  /**
+   * Move the screen reader cursor to the previous location.
+   */
   async previous() {
     this.#checkContainer();
 
@@ -206,6 +236,9 @@ export class Virtual implements ScreenReader {
     return;
   }
 
+  /**
+   * Move the screen reader cursor to the next location.
+   */
   async next() {
     this.#checkContainer();
 
@@ -227,44 +260,137 @@ export class Virtual implements ScreenReader {
     return;
   }
 
+  /**
+   * Perform the default action for the item in the screen reader cursor.
+   */
   async act() {
     this.#checkContainer();
 
-    notImplemented();
+    if (!this.#activeNode) {
+      return;
+    }
+
+    const target = this.#activeNode.node as HTMLElement;
+
+    // TODO: verify that is appropriate for all default actions
+    await userEvent.click(target, defaultUserEventOptions);
 
     return;
   }
 
+  /**
+   * Interact with the item under the screen reader cursor.
+   */
   async interact() {
     this.#checkContainer();
 
     return;
   }
 
+  /**
+   * Stop interacting with the current item.
+   */
   async stopInteracting() {
     this.#checkContainer();
 
     return;
   }
 
-  async press() {
+  /**
+   * Press a key on the active item.
+   *
+   * `key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
+   * value or a single character to generate the text for. A superset of the `key` values can be found
+   * [on the MDN key values page](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:
+   *
+   * `F1` - `F20`, `Digit0` - `Digit9`, `KeyA` - `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,
+   * `Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.
+   *
+   * Following modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta` (OS permitting).
+   *
+   * Holding down `Shift` will type the text that corresponds to the `key` in the upper case.
+   *
+   * If `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective
+   * texts.
+   *
+   * Shortcuts such as `key: "Control+f"` or `key: "Control+Shift+f"` are supported as well. When specified with the
+   * modifier, modifier is pressed and being held while the subsequent key is being pressed.
+   *
+   * ```ts
+   * await keyboard.press("Control+f");
+   * ```
+   *
+   * @param {string} key Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
+   */
+  async press(key: string) {
     this.#checkContainer();
 
-    notImplemented();
+    if (!this.#activeNode) {
+      return;
+    }
+
+    const rawKeys = key.replaceAll("{", "{{").replaceAll("[", "[[").split("+");
+    const modifiers = [];
+    const keys = [];
+
+    rawKeys.forEach((rawKey) => {
+      if (
+        typeof MacOSModifiers[rawKey] !== "undefined" ||
+        typeof WindowsModifiers[rawKey] !== "undefined"
+      ) {
+        modifiers.push(rawKey);
+      } else {
+        keys.push(rawKey);
+      }
+    });
+
+    const keyboardCommand = [
+      ...modifiers.map((modifier) => `{${modifier}>}`),
+      ...keys,
+      ...modifiers.reverse().map((modifier) => `{/${modifier}}`),
+    ].join("");
+
+    await this.click();
+    await userEvent.keyboard(keyboardCommand, defaultUserEventOptions);
 
     return;
   }
 
-  async type() {
+  /**
+   * Type text into the active item.
+   *
+   * To press a special key, like `Control` or `ArrowDown`, use `virtual.press(key)`.
+   *
+   * ```ts
+   * await virtual.type("my-username");
+   * await virtual.press("Enter");
+   * ```
+   *
+   * @param {string} text Text to type into the active item.
+   */
+  async type(text: string) {
     this.#checkContainer();
 
-    notImplemented();
+    if (!this.#activeNode) {
+      return;
+    }
+
+    const target = this.#activeNode.node as HTMLElement;
+    await userEvent.type(target, text, defaultUserEventOptions);
 
     return;
   }
 
+  /**
+   * Perform a screen reader command.
+   *
+   * @param {any} command Screen reader command to execute.
+   */
   async perform() {
     this.#checkContainer();
+
+    // TODO: decide what this means as there is no established "common" command
+    // set for different screen readers.
 
     notImplemented();
 
@@ -287,29 +413,52 @@ export class Virtual implements ScreenReader {
     const keys = key.repeat(clickCount);
     const target = this.#activeNode.node as HTMLElement;
 
-    await userEvent.pointer([{ target }, { keys, target }]);
+    await userEvent.pointer(
+      [{ target }, { keys, target }],
+      defaultUserEventOptions
+    );
 
     return;
   }
 
+  /**
+   * Get the last spoken phrase.
+   *
+   * @returns {Promise<string>} The last spoken phrase.
+   */
   async lastSpokenPhrase() {
     this.#checkContainer();
 
     return this.#spokenPhraseLog.at(-1) ?? "";
   }
 
+  /**
+   * Get the text of the item in the screen reader cursor.
+   *
+   * @returns {Promise<string>} The item's text.
+   */
   async itemText() {
     this.#checkContainer();
 
     return this.#itemTextLog.at(-1) ?? "";
   }
 
+  /**
+   * Get the log of all spoken phrases for this screen reader instance.
+   *
+   * @returns {Promise<string[]>} The spoken phrase log.
+   */
   async spokenPhraseLog() {
     this.#checkContainer();
 
     return this.#spokenPhraseLog;
   }
 
+  /**
+   * Get the log of all visited item text for this screen reader instance.
+   *
+   * @returns {Promise<string[]>} The item text log.
+   */
   async itemTextLog() {
     this.#checkContainer();
 
