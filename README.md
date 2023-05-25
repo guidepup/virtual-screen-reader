@@ -24,10 +24,9 @@ With Guidepup Virtual Screen Reader you can automate your screen reader unit tes
 
 This project is currently a work in progress, but here are some of the features you can expect from this package as it matures:
 
-- **Full Control** - if a screen reader has a keyboard command, then the Guidepup Virtual Screen Reader supports it.
 - **Mirrors Real User Experience** - assert on what users really do and hear when using screen readers.
 - **Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
-- **Fast Feedback** - avoid the cumbersome overhead of running an e2e test with a running screen reader by running virtually over provided DOM.
+- **Fast Feedback** - avoid the cumbersome overhead of running an e2e test with a running screen reader by running virtually over the provided DOM.
 
 ## Getting Started
 
