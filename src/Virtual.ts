@@ -33,6 +33,8 @@ const observedAttributes = [
 ];
 
 // TODO: handle aria-live, role="polite", role="alert", and other interruptions.
+// TODO: announce sensible attribute values, e.g. clicked, disabled, etc.
+// TODO: consider making the role, accessibleName, accessibleDescription, etc. available via their own APIs.
 
 const observeDOM = (function () {
   const MutationObserver = window.MutationObserver;
