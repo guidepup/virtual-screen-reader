@@ -1,6 +1,30 @@
 import { getByText, queryByText } from "@testing-library/dom";
-import { setupButtonPage } from "../utils";
 import { virtual } from "../../src";
+
+function setupButtonPage() {
+  document.body.innerHTML = `
+  <p id="status">Not Clicked</p>
+  <div id="hidden" style="display: none;">Hidden</div>
+  `;
+
+  const button = document.createElement("button");
+
+  button.addEventListener("click", function (event) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.getElementById(
+      "status"
+    )!.innerHTML = `Clicked ${event.detail} Time(s)`;
+  });
+
+  button.innerHTML = "Click Me";
+
+  document.body.appendChild(button);
+
+  document.body.addEventListener("contextmenu", () => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.getElementById("status")!.innerHTML = `Right Clicked`;
+  });
+}
 
 describe("click", () => {
   beforeEach(() => {

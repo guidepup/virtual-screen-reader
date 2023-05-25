@@ -32,7 +32,6 @@ const observedAttributes = [
   "disabled",
 ];
 
-// TODO: monitor focus change and update the screen reader active element.
 // TODO: handle aria-live, role="polite", role="alert", and other interruptions.
 
 const observeDOM = (function () {
@@ -84,13 +83,45 @@ export class Virtual implements ScreenReader {
   #getAccessibilityTree() {
     if (!this.#treeCache) {
       this.#treeCache = createAccessibilityTree(this.#container);
+      this.#attachFocusListeners();
     }
 
     return this.#treeCache;
   }
 
   #invalidateTreeCache() {
+    this.#detachFocusListeners();
     this.#treeCache = null;
+  }
+
+  #attachFocusListeners() {
+    this.#getAccessibilityTree().forEach((treeNode) => {
+      treeNode.node.addEventListener(
+        "focus",
+        this.#handleFocusChange.bind(this)
+      );
+    });
+  }
+
+  #detachFocusListeners() {
+    this.#getAccessibilityTree().forEach((treeNode) => {
+      treeNode.node.removeEventListener(
+        "focus",
+        this.#handleFocusChange.bind(this)
+      );
+    });
+  }
+
+  #handleFocusChange({ target }: FocusEvent) {
+    const tree = this.#getAccessibilityTree();
+    const nextIndex = tree.findIndex(({ node }) => node === target);
+
+    if (nextIndex === -1) {
+      return;
+    }
+
+    const newActiveNode = tree.at(nextIndex);
+    this.#updateState(newActiveNode);
   }
 
   #updateState(accessibilityNode: AccessibilityNode) {

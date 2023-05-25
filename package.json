@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Virtual screen reader driver for unit test automation.",
   "main": "lib/index.js",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
