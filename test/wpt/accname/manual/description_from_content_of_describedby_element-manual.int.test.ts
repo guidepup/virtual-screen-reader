@@ -50,7 +50,9 @@ describe("Description from content of describedby element", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "textbox, Important stuff, My name is Zambino the weird. (QED) Where are my marbles?", // TODO: FAIL incorrectly using Zambino where it should be using Eli
+      // TODO: FAIL incorrectly using Zambino where it should be using Eli
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "textbox, Important stuff, My name is Zambino the weird. (QED) Where are my marbles?",
       "My",
       "name is",
       "Bryan",

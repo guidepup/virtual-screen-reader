@@ -27,7 +27,7 @@ describe("type", () => {
     await virtual.type("Hello World!");
     expect(getByRole(container, "textbox")).toHaveValue("Hello World!");
 
-    // TODO: FAIL: accessible name should include the now non-empty value "abc"
+    // TODO: FAIL: item text should include the now non-empty value "Hello World!"
     expect(await virtual.itemText()).toEqual("Input Some Text");
 
     await virtual.stop();

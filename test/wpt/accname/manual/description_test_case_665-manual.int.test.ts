@@ -14,6 +14,8 @@ describe("Description test case 665", () => {
     `;
 
     await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
   });
 
   afterEach(async () => {
@@ -25,8 +27,8 @@ describe("Description test case 665", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      // "foo", // TODO: FAIL hidden description element isn't being used.
-      // "end of document",
+      "img, foo",
+      "end of document",
     ]);
   });
 });
