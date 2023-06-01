@@ -13,6 +13,7 @@ import {
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
 import { aria } from "aria-query";
+import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
 import { notImplemented } from "./notImplemented";
 import userEvent from "@testing-library/user-event";
@@ -28,22 +29,44 @@ const defaultUserEventOptions = {
 
 const observedAttributes = [
   ...aria.keys(),
-  "type",
+  "alt",
+  "class",
+  "checked",
   "control",
+  "disabled",
   "for",
+  "hidden",
+  "label",
   "labels",
   "style",
-  "class",
   "title",
-  "alt",
-  "label",
+  "type",
   "value",
-  "hidden",
-  "disabled",
 ];
 
-// TODO: handle aria-live, role="polite", role="alert", and other interruptions.
-// TODO: announce sensible attribute values, e.g. clicked, disabled, etc.
+/**
+ * TODO: handle live region roles:
+ *
+ * - alert
+ * - log
+ * - marquee
+ * - status
+ * - timer
+ * - alertdialog
+ *
+ * And handle live region attributes:
+ *
+ * - aria-atomic
+ * - aria-busy
+ * - aria-live
+ * - aria-relevant
+ *
+ * REF:
+ *
+ * - https://rawgit.com/w3c/aria/stable/#live_region_roles
+ * - https://rawgit.com/w3c/aria/stable/#window_roles
+ * - https://rawgit.com/w3c/aria/stable/#attrs_liveregions
+ */
 
 const observeDOM = (function () {
   const MutationObserver = window.MutationObserver;
@@ -136,10 +159,8 @@ export class Virtual implements ScreenReader {
   }
 
   #updateState(accessibilityNode: AccessibilityNode) {
-    const { accessibleDescription, accessibleName, role } = accessibilityNode;
-    const spokenPhrase = [role, accessibleName, accessibleDescription]
-      .filter(Boolean)
-      .join(", ");
+    const { accessibleName } = accessibilityNode;
+    const spokenPhrase = getSpokenPhrase(accessibilityNode);
 
     this.#activeNode = accessibilityNode;
     this.#itemTextLog.push(accessibleName);
@@ -148,11 +169,12 @@ export class Virtual implements ScreenReader {
 
   #getCurrentIndex(tree: AccessibilityNode[]) {
     return tree.findIndex(
-      ({ accessibleDescription, accessibleName, node, role }) =>
+      ({ accessibleDescription, accessibleName, node, role, spokenRole }) =>
         accessibleName === this.#activeNode?.accessibleName &&
         accessibleDescription === this.#activeNode?.accessibleDescription &&
         node === this.#activeNode?.node &&
-        role === this.#activeNode?.role
+        role === this.#activeNode?.role &&
+        spokenRole === this.#activeNode?.spokenRole
     );
   }
 

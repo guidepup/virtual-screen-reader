@@ -8,6 +8,7 @@ export interface AccessibilityNode {
   childrenPresentational: boolean;
   node: Node;
   role: string;
+  spokenRole: string;
 }
 
 interface AccessibilityNodeTree extends AccessibilityNode {
@@ -40,7 +41,9 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
 function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
   const { children, ...treeNode } = tree;
   const isAnnounced =
-    treeNode.accessibleName || treeNode.accessibleDescription || treeNode.role;
+    treeNode.accessibleName ||
+    treeNode.accessibleDescription ||
+    treeNode.spokenRole;
   const ignoreChildren = shouldIgnoreChildren(tree);
 
   const flattenedTree = ignoreChildren
@@ -48,7 +51,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
     : [...children.flatMap((child) => flattenTree(child))];
 
   const isRoleContainer =
-    flattenedTree.length && !ignoreChildren && treeNode.role;
+    flattenedTree.length && !ignoreChildren && treeNode.spokenRole;
 
   if (isAnnounced) {
     flattenedTree.unshift(treeNode);
@@ -60,7 +63,8 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       accessibleName: treeNode.accessibleName,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
-      role: `end of ${treeNode.role}`,
+      role: treeNode.role,
+      spokenRole: `end of ${treeNode.spokenRole}`,
     });
   }
 
@@ -81,6 +85,7 @@ function growTree(
       accessibleName,
       childrenPresentational,
       role,
+      spokenRole,
     } = getNodeAccessibilityData({
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
@@ -94,6 +99,7 @@ function growTree(
         childrenPresentational,
         node: childNode,
         role,
+        spokenRole,
       })
     );
   });
@@ -111,6 +117,7 @@ export function createAccessibilityTree(node: Node) {
     accessibleName,
     childrenPresentational,
     role,
+    spokenRole,
   } = getNodeAccessibilityData({
     node,
     inheritedImplicitPresentational: false,
@@ -123,6 +130,7 @@ export function createAccessibilityTree(node: Node) {
     childrenPresentational,
     node,
     role,
+    spokenRole,
   });
 
   return flattenTree(tree);

@@ -29,14 +29,15 @@ export function getNodeAccessibilityData({
     inheritedImplicitPresentational ||
     childrenPresentationalRoles.includes(role);
 
-  const amendedRole = isPresentational || isGeneric ? "" : role;
+  const spokenRole = isPresentational || isGeneric ? "" : role;
   const amendedAccessibleDescription =
     accessibleDescription === accessibleName ? "" : accessibleDescription;
 
   return {
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
-    role: amendedRole,
     childrenPresentational,
+    role,
+    spokenRole,
   };
 }

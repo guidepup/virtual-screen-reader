@@ -17,7 +17,7 @@ export const childrenPresentationalRoles = roles
 
 const rolesRequiringName = ["form", "region"];
 
-const globalStatesAndProperties = [
+export const globalStatesAndProperties = [
   "aria-atomic",
   "aria-braillelabel",
   "aria-brailleroledescription",
