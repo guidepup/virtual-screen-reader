@@ -3,6 +3,7 @@ import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
 export interface AccessibilityNode {
+  accessibleAttributeLabels: string[];
   accessibleDescription: string;
   accessibleName: string;
   childrenPresentational: boolean;
@@ -59,6 +60,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 
   if (isRoleContainer) {
     flattenedTree.push({
+      accessibleAttributeLabels: treeNode.accessibleAttributeLabels,
       accessibleDescription: treeNode.accessibleDescription,
       accessibleName: treeNode.accessibleName,
       childrenPresentational: treeNode.childrenPresentational,
@@ -81,6 +83,7 @@ function growTree(
     }
 
     const {
+      accessibleAttributeLabels,
       accessibleDescription,
       accessibleName,
       childrenPresentational,
@@ -93,6 +96,7 @@ function growTree(
 
     tree.children.push(
       growTree(childNode, {
+        accessibleAttributeLabels,
         accessibleDescription,
         accessibleName,
         children: [],
@@ -113,6 +117,7 @@ export function createAccessibilityTree(node: Node) {
   }
 
   const {
+    accessibleAttributeLabels,
     accessibleDescription,
     accessibleName,
     childrenPresentational,
@@ -124,6 +129,7 @@ export function createAccessibilityTree(node: Node) {
   });
 
   const tree = growTree(node, {
+    accessibleAttributeLabels,
     accessibleDescription,
     accessibleName,
     children: [],

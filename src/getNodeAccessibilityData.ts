@@ -3,6 +3,7 @@ import {
   getRole,
   presentationRoles,
 } from "./getRole";
+import { getAccessibleAttributeLabels } from "./getAccessibleAttributeLabels";
 import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
 
@@ -22,6 +23,11 @@ export function getNodeAccessibilityData({
     node,
   });
 
+  const accessibleAttributeLabels = getAccessibleAttributeLabels({
+    node,
+    role,
+  });
+
   const isPresentational = presentationRoles.includes(role);
   const isGeneric = role === "generic";
 
@@ -34,6 +40,7 @@ export function getNodeAccessibilityData({
     accessibleDescription === accessibleName ? "" : accessibleDescription;
 
   return {
+    accessibleAttributeLabels,
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
     childrenPresentational,
