@@ -2,17 +2,19 @@ import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLab
 
 // REF: https://www.w3.org/TR/html-aria/#docconformance-attr
 const ariaToHTMLAttributeMapping = {
-  "aria-checked": "checked",
-  "aria-disabled": "disabled",
-  // "aria-hidden": "hidden",
-  "aria-placeholder": "placeholder",
-  "aria-valuemax": "max",
-  "aria-valuemin": "min",
-  // TODO: contenteditable
-  "aria-readonly": "readonly",
-  "aria-required": "required",
-  "aria-colspan": "colspan",
-  "aria-rowspan": "rowspan",
+  "aria-checked": [{ name: "checked" }],
+  "aria-disabled": [{ name: "disabled" }],
+  // "aria-hidden": [{ name: "hidden" }],
+  "aria-placeholder": [{ name: "placeholder" }],
+  "aria-valuemax": [{ name: "max" }],
+  "aria-valuemin": [{ name: "min" }],
+  "aria-readonly": [
+    { name: "readonly" },
+    { name: "contenteditable", negative: true },
+  ],
+  "aria-required": [{ name: "required" }],
+  "aria-colspan": [{ name: "colspan" }],
+  "aria-rowspan": [{ name: "rowspan" }],
 };
 
 export const getLabelFromHtmlEquivalentAttribute = ({
@@ -22,13 +24,24 @@ export const getLabelFromHtmlEquivalentAttribute = ({
   attributeName: string;
   node: HTMLElement;
 }) => {
-  const htmlAttributeName = ariaToHTMLAttributeMapping[attributeName];
+  const htmlAttribute = ariaToHTMLAttributeMapping[attributeName];
 
-  if (!htmlAttributeName) {
+  if (!htmlAttribute?.length) {
     return null;
   }
 
-  const attributeValue = node.getAttribute(htmlAttributeName);
+  for (const { name, negative = false } of htmlAttribute) {
+    const attributeValue = node.getAttribute(name);
+    const label = mapAttributeNameAndValueToLabel(
+      attributeName,
+      attributeValue,
+      negative
+    );
 
-  return mapAttributeNameAndValueToLabel(attributeName, attributeValue);
+    if (label) {
+      return label;
+    }
+  }
+
+  return null;
 };

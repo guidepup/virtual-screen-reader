@@ -1,6 +1,6 @@
 import { virtual } from "../../src";
 
-describe("Checked Attribute State", () => {
+describe("Disabled Attribute State", () => {
   afterEach(async () => {
     document.body.innerHTML = "";
   });
