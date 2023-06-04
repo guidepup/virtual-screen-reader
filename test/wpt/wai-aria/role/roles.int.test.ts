@@ -40,6 +40,16 @@ function allowsNameFromContent(node: Element): boolean {
   ].includes(node.getAttribute("role") ?? "");
 }
 
+function defaultAriaAttributes(role) {
+  switch (role) {
+    case "combobox": {
+      return ", not expanded";
+    }
+  }
+
+  return "";
+}
+
 describe("Simple Core ARIA Role Verification Tests", () => {
   test.each([
     "alert",
@@ -155,12 +165,13 @@ describe("Simple Core ARIA Role Verification Tests", () => {
     container.appendChild(document.createTextNode("x"));
     container.setAttribute("role", role);
     container.id = `role_${role}`;
-    document.body.appendChild(container);
 
     await virtual.start({ container });
 
     expect(await virtual.lastSpokenPhrase()).toEqual(
-      `${role}${allowsNameFromContent(container) ? ", x" : ""}`
+      `${role}${
+        allowsNameFromContent(container) ? ", x" : ""
+      }${defaultAriaAttributes(role)}`
     );
 
     await virtual.stop();

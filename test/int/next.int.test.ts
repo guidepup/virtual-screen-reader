@@ -1,3 +1,4 @@
+import { getByRole } from "@testing-library/dom";
 import { setupBasicPage } from "../utils";
 import { virtual } from "../../src";
 
@@ -61,6 +62,26 @@ describe("next", () => {
       "Footer",
       "end of contentinfo",
       "end of document",
+    ]);
+  });
+
+  it("should handle the current node being removed from the DOM gracefully and set the active element back to the container", async () => {
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe("Nav Text");
+
+    const currentElement = getByRole(document.body, "navigation");
+    document.body.removeChild(currentElement);
+
+    await new Promise<void>((resolve) => setTimeout(() => resolve()));
+    await virtual.next();
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "navigation",
+      "Nav Text",
+      "document",
     ]);
   });
 });

@@ -19,7 +19,7 @@ export const getAccessibleAttributeLabels = ({
 
   const attributes = getAttributesByRole(role);
 
-  attributes.forEach((attributeName) => {
+  attributes.forEach(([attributeName, implicitAttributeValue]) => {
     const labelFromHtmlEquivalentAttribute =
       getLabelFromHtmlEquivalentAttribute({
         attributeName,
@@ -45,7 +45,7 @@ export const getAccessibleAttributeLabels = ({
 
     const labelFromImplicitAriaAttributeValue = mapAttributeNameAndValueToLabel(
       attributeName,
-      attributes[attributeName]
+      implicitAttributeValue
     );
 
     if (labelFromImplicitAriaAttributeValue) {

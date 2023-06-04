@@ -26,7 +26,9 @@ describe("Checked Attribute State", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("button, Submit");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "button, Submit, not disabled"
+    );
 
     await virtual.stop();
   });
@@ -65,7 +67,9 @@ describe("Checked Attribute State", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("button, Submit");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "button, Submit, not disabled"
+    );
 
     await virtual.stop();
   });

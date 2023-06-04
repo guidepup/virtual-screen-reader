@@ -71,15 +71,16 @@ const observedAttributes = [
 const observeDOM = (function () {
   const MutationObserver = window.MutationObserver;
 
-  return function observeDOM(node: Node, onChange: () => void): () => void {
+  return function observeDOM(
+    node: Node,
+    onChange: MutationCallback
+  ): () => void {
     if (!isElement(node)) {
       return;
     }
 
-    const callback = () => onChange();
-
     if (MutationObserver) {
-      const mutationObserver = new MutationObserver(callback);
+      const mutationObserver = new MutationObserver(onChange);
 
       mutationObserver.observe(node, {
         attributes: true,
@@ -149,12 +150,8 @@ export class Virtual implements ScreenReader {
   #handleFocusChange({ target }: FocusEvent) {
     const tree = this.#getAccessibilityTree();
     const nextIndex = tree.findIndex(({ node }) => node === target);
-
-    if (nextIndex === -1) {
-      return;
-    }
-
     const newActiveNode = tree.at(nextIndex);
+
     this.#updateState(newActiveNode);
   }
 
@@ -208,8 +205,10 @@ export class Virtual implements ScreenReader {
 
     this.#container = container;
 
-    const invalidateTreeCache = () => this.#invalidateTreeCache();
-    this.#disconnectDOMObserver = observeDOM(container, invalidateTreeCache);
+    this.#disconnectDOMObserver = observeDOM(
+      container,
+      this.#invalidateTreeCache.bind(this)
+    );
 
     const tree = this.#getAccessibilityTree();
 
@@ -406,7 +405,7 @@ export class Virtual implements ScreenReader {
   /**
    * Perform a screen reader command.
    *
-   * @param {any} command Screen reader command to execute.
+   * Currently not implemented.
    */
   async perform() {
     this.#checkContainer();
@@ -415,8 +414,6 @@ export class Virtual implements ScreenReader {
     // set for different screen readers.
 
     notImplemented();
-
-    return;
   }
 
   /**
