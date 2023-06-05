@@ -43,10 +43,28 @@ function allowsNameFromContent(node: Element): boolean {
 function defaultAriaAttributes(role) {
   switch (role) {
     case "combobox": {
-      return ", not expanded";
+      return ", not expanded, has popup listbox";
     }
     case "heading": {
       return ", level 2";
+    }
+    case "meter": {
+      return ", max value 100, min value 0";
+    }
+    case "scrollbar": {
+      return ", orientated vertically, max value 100, min value 0";
+    }
+    case "separator": {
+      return ", orientated horizontally, max value 100, min value 0";
+    }
+    case "slider": {
+      return ", orientated horizontally, max value 100, min value 0";
+    }
+    case "spinbutton": {
+      return ", current value 0";
+    }
+    case "toolbar": {
+      return ", orientated horizontally";
     }
   }
 

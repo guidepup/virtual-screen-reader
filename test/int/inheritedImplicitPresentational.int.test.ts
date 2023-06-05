@@ -57,9 +57,9 @@ describe("Inherited Implicit Presentational Role", () => {
       "Sample Content",
       "link, let's go!",
       "img, A visible text caption labeling the image.",
-      "tree",
+      "tree, orientated vertically",
       "treeitem, An expanded tree node, expanded, not selected",
-      "end of tree",
+      "end of tree, orientated vertically",
       "end of document",
     ]);
   });

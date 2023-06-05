@@ -299,7 +299,7 @@ describe("HTML-AAM Role Verification Tests", () => {
       "x",
       "end of banner",
       "heading, x, level 1", // TODO: FAIL hgroup missing role
-      "separator",
+      "separator, orientated horizontally, max value 100, min value 0",
       "x", // WONTFIX generic ignored by screen readers
       "img, x", // TODO: FAIL img role should be image
       // PASS on missing img entry
@@ -308,7 +308,7 @@ describe("HTML-AAM Role Verification Tests", () => {
       "checkbox",
       "textbox",
       "radio",
-      "slider",
+      "slider, orientated horizontally, max value 100, min value 0",
       "button, x",
       "searchbox",
       "button, x",
@@ -356,10 +356,10 @@ describe("HTML-AAM Role Verification Tests", () => {
       "x",
       "end of listitem",
       "end of list",
-      "combobox, not expanded",
+      "combobox, not expanded, has popup listbox",
       "option, x, not selected",
       "option, x, not selected",
-      "end of combobox, not expanded",
+      "end of combobox, not expanded, has popup listbox",
       "status",
       "x",
       "end of status",
@@ -376,10 +376,10 @@ describe("HTML-AAM Role Verification Tests", () => {
       "region", // TODO: FAIL section with no name should be generic
       "x",
       "end of region",
-      "listbox",
+      "listbox, orientated vertically",
       "option, b1, not selected",
       "option, b2, not selected",
-      "end of listbox",
+      "end of listbox, orientated vertically",
       "x", // WONTFIX generic ignored by screen readers
       "x", // WONTFIX generic ignored by screen readers
       "x", // TODO: FAIL strong should have strong role

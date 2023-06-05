@@ -28,9 +28,9 @@ describe("Description 1.0 combobox-focusable", () => {
   test("tests description", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "combobox, Choose your language., not expanded",
+      "combobox, Choose your language., not expanded, has popup listbox",
       "English",
-      "end of combobox, Choose your language., not expanded",
+      "end of combobox, Choose your language., not expanded, has popup listbox",
       "end of document",
     ]);
   });
