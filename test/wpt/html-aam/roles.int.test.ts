@@ -286,19 +286,19 @@ describe("HTML-AAM Role Verification Tests", () => {
       "form",
       "textbox",
       "end of form",
-      "heading, x",
-      "heading, x",
-      "heading, x",
-      "heading, x",
-      "heading, x",
-      "heading, x",
+      "heading, x, level 1",
+      "heading, x, level 2",
+      "heading, x, level 3",
+      "heading, x, level 4",
+      "heading, x, level 5",
+      "heading, x, level 6",
       "navigation",
       "banner, x", // TODO: FAIL header role should be generic
       "end of navigation",
       "banner",
       "x",
       "end of banner",
-      "heading, x", // TODO: FAIL hgroup missing role
+      "heading, x, level 1", // TODO: FAIL hgroup missing role
       "separator",
       "x", // WONTFIX generic ignored by screen readers
       "img, x", // TODO: FAIL img role should be image

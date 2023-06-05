@@ -158,4 +158,61 @@ describe("Checked Attribute State", () => {
 
     await virtual.stop();
   });
+
+  it("should handle a checkbox with an aria-checked attribute set to mixed", async () => {
+    // REF: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/
+    document.body.innerHTML = `
+    <fieldset class="checkbox-mixed">
+      <legend>
+        Sandwich Condiments
+      </legend>
+      <div role="checkbox"
+          class="group_checkbox"
+          aria-checked="mixed"
+          aria-controls="cond1 cond2 cond3 cond4"
+          tabindex="0">
+        All condiments
+      </div>
+      <ul class="checkboxes">
+        <li>
+          <label>
+            <input type="checkbox" id="cond1">
+            Lettuce
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox"
+                  id="cond2"
+                  checked="">
+            Tomato
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" id="cond3">
+            Mustard
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" id="cond4">
+            Sprouts
+          </label>
+        </li>
+      </ul>
+    </fieldset>
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, All condiments, partially checked"
+    );
+
+    await virtual.stop();
+  });
 });

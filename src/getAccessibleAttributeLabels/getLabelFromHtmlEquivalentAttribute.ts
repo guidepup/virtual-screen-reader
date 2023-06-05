@@ -32,11 +32,11 @@ export const getLabelFromHtmlEquivalentAttribute = ({
 
   for (const { name, negative = false } of htmlAttribute) {
     const attributeValue = node.getAttribute(name);
-    const label = mapAttributeNameAndValueToLabel(
+    const label = mapAttributeNameAndValueToLabel({
       attributeName,
       attributeValue,
-      negative
-    );
+      negative,
+    });
 
     if (label) {
       return label;

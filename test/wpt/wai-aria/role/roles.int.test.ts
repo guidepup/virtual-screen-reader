@@ -45,6 +45,9 @@ function defaultAriaAttributes(role) {
     case "combobox": {
       return ", not expanded";
     }
+    case "heading": {
+      return ", level 2";
+    }
   }
 
   return "";

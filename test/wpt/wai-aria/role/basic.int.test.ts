@@ -28,6 +28,8 @@ describe("Basic Tests", () => {
   test("tests implicit role", async () => {
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toEqual("heading, test heading");
+    expect(await virtual.lastSpokenPhrase()).toEqual(
+      "heading, test heading, level 1"
+    );
   });
 });

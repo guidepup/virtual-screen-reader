@@ -43,4 +43,54 @@ describe("Checked Attribute State", () => {
 
     await virtual.stop();
   });
+
+  it("should handle a button with an aria-pressed attribute set to mixed", async () => {
+    document.body.innerHTML = `
+    <fieldset class="button-mixed">
+      <legend>
+        Power Plant Controls
+      </legend>
+      <div role="button"
+          class="group_button"
+          aria-pressed="mixed"
+          aria-controls="cond1 cond2 cond3"
+          tabindex="0">
+        All systems
+      </div>
+      <ul class="buttons">
+        <li>
+          <label>
+            <button id="cond1">
+            Reactor
+          </label>
+        </li>
+        <li>
+          <label>
+            <button
+                  id="cond2"
+                  aria-pressed="">
+            Coolant
+          </label>
+        </li>
+        <li>
+          <label>
+            <button id="cond3">
+            Generator
+          </label>
+        </li>
+      </ul>
+    </fieldset>
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "button, All systems, partially pressed"
+    );
+
+    await virtual.stop();
+  });
 });

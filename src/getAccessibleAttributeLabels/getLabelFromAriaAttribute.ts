@@ -9,5 +9,8 @@ export const getLabelFromAriaAttribute = ({
 }) => {
   const attributeValue = node.getAttribute(attributeName);
 
-  return mapAttributeNameAndValueToLabel(attributeName, attributeValue);
+  return mapAttributeNameAndValueToLabel({
+    attributeName,
+    attributeValue,
+  });
 };

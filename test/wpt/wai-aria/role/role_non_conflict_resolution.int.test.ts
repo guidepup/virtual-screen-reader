@@ -49,20 +49,20 @@ describe("Role None Conflict Resolution Verification Tests", () => {
   test("verifies roles", async () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "heading, x",
+      "heading, x, level 1",
       /**
        * Invalid as of Aria 1.2, see https://www.w3.org/TR/wai-aria-1.2/#paragraph.
-       * Awaiting new release of https://github.com/A11yance/aria-query
+       * Awaiting new release of dom-accessibility-api / aria-query dependencies
        * "paragraph, x"
        */
       "x",
       "x",
-      "heading",
+      "heading, level 1",
       "x",
-      "end of heading",
-      "heading",
+      "end of heading, level 1",
+      "heading, level 1",
       "x",
-      "end of heading",
+      "end of heading, level 1",
       "x",
       "Sample Content",
     ]);

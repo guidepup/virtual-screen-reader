@@ -63,9 +63,15 @@ const observedAttributes = [
  *
  * REF:
  *
- * - https://rawgit.com/w3c/aria/stable/#live_region_roles
- * - https://rawgit.com/w3c/aria/stable/#window_roles
- * - https://rawgit.com/w3c/aria/stable/#attrs_liveregions
+ * - https://w3c.github.io/aria/##live_region_roles
+ * - https://w3c.github.io/aria/#window_roles
+ * - https://w3c.github.io/aria/#attrs_liveregions
+ */
+
+/**
+ * TODO: handle logical descendants via aria-activedescendant and aria-owns
+ *
+ * REF: https://w3c.github.io/aria/#state_prop_def
  */
 
 const observeDOM = (function () {
