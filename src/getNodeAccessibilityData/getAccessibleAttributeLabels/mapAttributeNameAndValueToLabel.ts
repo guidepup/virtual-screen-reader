@@ -53,7 +53,7 @@ const ariaPropertyToVirtualLabelMap = {
   "aria-flowto": null, // TODO: decide what to announce here + implement focus logic
   "aria-grabbed": null, // Deprecated in WAI-ARIA 1.1
   "aria-haspopup": token({
-    false: "does not have popup",
+    false: null, // https://w3c.github.io/aria/#aria-haspopup
     true: "has popup menu",
     menu: "has popup menu",
     listbox: "has popup listbox",
@@ -101,7 +101,9 @@ const ariaPropertyToVirtualLabelMap = {
   }),
   "aria-valuemax": number("max value"),
   "aria-valuemin": number("min value"),
-  "aria-valuenow": number("current value"), // TODO: don't announce if have an aria-valuetext
+  // TODO: don't announce if have an aria-valuetext
+  // TODO: map to percentage as per https://w3c.github.io/aria/#aria-valuenow for certain roles
+  "aria-valuenow": number("current value"),
   "aria-valuetext": string("current value"), // TODO: don't announce if have a value?
 };
 

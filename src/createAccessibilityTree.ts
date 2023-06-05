@@ -6,6 +6,7 @@ export interface AccessibilityNode {
   accessibleAttributeLabels: string[];
   accessibleDescription: string;
   accessibleName: string;
+  accessibleValue: string;
   childrenPresentational: boolean;
   node: Node;
   role: string;
@@ -63,6 +64,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       accessibleAttributeLabels: treeNode.accessibleAttributeLabels,
       accessibleDescription: treeNode.accessibleDescription,
       accessibleName: treeNode.accessibleName,
+      accessibleValue: treeNode.accessibleValue,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
       role: treeNode.role,
@@ -86,6 +88,7 @@ function growTree(
       accessibleAttributeLabels,
       accessibleDescription,
       accessibleName,
+      accessibleValue,
       childrenPresentational,
       role,
       spokenRole,
@@ -99,6 +102,7 @@ function growTree(
         accessibleAttributeLabels,
         accessibleDescription,
         accessibleName,
+        accessibleValue,
         children: [],
         childrenPresentational,
         node: childNode,
@@ -120,6 +124,7 @@ export function createAccessibilityTree(node: Node) {
     accessibleAttributeLabels,
     accessibleDescription,
     accessibleName,
+    accessibleValue,
     childrenPresentational,
     role,
     spokenRole,
@@ -132,6 +137,7 @@ export function createAccessibilityTree(node: Node) {
     accessibleAttributeLabels,
     accessibleDescription,
     accessibleName,
+    accessibleValue,
     children: [],
     childrenPresentational,
     node,

@@ -2,10 +2,11 @@ import {
   childrenPresentationalRoles,
   getRole,
   presentationRoles,
-} from "./getRole";
+} from "../getRole";
 import { getAccessibleAttributeLabels } from "./getAccessibleAttributeLabels";
 import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
+import { getAccessibleValue } from "./getAccessibleValue";
 
 export function getNodeAccessibilityData({
   inheritedImplicitPresentational,
@@ -16,6 +17,7 @@ export function getNodeAccessibilityData({
 }) {
   const accessibleDescription = getAccessibleDescription(node);
   const accessibleName = getAccessibleName(node);
+  const accessibleValue = getAccessibleValue(node);
 
   const role = getRole({
     accessibleName,
@@ -43,6 +45,7 @@ export function getNodeAccessibilityData({
     accessibleAttributeLabels,
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
+    accessibleValue,
     childrenPresentational,
     role,
     spokenRole,

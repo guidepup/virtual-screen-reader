@@ -13,6 +13,7 @@ import {
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
 import { aria } from "aria-query";
+import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
 import { notImplemented } from "./notImplemented";
@@ -63,7 +64,7 @@ const observedAttributes = [
  *
  * REF:
  *
- * - https://w3c.github.io/aria/##live_region_roles
+ * - https://w3c.github.io/aria/#live_region_roles
  * - https://w3c.github.io/aria/#window_roles
  * - https://w3c.github.io/aria/#attrs_liveregions
  */
@@ -162,19 +163,27 @@ export class Virtual implements ScreenReader {
   }
 
   #updateState(accessibilityNode: AccessibilityNode) {
-    const { accessibleName } = accessibilityNode;
     const spokenPhrase = getSpokenPhrase(accessibilityNode);
+    const itemText = getItemText(accessibilityNode);
 
     this.#activeNode = accessibilityNode;
-    this.#itemTextLog.push(accessibleName);
+    this.#itemTextLog.push(itemText);
     this.#spokenPhraseLog.push(spokenPhrase);
   }
 
   #getCurrentIndex(tree: AccessibilityNode[]) {
     return tree.findIndex(
-      ({ accessibleDescription, accessibleName, node, role, spokenRole }) =>
-        accessibleName === this.#activeNode?.accessibleName &&
+      ({
+        accessibleDescription,
+        accessibleName,
+        accessibleValue,
+        node,
+        role,
+        spokenRole,
+      }) =>
         accessibleDescription === this.#activeNode?.accessibleDescription &&
+        accessibleName === this.#activeNode?.accessibleName &&
+        accessibleValue === this.#activeNode?.accessibleValue &&
         node === this.#activeNode?.node &&
         role === this.#activeNode?.role &&
         spokenRole === this.#activeNode?.spokenRole

@@ -1,17 +1,21 @@
 import { AccessibilityNode } from "./createAccessibilityTree";
 
-// TODO: expose the value (e.g. for input elements) as part of spoken phrase.
 export const getSpokenPhrase = (accessibilityNode: AccessibilityNode) => {
   const {
     accessibleAttributeLabels,
     accessibleDescription,
     accessibleName,
+    accessibleValue,
     spokenRole,
   } = accessibilityNode;
+
+  const announcedValue =
+    accessibleName === accessibleValue ? "" : accessibleValue;
 
   return [
     spokenRole,
     accessibleName,
+    announcedValue,
     accessibleDescription,
     ...accessibleAttributeLabels,
   ]

@@ -2,7 +2,7 @@ import { getAttributesByRole } from "./getAttributesByRole";
 import { getLabelFromAriaAttribute } from "./getLabelFromAriaAttribute";
 import { getLabelFromHtmlEquivalentAttribute } from "./getLabelFromHtmlEquivalentAttribute";
 import { getLabelFromImplicitHtmlElementValue } from "./getLabelFromImplicitHtmlElementValue";
-import { isElement } from "../isElement";
+import { isElement } from "../../isElement";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
 export const getAccessibleAttributeLabels = ({

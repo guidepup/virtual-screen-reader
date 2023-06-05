@@ -32,7 +32,7 @@ describe("Name Comp: Embedded Control", () => {
       "",
       "Flash the screen 3 times",
       "Flash the screen",
-      "number of times",
+      "number of times, 3",
       "times",
       "",
     ]);

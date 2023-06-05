@@ -36,7 +36,7 @@ describe("click", () => {
 
     await virtual.previous();
     await virtual.previous();
-    expect(await virtual.lastSpokenPhrase()).toEqual("textbox, 3 label");
+    expect(await virtual.lastSpokenPhrase()).toEqual("textbox, 3 label, 3");
 
     getByText(container, "6").focus();
     expect(await virtual.lastSpokenPhrase()).toEqual("link, 6");

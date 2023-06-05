@@ -164,8 +164,7 @@ export function getRole({
   let role = getImplicitRole(target) ?? "";
 
   if (!role) {
-    // TODO: decide if we just replace dom-accessibility-api above with
-    // @testing-library/dom here rather than doing this fallback
+    // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
     role = Object.keys(getRoles(target))?.[0] ?? "";
   }
 
