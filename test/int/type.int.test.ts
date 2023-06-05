@@ -14,6 +14,10 @@ describe("type", () => {
     setupInputPage();
   });
 
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
   it("should type on the active element", async () => {
     const container = document.body;
 
@@ -26,9 +30,7 @@ describe("type", () => {
 
     await virtual.type("Hello World!");
     expect(getByRole(container, "textbox")).toHaveValue("Hello World!");
-
-    // TODO: FAIL: item text should include the now non-empty value "Hello World!"
-    expect(await virtual.itemText()).toEqual("Input Some Text");
+    expect(await virtual.itemText()).toEqual("Input Some Text, Hello World!");
 
     await virtual.stop();
   });

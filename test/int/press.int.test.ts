@@ -27,9 +27,7 @@ describe("press", () => {
     await virtual.press("Shift+a+b+c");
     // TODO: FAIL: Testing Library user-event doesn't support modification yet, this should be "ABC"
     expect(getByRole(container, "textbox")).toHaveValue("abc");
-
-    // TODO: FAIL: item text should include the now non-empty value "ABC"
-    expect(await virtual.itemText()).toEqual("Input Some Text");
+    expect(await virtual.itemText()).toEqual("Input Some Text, abc");
 
     await virtual.stop();
   });

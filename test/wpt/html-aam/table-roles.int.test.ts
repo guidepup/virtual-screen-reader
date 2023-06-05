@@ -55,9 +55,9 @@ describe("HTML-AAM Table Role Verification Tests", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "table, caption",
-      "caption", // TODO: FAIL caption should have role of caption
+      "caption",
       "rowgroup",
-      "row, a b c", // TODO: Should rows have accessible name of their columns? Likely not?
+      "row, a b c",
       "columnheader, a",
       "columnheader, b",
       "columnheader, c",

@@ -175,6 +175,22 @@ export class Virtual implements ScreenReader {
     this.#spokenPhraseLog.push(spokenPhrase);
   }
 
+  async #refreshState() {
+    await tick();
+
+    this.#invalidateTreeCache();
+    const tree = this.#getAccessibilityTree();
+
+    if (!tree.length) {
+      return;
+    }
+
+    const currentIndex = this.#getCurrentIndexByNode(tree);
+    const newActiveNode = tree.at(currentIndex);
+
+    this.#updateState(newActiveNode);
+  }
+
   #getCurrentIndex(tree: AccessibilityNode[]) {
     return tree.findIndex(
       ({
@@ -192,6 +208,10 @@ export class Virtual implements ScreenReader {
         role === this.#activeNode?.role &&
         spokenRole === this.#activeNode?.spokenRole
     );
+  }
+
+  #getCurrentIndexByNode(tree: AccessibilityNode[]) {
+    return tree.findIndex(({ node }) => node === this.#activeNode?.node);
   }
 
   /**
@@ -396,6 +416,7 @@ export class Virtual implements ScreenReader {
 
     await this.click();
     await userEvent.keyboard(keyboardCommand, defaultUserEventOptions);
+    await this.#refreshState();
 
     return;
   }
@@ -422,6 +443,7 @@ export class Virtual implements ScreenReader {
 
     const target = this.#activeNode.node as HTMLElement;
     await userEvent.type(target, text, defaultUserEventOptions);
+    await this.#refreshState();
 
     return;
   }
