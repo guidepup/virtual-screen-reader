@@ -108,6 +108,10 @@ const observeDOM = (function () {
   };
 })();
 
+async function tick() {
+  return await new Promise<void>((resolve) => setTimeout(() => resolve()));
+}
+
 export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
   #container: Node | null = null;
@@ -256,6 +260,7 @@ export class Virtual implements ScreenReader {
    */
   async previous() {
     this.#checkContainer();
+    await tick();
 
     const tree = this.#getAccessibilityTree();
 
@@ -277,6 +282,7 @@ export class Virtual implements ScreenReader {
    */
   async next() {
     this.#checkContainer();
+    await tick();
 
     const tree = this.#getAccessibilityTree();
 
@@ -301,6 +307,7 @@ export class Virtual implements ScreenReader {
    */
   async act() {
     this.#checkContainer();
+    await tick();
 
     if (!this.#activeNode) {
       return;
@@ -360,6 +367,7 @@ export class Virtual implements ScreenReader {
    */
   async press(key: string) {
     this.#checkContainer();
+    await tick();
 
     if (!this.#activeNode) {
       return;
@@ -406,6 +414,7 @@ export class Virtual implements ScreenReader {
    */
   async type(text: string) {
     this.#checkContainer();
+    await tick();
 
     if (!this.#activeNode) {
       return;
@@ -424,6 +433,7 @@ export class Virtual implements ScreenReader {
    */
   async perform() {
     this.#checkContainer();
+    await tick();
 
     // TODO: decide what this means as there is no established "common" command
     // set for different screen readers.
@@ -438,6 +448,7 @@ export class Virtual implements ScreenReader {
    */
   async click({ button = "left", clickCount = 1 } = {}) {
     this.#checkContainer();
+    await tick();
 
     if (!this.#activeNode) {
       return;

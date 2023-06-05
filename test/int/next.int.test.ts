@@ -74,7 +74,6 @@ describe("next", () => {
     const currentElement = getByRole(document.body, "navigation");
     document.body.removeChild(currentElement);
 
-    await new Promise<void>((resolve) => setTimeout(() => resolve()));
     await virtual.next();
 
     expect(await virtual.spokenPhraseLog()).toEqual([
