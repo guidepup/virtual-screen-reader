@@ -20,10 +20,6 @@ With Guidepup Virtual Screen Reader you can automate your screen reader unit tes
 
 ## Upcoming Features
 
-🚧🚧🚧 **WIP** 🚧🚧🚧
-
-This project is currently a work in progress, but here are some of the features you can expect from this package as it matures:
-
 - **Mirrors Real User Experience** - assert on what users really do and hear when using screen readers.
 - **Test Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
 - **UI Framework Agnostic** - want to use React, Vue, Solid, Svelte, etc.? All good here! Works with any UI framework, and plays nicely with the [Testing Library](https://testing-library.com/) suite.
@@ -46,11 +42,11 @@ function setupBasicPage() {
   document.body.innerHTML = `
   <nav>Nav Text</nav>
   <section>
-    <h1>Section Heading 1</h1>
+    <h1>Section Heading</h1>
     <p>Section Text</p>
     <article>
       <header>
-        <h1>Article Header Heading 1</h1>
+        <h1>Article Header Heading</h1>
         <p>Article Header Text</p>
       </header>
       <p>Article Text</p>
@@ -61,7 +57,7 @@ function setupBasicPage() {
 }
 
 describe("Screen Reader Tests", () => {
-  test("should traverse the page announcing the expected roles and content", () => {
+  test("should traverse the page announcing the expected roles and content", async () => {
     // Setup a page using a framework and testing library of your choice
     setupBasicPage();
 
@@ -80,11 +76,11 @@ describe("Screen Reader Tests", () => {
       "Nav Text",
       "end of navigation",
       "region",
-      "heading, Section Heading 1",
+      "heading, Section Heading, level 1",
       "Section Text",
       "article",
       "banner",
-      "heading, Article Header Heading 1",
+      "heading, Article Header Heading, level 1",
       "Article Header Text",
       "end of banner",
       "Article Text",
@@ -97,7 +93,7 @@ describe("Screen Reader Tests", () => {
     ]);
 
     // Stop your virtual screen reader instance
-    await voiceOver.stop();
+    await virtual.stop();
   });
 });
 ```
@@ -107,7 +103,7 @@ describe("Screen Reader Tests", () => {
 Check out some of the other Guidepup modules:
 
 - [`@guidepup/guidepup`](https://github.com/guidepup/guidepup/) - reliable automation for your screen reader a11y workflows through JavaScript supporting VoiceOver and NVDA.
-- [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright/) - seemless integration of Guidepup with Playwright.
+- [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright/) - seamless integration of Guidepup with Playwright.
 
 ## Similar
 
