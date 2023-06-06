@@ -1,7 +1,15 @@
 import { ARIAPropertyMap, ARIARoleDefinitionKey, roles } from "aria-query";
 import { globalStatesAndProperties } from "../../getRole";
 
-export const getAttributesByRole = (role: string) => {
+const ignoreAttributesWithAccessibleValue = ["aria-placeholder"];
+
+export const getAttributesByRole = ({
+  accessibleValue,
+  role,
+}: {
+  accessibleValue: string;
+  role: string;
+}) => {
   const {
     props: implicitRoleAttributes = {},
     prohibitedProps: prohibitedAttributes = [],
@@ -15,7 +23,13 @@ export const getAttributesByRole = (role: string) => {
       ...Object.keys(implicitRoleAttributes),
       ...globalStatesAndProperties,
     ])
-  ).filter((attribute) => !prohibitedAttributes.includes(attribute));
+  )
+    .filter((attribute) => !prohibitedAttributes.includes(attribute))
+    .filter(
+      (attribute) =>
+        !accessibleValue ||
+        !ignoreAttributesWithAccessibleValue.includes(attribute)
+    );
 
   return uniqueAttributes.map((attribute) => [
     attribute,

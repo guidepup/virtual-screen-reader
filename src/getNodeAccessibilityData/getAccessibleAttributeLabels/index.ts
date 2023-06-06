@@ -6,9 +6,11 @@ import { isElement } from "../../isElement";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
 export const getAccessibleAttributeLabels = ({
+  accessibleValue,
   node,
   role,
 }: {
+  accessibleValue: string;
   node: Node;
   role: string;
 }): string[] => {
@@ -18,7 +20,7 @@ export const getAccessibleAttributeLabels = ({
     return labels;
   }
 
-  const attributes = getAttributesByRole(role);
+  const attributes = getAttributesByRole({ accessibleValue, role });
 
   attributes.forEach(([attributeName, implicitAttributeValue]) => {
     const labelFromHtmlEquivalentAttribute =
