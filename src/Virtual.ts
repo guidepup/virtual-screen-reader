@@ -20,6 +20,11 @@ import { notImplemented } from "./notImplemented";
 import userEvent from "@testing-library/user-event";
 
 export interface StartOptions extends CommandOptions {
+  /**
+   * The bounding HTML element to use the Virtual Screen Reader in.
+   *
+   * To use the entire page pass `document.body`.
+   */
   container: HTMLElement;
 }
 

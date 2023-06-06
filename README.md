@@ -18,7 +18,7 @@ A11y static analysis tools [only cover 25% of WCAG](https://karlgroves.com/web-a
 
 With Guidepup Virtual Screen Reader you can automate your screen reader unit test workflows the same you as would for mouse or keyboard based scenarios, no sweat!
 
-## Upcoming Features
+## Features
 
 - **Mirrors Real User Experience** - assert on what users really do and hear when using screen readers.
 - **Test Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.

@@ -1,7 +1,7 @@
-import { Virtual } from "./Virtual";
+import { StartOptions, Virtual } from "./Virtual";
 
 export const virtual = new Virtual();
 
 type _Virtual = typeof virtual;
 
-export { _Virtual as Virtual };
+export { StartOptions, _Virtual as Virtual };
