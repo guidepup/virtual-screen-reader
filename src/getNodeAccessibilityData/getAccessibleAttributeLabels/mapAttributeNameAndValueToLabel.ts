@@ -135,7 +135,7 @@ function token(tokenMap: Record<string, string>) {
 
 function concat(propertyName: string) {
   return function mapper({ attributeValue }) {
-    return `${propertyName} ${attributeValue}`;
+    return attributeValue ? `${propertyName} ${attributeValue}` : "";
   };
 }
 

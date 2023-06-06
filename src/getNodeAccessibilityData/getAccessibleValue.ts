@@ -1,6 +1,6 @@
 import { isElement } from "../isElement";
 
-function getSelectValue(node) {
+function getSelectValue(node: HTMLSelectElement) {
   const selectedOptions = [...node.options].filter((option) => option.selected);
 
   if (node.multiple) {
@@ -14,7 +14,7 @@ function getSelectValue(node) {
   return selectedOptions[0].value;
 }
 
-function getInputValue(node) {
+function getInputValue(node: HTMLInputElement) {
   if (["checkbox", "radio"].includes(node.type)) {
     return "";
   }
@@ -29,10 +29,10 @@ export function getAccessibleValue(node: Node) {
 
   switch (node.localName) {
     case "input": {
-      return getInputValue(node);
+      return getInputValue(node as HTMLInputElement);
     }
     case "select": {
-      return getSelectValue(node);
+      return getSelectValue(node as HTMLSelectElement);
     }
   }
 

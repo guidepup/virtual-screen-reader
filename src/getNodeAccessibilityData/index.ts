@@ -26,6 +26,7 @@ export function getNodeAccessibilityData({
   });
 
   const accessibleAttributeLabels = getAccessibleAttributeLabels({
+    accessibleValue,
     node,
     role,
   });

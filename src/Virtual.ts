@@ -180,11 +180,6 @@ export class Virtual implements ScreenReader {
 
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
-
-    if (!tree.length) {
-      return;
-    }
-
     const currentIndex = this.#getCurrentIndexByNode(tree);
     const newActiveNode = tree.at(currentIndex);
 

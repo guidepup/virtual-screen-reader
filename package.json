@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "yarn clean && yarn compile",
-    "ci": "yarn clean && yarn lint && yarn test && yarn build",
+    "ci": "yarn clean && yarn lint && yarn test:coverage && yarn build",
     "clean": "rimraf lib",
     "compile": "tsc",
     "lint": "eslint . --ext .ts --cache",
