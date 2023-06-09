@@ -1,5 +1,5 @@
 import { ARIAPropertyMap, ARIARoleDefinitionKey, roles } from "aria-query";
-import { globalStatesAndProperties } from "../../getRole";
+import { globalStatesAndProperties } from "../getRole";
 
 const ignoreAttributesWithAccessibleValue = ["aria-placeholder"];
 

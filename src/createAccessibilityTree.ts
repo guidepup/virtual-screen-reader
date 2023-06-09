@@ -36,7 +36,8 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
     // TODO: improve comparison on whether the children are superfluous
     // to include.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    accessibleName === (node.textContent || (node as any).value)?.trim()
+    accessibleName ===
+    (node.textContent || `${(node as any).value}` || "")?.trim()
   );
 }
 

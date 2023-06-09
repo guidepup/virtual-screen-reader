@@ -67,17 +67,34 @@ const observedAttributes = [
  * - aria-live
  * - aria-relevant
  *
+ * When live regions are marked as polite, assistive technologies SHOULD
+ * announce updates at the next graceful opportunity, such as at the end of
+ * speaking the current sentence or when the user pauses typing. When live
+ * regions are marked as assertive, assistive technologies SHOULD notify the
+ * user immediately.
+ *
  * REF:
  *
  * - https://w3c.github.io/aria/#live_region_roles
  * - https://w3c.github.io/aria/#window_roles
  * - https://w3c.github.io/aria/#attrs_liveregions
+ * - https://w3c.github.io/aria/#aria-live
  */
 
 /**
  * TODO: handle logical descendants via aria-activedescendant and aria-owns
  *
  * REF: https://w3c.github.io/aria/#state_prop_def
+ */
+
+/**
+ * TODO: When a modal element is displayed, assistive technologies SHOULD
+ * navigate to the element unless focus has explicitly been set elsewhere. Some
+ * assistive technologies limit navigation to the modal element's contents. If
+ * focus moves to an element outside the modal element, assistive technologies
+ * SHOULD NOT limit navigation to the modal element.
+ *
+ * REF: https://w3c.github.io/aria/#aria-modal
  */
 
 const observeDOM = (function () {
@@ -116,6 +133,16 @@ const observeDOM = (function () {
 async function tick() {
   return await new Promise<void>((resolve) => setTimeout(() => resolve()));
 }
+
+/**
+ * TODO: When an assistive technology reading cursor moves from one article to
+ * another, assistive technologies SHOULD set user agent focus on the article
+ * that contains the reading cursor. If the reading cursor lands on a focusable
+ * element inside the article, the assistive technology MAY set focus on that
+ * element in lieu of setting focus on the containing article.
+ *
+ * REF: https://w3c.github.io/aria/#feed
+ */
 
 export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
@@ -457,8 +484,89 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
     await tick();
 
-    // TODO: decide what this means as there is no established "common" command
-    // set for different screen readers.
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role banner.
+     *
+     * REF: https://w3c.github.io/aria/#banner
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role complementary.
+     *
+     * REF: https://w3c.github.io/aria/#complementary
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role contentinfo.
+     *
+     * REF: https://w3c.github.io/aria/#contentinfo
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * figures.
+     *
+     * REF: https://w3c.github.io/aria/#figure
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role form.
+     *
+     * REF: https://w3c.github.io/aria/#form
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * landmark regions.
+     *
+     * REF: https://w3c.github.io/aria/#landmark
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role main.
+     *
+     * REF: https://w3c.github.io/aria/#main
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role navigation.
+     *
+     * REF: https://w3c.github.io/aria/#navigation
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role region.
+     *
+     * REF: https://w3c.github.io/aria/#region
+     */
+
+    /**
+     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
+     * elements with role search.
+     *
+     * REF: https://w3c.github.io/aria/#search
+     */
+
+    /**
+     * TODO:  However, when aria-flowto is provided with multiple ID
+     * references, assistive technologies SHOULD present the referenced
+     * elements as path choices.
+     *
+     * In the case of one or more ID references, user agents or assistive
+     * technologies SHOULD give the user the option of navigating to any of the
+     * targeted elements. The name of the path can be determined by the name of
+     * the target element of the aria-flowto attribute. Accessibility APIs can
+     * provide named path relationships.
+     *
+     * REF: https://w3c.github.io/aria/#aria-flowto
+     */
 
     notImplemented();
   }

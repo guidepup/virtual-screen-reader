@@ -61,7 +61,7 @@ function defaultAriaAttributes(role) {
       return ", orientated horizontally, max value 100, min value 0";
     }
     case "spinbutton": {
-      return ", current value 0";
+      return ", 0";
     }
     case "toolbar": {
       return ", orientated horizontally";
