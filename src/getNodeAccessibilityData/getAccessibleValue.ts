@@ -1,25 +1,66 @@
 import { isElement } from "../isElement";
 
+type HTMLElementWithValue =
+  | HTMLButtonElement
+  | HTMLDataElement
+  | HTMLInputElement
+  | HTMLLIElement
+  | HTMLMeterElement
+  | HTMLOptionElement
+  | HTMLProgressElement
+  | HTMLParamElement;
+
+const ignoredInputTypes = ["checkbox", "radio"];
+const allowedLocalNames = [
+  "button",
+  "data",
+  "input",
+  // "li",
+  "meter",
+  "option",
+  "progress",
+  "param",
+];
+
 function getSelectValue(node: HTMLSelectElement) {
-  const selectedOptions = [...node.options].filter((option) => option.selected);
+  const selectedOptions = [...node.options].filter(
+    (optionElement) => optionElement.selected
+  );
 
   if (node.multiple) {
-    return [...selectedOptions].map((opt) => opt.value).join("; ");
+    return [...selectedOptions]
+      .map((optionElement) => getValue(optionElement))
+      .join("; ");
   }
 
   if (selectedOptions.length === 0) {
     return "";
   }
 
-  return selectedOptions[0].value;
+  return getValue(selectedOptions[0]);
 }
 
 function getInputValue(node: HTMLInputElement) {
-  if (["checkbox", "radio"].includes(node.type)) {
+  if (ignoredInputTypes.includes(node.type)) {
     return "";
   }
 
-  return node.value;
+  return getValue(node);
+}
+
+function getValue(node: HTMLElementWithValue) {
+  if (!allowedLocalNames.includes(node.localName)) {
+    return "";
+  }
+
+  if (
+    node.getAttribute("aria-valuetext") ||
+    node.getAttribute("aria-valuenow")
+  ) {
+    return "";
+  }
+
+  return typeof node.value === "number" ? `${node.value}` : node.value;
 }
 
 export function getAccessibleValue(node: Node) {
@@ -36,5 +77,5 @@ export function getAccessibleValue(node: Node) {
     }
   }
 
-  return "";
+  return getValue(node as HTMLElementWithValue);
 }

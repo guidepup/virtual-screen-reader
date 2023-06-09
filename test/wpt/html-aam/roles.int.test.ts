@@ -365,9 +365,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "end of status",
       "x", // TODO: FAIL p should have paragraph role
       "x", // WONTFIX generic ignored by screen readers
-      "progressbar",
+      "progressbar, 0",
       "x",
-      "end of progressbar",
+      "end of progressbar, 0",
       "x",
       "x", // TODO: FAIL s should have deletion role
       "x", // WONTFIX generic ignored by screen readers

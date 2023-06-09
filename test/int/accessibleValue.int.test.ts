@@ -152,4 +152,55 @@ describe("Placeholder Attribute Property", () => {
 
     await virtual.stop();
   });
+
+  it("should announce the value for a progress element", async () => {
+    document.body.innerHTML = `
+    <label for="element1">Loading:</label>
+    <progress id="element1" max="100" value="23"></progress>
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "progressbar, Loading:, 23, max value 100"
+    );
+
+    await virtual.stop();
+  });
+
+  it("should not announce the value for a progress element which has an aria-valuenow", async () => {
+    document.body.innerHTML = `
+    <label for="element1">Loading:</label>
+    <progress id="element1" max="100" value="23" aria-valuenow="24"></progress>
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "progressbar, Loading:, max value 100, current value 24%"
+    );
+
+    await virtual.stop();
+  });
+
+  it("should not announce the value for a progress element which has an aria-valuetext", async () => {
+    document.body.innerHTML = `
+    <label for="element1">Loading:</label>
+    <progress id="element1" max="100" value="23" aria-valuetext="massive"></progress>
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "progressbar, Loading:, current value massive, max value 100"
+    );
+
+    await virtual.stop();
+  });
 });

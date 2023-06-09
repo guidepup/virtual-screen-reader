@@ -16,7 +16,10 @@ enum State {
 }
 
 // https://w3c.github.io/aria/#state_prop_def
-const ariaPropertyToVirtualLabelMap = {
+const ariaPropertyToVirtualLabelMap: Record<
+  string,
+  ((...args: unknown[]) => string) | null
+> = {
   "aria-activedescendant": null, // TODO: decide what to announce here + implement focus logic
   "aria-atomic": null, // Handled by live region logic
   "aria-autocomplete": token({
@@ -53,7 +56,13 @@ const ariaPropertyToVirtualLabelMap = {
   "aria-flowto": null, // TODO: decide what to announce here + implement focus logic
   "aria-grabbed": null, // Deprecated in WAI-ARIA 1.1
   "aria-haspopup": token({
-    false: null, // https://w3c.github.io/aria/#aria-haspopup
+    /**
+     * Assistive technologies SHOULD NOT expose the aria-haspopup property if
+     * it has a value of false.
+     *
+     * REF: // https://w3c.github.io/aria/#aria-haspopup
+     */
+    false: null,
     true: "has popup menu",
     menu: "has popup menu",
     listbox: "has popup listbox",
@@ -101,10 +110,8 @@ const ariaPropertyToVirtualLabelMap = {
   }),
   "aria-valuemax": number("max value"),
   "aria-valuemin": number("min value"),
-  // TODO: don't announce if have an aria-valuetext
-  // TODO: map to percentage as per https://w3c.github.io/aria/#aria-valuenow for certain roles
   "aria-valuenow": number("current value"),
-  "aria-valuetext": string("current value"), // TODO: don't announce if have a value?
+  "aria-valuetext": string("current value"),
 };
 
 function state(stateValue: State) {

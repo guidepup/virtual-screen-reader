@@ -1,7 +1,10 @@
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
 // REF: https://www.w3.org/TR/html-aria/#docconformance-attr
-const ariaToHTMLAttributeMapping = {
+const ariaToHTMLAttributeMapping: Record<
+  string,
+  Array<{ name: string; negative?: boolean }>
+> = {
   "aria-checked": [{ name: "checked" }],
   "aria-disabled": [{ name: "disabled" }],
   // "aria-hidden": [{ name: "hidden" }],
@@ -27,7 +30,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
   const htmlAttribute = ariaToHTMLAttributeMapping[attributeName];
 
   if (!htmlAttribute?.length) {
-    return null;
+    return { label: "", value: "" };
   }
 
   for (const { name, negative = false } of htmlAttribute) {
@@ -39,9 +42,9 @@ export const getLabelFromHtmlEquivalentAttribute = ({
     });
 
     if (label) {
-      return label;
+      return { label, value: attributeValue };
     }
   }
 
-  return null;
+  return { label: "", value: "" };
 };
