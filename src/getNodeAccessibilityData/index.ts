@@ -62,6 +62,15 @@ export function getNodeAccessibilityData({
   const isPresentational = presentationRoles.includes(role);
   const isGeneric = role === "generic";
 
+  /**
+   * Any descendants of elements that have the characteristic "Children
+   * Presentational: True" unless the descendant is not allowed to be
+   * presentational because it meets one of the conditions for exception
+   * described in Presentational Roles Conflict Resolution. However, the text
+   * content of any excluded descendants is included.
+   *
+   * REF: https://w3c.github.io/aria/#tree_exclusion
+   */
   const childrenPresentational =
     inheritedImplicitPresentational ||
     childrenPresentationalRoles.includes(role);

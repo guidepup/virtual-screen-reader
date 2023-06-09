@@ -69,26 +69,14 @@ function getExplicitRole({
 }) {
   const rawRoles = node.getAttribute("role")?.trim().split(" ") ?? [];
 
-  // "Children Presentational: True"
-  // https://w3c.github.io/aria/#tree_exclusion
-  if (inheritedImplicitPresentational) {
-    rawRoles.unshift("none");
-  }
-
-  if (!rawRoles?.length) {
-    return "";
-  }
-
-  // TODO: allowed child element exceptions for
-  // https://w3c.github.io/aria/#conflict_resolution_presentation_none
-  const filteredRoles = rawRoles
+  const authorErrorFilteredRoles = rawRoles
     /**
      * As stated in the Definition of Roles section, it is considered an
      * authoring error to use abstract roles in content.
      * User agents MUST NOT map abstract roles via the standard role mechanism
      * of the accessibility API.
      *
-     * https://w3c.github.io/aria/#document-handling_author-errors_roles
+     * REF: https://w3c.github.io/aria/#document-handling_author-errors_roles
      */
     .filter((role) => allowedNonAbstractRoles.includes(role))
     /**
@@ -103,9 +91,43 @@ function getExplicitRole({
      * - form
      * - region
      *
-     * https://w3c.github.io/aria/#document-handling_author-errors_roles
+     * REF: https://w3c.github.io/aria/#document-handling_author-errors_roles
      */
-    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role))
+    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
+
+  /**
+   * "Children Presentational: True"
+   *
+   * If an allowed child element has an explicit non-presentational role, user
+   * agents MUST ignore an inherited presentational role and expose the element
+   * with its explicit role. If the action of exposing the explicit role causes
+   * the accessibility tree to be malformed, the expected results are
+   * undefined.
+   *
+   * TODO: we're assuming here that the role is allowed. To know otherwise
+   * would require us to either have passed through what roles are allowed for
+   * this node from parents, or for us to do a backward pass up through parents
+   * from this node (the prior likely nicer). We can use the
+   * `requiredOwnedElements` property from the `aria-query` to determine what
+   * allowed child roles are from any parent role. Work would also be required
+   * to make sure the allowed roles "passed through" presentational or generic
+   * layers and also handle complicated cases such as aria-owns (and aria-owns
+   * with generics intervening). See https://w3c.github.io/aria/#mustContain.
+   *
+   * REF:
+   *
+   * - https://w3c.github.io/aria/#tree_exclusion
+   * - https://w3c.github.io/aria/#conflict_resolution_presentation_none
+   */
+  if (inheritedImplicitPresentational && !authorErrorFilteredRoles.length) {
+    authorErrorFilteredRoles.unshift("none");
+  }
+
+  if (!authorErrorFilteredRoles?.length) {
+    return "";
+  }
+
+  const filteredRoles = authorErrorFilteredRoles
     /**
      * If an element is focusable, user agents MUST ignore the
      * presentation/none role and expose the element with its implicit role, in
@@ -118,7 +140,7 @@ function getExplicitRole({
      * presentational role is inherited and an explicit non-presentational role
      * is applied.
      *
-     * https://w3c.github.io/aria/#conflict_resolution_presentation_none
+     * REF: https://w3c.github.io/aria/#conflict_resolution_presentation_none
      */
     .filter((role) => {
       if (!presentationRoles.includes(role)) {
