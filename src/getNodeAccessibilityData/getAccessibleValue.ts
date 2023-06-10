@@ -1,6 +1,6 @@
 import { isElement } from "../isElement";
 
-type HTMLElementWithValue =
+export type HTMLElementWithValue =
   | HTMLButtonElement
   | HTMLDataElement
   | HTMLInputElement
