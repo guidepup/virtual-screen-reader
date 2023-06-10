@@ -99,22 +99,13 @@ function getExplicitRole({
    * the accessibility tree to be malformed, the expected results are
    * undefined.
    *
-   * TODO: we're assuming here that the role is allowed. To know otherwise
-   * would require us to either have passed through what roles are allowed for
-   * this node from parents, or for us to do a backward pass up through parents
-   * from this node (the prior likely nicer). We can use the
-   * `requiredOwnedElements` property from the `aria-query` to determine what
-   * allowed child roles are from any parent role. Work would also be required
-   * to make sure the allowed roles "passed through" presentational or generic
-   * layers and also handle complicated cases such as aria-owns (and aria-owns
-   * with generics intervening). See https://w3c.github.io/aria/#mustContain.
-   *
    * See also "Children Presentational: True".
    *
    * REF:
    *
    * - https://w3c.github.io/aria/#conflict_resolution_presentation_none
    * - https://w3c.github.io/aria/#tree_exclusion
+   * - https://w3c.github.io/aria/#mustContain
    */
 
   const isExplicitAllowedChildElement = allowedAccessibilityRoles.some(
