@@ -1,7 +1,11 @@
 import { virtual } from "../../src";
 
 describe("Inherited Implicit Presentational Role", () => {
-  beforeEach(async () => {
+  afterEach(async () => {
+    document.body.innerHTML = "";
+  });
+
+  it("should treat children of presentation roles as presentation when there are no exceptions", async () => {
     document.body.innerHTML = `
     <!-- 1. role="presentation" negates the implicit 'heading' role semantics but does not affect the contents, including the nested hyperlink. -->
     <h1 role="presentation"> Sample Content <a href="...">let's go!</a> </h1>
@@ -24,15 +28,7 @@ describe("Inherited Implicit Presentational Role", () => {
     `;
 
     await virtual.start({ container: document.body });
-  });
 
-  afterEach(async () => {
-    await virtual.stop();
-
-    document.body.innerHTML = "";
-  });
-
-  it("should treat children of presentation roles as presentation when there are no exceptions", async () => {
     while ((await virtual.lastSpokenPhrase()) !== "end of document") {
       await virtual.next();
     }
@@ -62,5 +58,55 @@ describe("Inherited Implicit Presentational Role", () => {
       "end of tree, orientated vertically",
       "end of document",
     ]);
+
+    await virtual.stop();
+  });
+
+  it("should handle inherited implicit presentation role", async () => {
+    document.body.innerHTML = `
+    <ul role="presentation">
+      <li> Sample Content </li>
+      <li> More Sample Content </li>
+    </ul>
+    `;
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "Sample Content",
+      "More Sample Content",
+      "end of document",
+    ]);
+
+    await virtual.stop();
+  });
+
+  it("should handle no implicit roles", async () => {
+    document.body.innerHTML = `
+    <foo>
+      <foo> Sample Content </foo>
+      <foo> More Sample Content </foo>
+    </foo>
+    `;
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "Sample Content",
+      "More Sample Content",
+      "end of document",
+    ]);
+
+    await virtual.stop();
   });
 });

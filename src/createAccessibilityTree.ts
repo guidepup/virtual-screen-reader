@@ -1,4 +1,5 @@
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
+import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
@@ -7,6 +8,7 @@ export interface AccessibilityNode {
   accessibleDescription: string;
   accessibleName: string;
   accessibleValue: string;
+  allowedAccessibilityChildRoles: string[][];
   childrenPresentational: boolean;
   node: Node;
   role: string;
@@ -35,9 +37,12 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
   return (
     // TODO: improve comparison on whether the children are superfluous
     // to include.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     accessibleName ===
-    (node.textContent || `${(node as any).value}` || "")?.trim()
+    (
+      node.textContent ||
+      `${(node as HTMLElementWithValue).value}` ||
+      ""
+    )?.trim()
   );
 }
 
@@ -47,6 +52,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
     treeNode.accessibleName ||
     treeNode.accessibleDescription ||
     treeNode.spokenRole;
+
   const ignoreChildren = shouldIgnoreChildren(tree);
 
   const flattenedTree = ignoreChildren
@@ -66,6 +72,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       accessibleDescription: treeNode.accessibleDescription,
       accessibleName: treeNode.accessibleName,
       accessibleValue: treeNode.accessibleValue,
+      allowedAccessibilityChildRoles: treeNode.allowedAccessibilityChildRoles,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
       role: treeNode.role,
@@ -90,10 +97,12 @@ function growTree(
       accessibleDescription,
       accessibleName,
       accessibleValue,
+      allowedAccessibilityChildRoles,
       childrenPresentational,
       role,
       spokenRole,
     } = getNodeAccessibilityData({
+      allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
     });
@@ -104,6 +113,7 @@ function growTree(
         accessibleDescription,
         accessibleName,
         accessibleValue,
+        allowedAccessibilityChildRoles,
         children: [],
         childrenPresentational,
         node: childNode,
@@ -126,10 +136,12 @@ export function createAccessibilityTree(node: Node) {
     accessibleDescription,
     accessibleName,
     accessibleValue,
+    allowedAccessibilityChildRoles,
     childrenPresentational,
     role,
     spokenRole,
   } = getNodeAccessibilityData({
+    allowedAccessibilityRoles: [],
     node,
     inheritedImplicitPresentational: false,
   });
@@ -139,6 +151,7 @@ export function createAccessibilityTree(node: Node) {
     accessibleDescription,
     accessibleName,
     accessibleValue,
+    allowedAccessibilityChildRoles,
     children: [],
     childrenPresentational,
     node,

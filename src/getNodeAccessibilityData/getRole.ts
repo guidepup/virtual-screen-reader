@@ -10,11 +10,6 @@ const allowedNonAbstractRoles = roles
   .filter(([, { abstract }]) => !abstract)
   .map(([key]) => key) as string[];
 
-export const childrenPresentationalRoles = roles
-  .entries()
-  .filter(([, { childrenPresentational }]) => childrenPresentational)
-  .map(([key]) => key) as string[];
-
 const rolesRequiringName = ["form", "region"];
 
 export const globalStatesAndProperties = [
@@ -60,10 +55,12 @@ function hasGlobalStateOrProperty(node: HTMLElement) {
 
 function getExplicitRole({
   accessibleName,
+  allowedAccessibilityRoles,
   inheritedImplicitPresentational,
   node,
 }: {
   accessibleName: string;
+  allowedAccessibilityRoles: string[][];
   inheritedImplicitPresentational: boolean;
   node: HTMLElement;
 }) {
@@ -96,8 +93,6 @@ function getExplicitRole({
     .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
 
   /**
-   * "Children Presentational: True"
-   *
    * If an allowed child element has an explicit non-presentational role, user
    * agents MUST ignore an inherited presentational role and expose the element
    * with its explicit role. If the action of exposing the explicit role causes
@@ -114,12 +109,20 @@ function getExplicitRole({
    * layers and also handle complicated cases such as aria-owns (and aria-owns
    * with generics intervening). See https://w3c.github.io/aria/#mustContain.
    *
+   * See also "Children Presentational: True".
+   *
    * REF:
    *
-   * - https://w3c.github.io/aria/#tree_exclusion
    * - https://w3c.github.io/aria/#conflict_resolution_presentation_none
+   * - https://w3c.github.io/aria/#tree_exclusion
    */
-  if (inheritedImplicitPresentational && !authorErrorFilteredRoles.length) {
+
+  const isExplicitAllowedChildElement = allowedAccessibilityRoles.some(
+    ([allowedExplicitRole]) =>
+      authorErrorFilteredRoles?.[0] === allowedExplicitRole
+  );
+
+  if (inheritedImplicitPresentational && !isExplicitAllowedChildElement) {
     authorErrorFilteredRoles.unshift("none");
   }
 
@@ -159,36 +162,43 @@ function getExplicitRole({
 
 export function getRole({
   accessibleName,
+  allowedAccessibilityRoles,
   inheritedImplicitPresentational,
   node,
 }: {
   accessibleName: string;
+  allowedAccessibilityRoles: string[][];
   inheritedImplicitPresentational: boolean;
   node: Node;
 }) {
   if (!isElement(node)) {
-    return "";
+    return { explicitRole: "", implicitRole: "", role: "" };
   }
 
   const target = node.cloneNode() as HTMLElement;
   const explicitRole = getExplicitRole({
     accessibleName,
+    allowedAccessibilityRoles,
     inheritedImplicitPresentational,
     node: target,
   });
 
-  if (explicitRole) {
-    target.setAttribute("role", explicitRole);
-  } else {
-    target.removeAttribute("role");
-  }
+  target.removeAttribute("role");
 
-  let role = getImplicitRole(target) ?? "";
+  let implicitRole = getImplicitRole(target) ?? "";
 
-  if (!role) {
+  if (!implicitRole) {
     // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
-    role = Object.keys(getRoles(target))?.[0] ?? "";
+    implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
   }
 
-  return role;
+  if (explicitRole) {
+    return { explicitRole, implicitRole, role: explicitRole };
+  }
+
+  return {
+    explicitRole,
+    implicitRole,
+    role: implicitRole,
+  };
 }
