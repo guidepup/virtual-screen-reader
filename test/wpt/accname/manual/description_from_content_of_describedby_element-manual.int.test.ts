@@ -42,9 +42,8 @@ describe("Description from content of describedby element", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+    document.body.innerHTML = "";
   });
 
   test("tests description", async () => {

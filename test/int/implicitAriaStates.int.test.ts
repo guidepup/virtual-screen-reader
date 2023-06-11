@@ -2,6 +2,7 @@ import { virtual } from "../../src";
 
 describe("Implicit Aria States", () => {
   afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

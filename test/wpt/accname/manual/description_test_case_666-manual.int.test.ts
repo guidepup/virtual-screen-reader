@@ -21,9 +21,8 @@ describe("Description test case 666", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+    document.body.innerHTML = "";
   });
 
   test("tests description", async () => {

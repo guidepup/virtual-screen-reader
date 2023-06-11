@@ -11,7 +11,8 @@ describe("Invalid Start", () => {
     `;
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

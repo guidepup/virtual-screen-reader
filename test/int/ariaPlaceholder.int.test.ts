@@ -1,7 +1,8 @@
 import { virtual } from "../../src";
 
 describe("Placeholder Attribute Property", () => {
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

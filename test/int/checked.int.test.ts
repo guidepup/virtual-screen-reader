@@ -2,6 +2,7 @@ import { virtual } from "../../src";
 
 describe("Checked Attribute State", () => {
   afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

@@ -2,6 +2,7 @@ import { virtual } from "../../src";
 
 describe("Edge Case Container", () => {
   afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

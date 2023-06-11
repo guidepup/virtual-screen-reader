@@ -19,7 +19,56 @@ interface AccessibilityNodeTree extends AccessibilityNode {
   children: AccessibilityNodeTree[];
 }
 
+interface AccessibilityContext {
+  ownedNodes: Set<Node>;
+  visitedNodes: Set<Node>;
+}
+
+function addOwnedNodes(owningNode: Element, ownedNodes: Set<Node>) {
+  const ownedNodesIdRefs = (owningNode.getAttribute("aria-owns") ?? "")
+    .trim()
+    .split(" ");
+
+  ownedNodesIdRefs.filter(Boolean).forEach((id) => {
+    const ownedNode = document.querySelector(`#${id}`);
+
+    if (!!ownedNode && !ownedNodes.has(ownedNode)) {
+      ownedNodes.add(ownedNode);
+    }
+  });
+}
+
+function getAllOwnedNodes(node: Node) {
+  const ownedNodes = new Set<Node>();
+
+  if (!isElement(node)) {
+    return ownedNodes;
+  }
+
+  node
+    .querySelectorAll("[aria-owns]")
+    .forEach((owningNode) => addOwnedNodes(owningNode, ownedNodes));
+
+  return ownedNodes;
+}
+
+function getOwnedNodes(node: Node) {
+  const ownedNodes = new Set<Node>();
+
+  if (!isElement(node)) {
+    return ownedNodes;
+  }
+
+  addOwnedNodes(node, ownedNodes);
+
+  return ownedNodes;
+}
+
 function isHiddenFromAccessibilityTree(node: Node) {
+  if (!node) {
+    return true;
+  }
+
   if (node.nodeType === Node.TEXT_NODE && !!node.textContent.trim()) {
     return false;
   }
@@ -60,7 +109,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
     : [...children.flatMap((child) => flattenTree(child))];
 
   const isRoleContainer =
-    flattenedTree.length && !ignoreChildren && treeNode.spokenRole;
+    !!flattenedTree.length && !ignoreChildren && !!treeNode.spokenRole;
 
   if (isAnnounced) {
     flattenedTree.unshift(treeNode);
@@ -85,9 +134,58 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 
 function growTree(
   node: Node,
-  tree: AccessibilityNodeTree
+  tree: AccessibilityNodeTree,
+  { ownedNodes, visitedNodes }: AccessibilityContext
 ): AccessibilityNodeTree {
+  if (visitedNodes.has(node)) {
+    return tree;
+  }
+
+  visitedNodes.add(node);
+
   node.childNodes.forEach((childNode) => {
+    if (isHiddenFromAccessibilityTree(childNode) || ownedNodes.has(childNode)) {
+      return;
+    }
+
+    const {
+      accessibleAttributeLabels,
+      accessibleDescription,
+      accessibleName,
+      accessibleValue,
+      allowedAccessibilityChildRoles,
+      childrenPresentational,
+      role,
+      spokenRole,
+    } = getNodeAccessibilityData({
+      allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
+      node: childNode,
+      inheritedImplicitPresentational: tree.childrenPresentational,
+    });
+
+    tree.children.push(
+      growTree(
+        childNode,
+        {
+          accessibleAttributeLabels,
+          accessibleDescription,
+          accessibleName,
+          accessibleValue,
+          allowedAccessibilityChildRoles,
+          children: [],
+          childrenPresentational,
+          node: childNode,
+          role,
+          spokenRole,
+        },
+        { ownedNodes, visitedNodes }
+      )
+    );
+  });
+
+  const ownedChildNodes = getOwnedNodes(node);
+
+  ownedChildNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
     }
@@ -108,18 +206,22 @@ function growTree(
     });
 
     tree.children.push(
-      growTree(childNode, {
-        accessibleAttributeLabels,
-        accessibleDescription,
-        accessibleName,
-        accessibleValue,
-        allowedAccessibilityChildRoles,
-        children: [],
-        childrenPresentational,
-        node: childNode,
-        role,
-        spokenRole,
-      })
+      growTree(
+        childNode,
+        {
+          accessibleAttributeLabels,
+          accessibleDescription,
+          accessibleName,
+          accessibleValue,
+          allowedAccessibilityChildRoles,
+          children: [],
+          childrenPresentational,
+          node: childNode,
+          role,
+          spokenRole,
+        },
+        { ownedNodes, visitedNodes }
+      )
     );
   });
 
@@ -130,6 +232,9 @@ export function createAccessibilityTree(node: Node) {
   if (isHiddenFromAccessibilityTree(node)) {
     return [];
   }
+
+  const ownedNodes = getAllOwnedNodes(node);
+  const visitedNodes = new Set<Node>();
 
   const {
     accessibleAttributeLabels,
@@ -146,18 +251,25 @@ export function createAccessibilityTree(node: Node) {
     inheritedImplicitPresentational: false,
   });
 
-  const tree = growTree(node, {
-    accessibleAttributeLabels,
-    accessibleDescription,
-    accessibleName,
-    accessibleValue,
-    allowedAccessibilityChildRoles,
-    children: [],
-    childrenPresentational,
+  const tree = growTree(
     node,
-    role,
-    spokenRole,
-  });
+    {
+      accessibleAttributeLabels,
+      accessibleDescription,
+      accessibleName,
+      accessibleValue,
+      allowedAccessibilityChildRoles,
+      children: [],
+      childrenPresentational,
+      node,
+      role,
+      spokenRole,
+    },
+    {
+      ownedNodes,
+      visitedNodes,
+    }
+  );
 
   return flattenTree(tree);
 }

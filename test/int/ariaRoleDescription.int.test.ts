@@ -1,7 +1,8 @@
 import { virtual } from "../../src";
 
 describe("Aria Role Description", () => {
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

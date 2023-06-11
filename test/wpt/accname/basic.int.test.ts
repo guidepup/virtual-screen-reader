@@ -16,9 +16,9 @@ describe("Basic Tests", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("tests label accessible name", async () => {

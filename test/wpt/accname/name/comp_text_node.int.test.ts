@@ -28,9 +28,9 @@ describe("Name Comp: Text Node", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("tests accessible name", async () => {
