@@ -270,4 +270,28 @@ describe("Allowed Accessibility Child Roles", () => {
 
     await virtual.stop();
   });
+
+  it("should handle multiple aria-owns for the same IDREF gracefully", async () => {
+    document.body.innerHTML = `
+    <div id="element1" aria-owns="element3">Element 1</div>
+    <div id="element2" aria-owns="element3">Element 2</div>
+    <div id="element3">Element 3</div>
+    `;
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "Element 1",
+      "Element 3",
+      "Element 2",
+      "end of document",
+    ]);
+
+    await virtual.stop();
+  });
 });

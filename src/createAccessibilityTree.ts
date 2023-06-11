@@ -137,6 +137,13 @@ function growTree(
   tree: AccessibilityNodeTree,
   { ownedNodes, visitedNodes }: AccessibilityContext
 ): AccessibilityNodeTree {
+  /**
+   * Authors MUST NOT create circular references with aria-owns. In the case of
+   * authoring error with aria-owns, the user agent MAY ignore some aria-owns
+   * element references in order to build a consistent model of the content.
+   *
+   * REF: https://w3c.github.io/aria/#aria-owns
+   */
   if (visitedNodes.has(node)) {
     return tree;
   }
@@ -144,7 +151,12 @@ function growTree(
   visitedNodes.add(node);
 
   node.childNodes.forEach((childNode) => {
-    if (isHiddenFromAccessibilityTree(childNode) || ownedNodes.has(childNode)) {
+    if (isHiddenFromAccessibilityTree(childNode)) {
+      return;
+    }
+
+    // REF: https://github.com/w3c/aria/issues/1817#issuecomment-1261602357
+    if (ownedNodes.has(childNode)) {
       return;
     }
 
@@ -183,6 +195,17 @@ function growTree(
     );
   });
 
+  /**
+   * If an element has both aria-owns and DOM children then the order of the
+   * child elements with respect to the parent/child relationship is the DOM
+   * children first, then the elements referenced in aria-owns. If the author
+   * intends that the DOM children are not first, then list the DOM children in
+   * aria-owns in the desired order. Authors SHOULD NOT use aria-owns as a
+   * replacement for the DOM hierarchy. If the relationship is represented in
+   * the DOM, do not use aria-owns.
+   *
+   * REF: https://w3c.github.io/aria/#aria-owns
+   */
   const ownedChildNodes = getOwnedNodes(node);
 
   ownedChildNodes.forEach((childNode) => {
