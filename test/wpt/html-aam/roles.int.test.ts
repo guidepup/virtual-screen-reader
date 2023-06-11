@@ -220,9 +220,9 @@ describe("HTML-AAM Role Verification Tests", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("verifies roles", async () => {

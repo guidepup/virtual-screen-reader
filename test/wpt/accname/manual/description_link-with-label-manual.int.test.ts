@@ -18,9 +18,8 @@ describe("Description link-with-label", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+    document.body.innerHTML = "";
   });
 
   test("tests description", async () => {

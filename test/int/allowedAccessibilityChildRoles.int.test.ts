@@ -55,8 +55,7 @@ describe("Allowed Accessibility Child Roles", () => {
     await virtual.stop();
   });
 
-  // TODO: https://github.com/guidepup/virtual-screen-reader/issues/4
-  it.skip("should handle a direct aria-owns relationship", async () => {
+  it("should handle a direct aria-owns relationship", async () => {
     document.body.innerHTML = `
     <div role="listbox" aria-owns="id1"></div>
     <div role="option" id="id1">option text</div>
@@ -79,8 +78,7 @@ describe("Allowed Accessibility Child Roles", () => {
     await virtual.stop();
   });
 
-  // TODO: https://github.com/guidepup/virtual-screen-reader/issues/4
-  it.skip("should handle an aria-owns relationship with generics intervening", async () => {
+  it("should handle an aria-owns relationship with generics intervening", async () => {
     document.body.innerHTML = `
     <div role="listbox" aria-owns="id1"></div>
     <div id="id1">

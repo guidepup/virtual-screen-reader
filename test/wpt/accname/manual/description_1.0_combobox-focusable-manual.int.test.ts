@@ -20,9 +20,9 @@ describe("Description 1.0 combobox-focusable", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("tests description", async () => {

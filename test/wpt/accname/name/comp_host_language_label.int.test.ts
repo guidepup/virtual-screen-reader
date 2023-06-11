@@ -26,9 +26,9 @@ describe("Name Comp: Host Language Label", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("tests accessible name", async () => {

@@ -2,6 +2,7 @@ import { virtual } from "../../src";
 
 describe("Inherited Implicit Presentational Role", () => {
   afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

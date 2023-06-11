@@ -1,7 +1,8 @@
 import { virtual } from "../../src";
 
 describe("Label Priority Replacement", () => {
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

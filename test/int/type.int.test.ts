@@ -14,7 +14,8 @@ describe("type", () => {
     setupInputPage();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

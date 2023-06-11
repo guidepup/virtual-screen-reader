@@ -1,7 +1,8 @@
 import { virtual } from "../../src";
 
 describe("Read only Attribute State", () => {
-  afterEach(() => {
+  afterEach(async () => {
+    await virtual.stop();
     document.body.innerHTML = "";
   });
 

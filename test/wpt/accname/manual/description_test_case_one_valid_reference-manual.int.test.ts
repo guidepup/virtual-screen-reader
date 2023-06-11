@@ -19,9 +19,8 @@ describe("Description test case one valid reference", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+    document.body.innerHTML = "";
   });
 
   test("tests description", async () => {

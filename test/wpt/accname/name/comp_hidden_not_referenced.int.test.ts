@@ -22,9 +22,9 @@ describe("Name Comp: Hidden Not Referenced", () => {
   });
 
   afterEach(async () => {
-    document.body.innerHTML = "";
-
     await virtual.stop();
+
+    document.body.innerHTML = "";
   });
 
   test("tests accessible name", async () => {
