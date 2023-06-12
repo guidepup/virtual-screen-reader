@@ -13,9 +13,11 @@ const mapLocalNameToImplicitValue = {
 
 export const getLabelFromImplicitHtmlElementValue = ({
   attributeName,
+  container,
   node,
 }: {
   attributeName: string;
+  container: Node;
   node: HTMLElement;
 }) => {
   const { localName } = node;
@@ -25,6 +27,7 @@ export const getLabelFromImplicitHtmlElementValue = ({
     label: mapAttributeNameAndValueToLabel({
       attributeName,
       attributeValue: implicitValue,
+      container,
     }),
     value: implicitValue,
   };

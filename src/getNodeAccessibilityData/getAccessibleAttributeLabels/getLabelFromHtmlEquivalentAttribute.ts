@@ -22,9 +22,11 @@ const ariaToHTMLAttributeMapping: Record<
 
 export const getLabelFromHtmlEquivalentAttribute = ({
   attributeName,
+  container,
   node,
 }: {
   attributeName: string;
+  container: Node;
   node: HTMLElement;
 }) => {
   const htmlAttribute = ariaToHTMLAttributeMapping[attributeName];
@@ -38,6 +40,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
     const label = mapAttributeNameAndValueToLabel({
       attributeName,
       attributeValue,
+      container,
       negative,
     });
 

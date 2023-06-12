@@ -1,3 +1,8 @@
+import { getAccessibleName } from "../getAccessibleName";
+import { getAccessibleValue } from "../getAccessibleValue";
+import { getItemText } from "../../getItemText";
+import { isElement } from "../../isElement";
+
 enum State {
   BUSY = "busy",
   CHECKED = "checked",
@@ -20,7 +25,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   string,
   ((...args: unknown[]) => string) | null
 > = {
-  "aria-activedescendant": null, // TODO: decide what to announce here + implement focus logic
+  "aria-activedescendant": idref("active descendant"),
   "aria-atomic": null, // Handled by live region logic
   "aria-autocomplete": token({
     inline: "autocomplete inlined",
@@ -33,7 +38,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-busy": state(State.BUSY),
   "aria-checked": tristate(State.CHECKED, State.PARTIALLY_CHECKED),
   "aria-colcount": integer("column count"),
-  "aria-colindex": integer("column index"), // TODO: don't announce if have an aria-colindextext
+  "aria-colindex": integer("column index"),
   "aria-colindextext": string("column index"),
   "aria-colspan": integer("column span"),
   "aria-controls": null, // TODO: decide what to announce here
@@ -89,7 +94,7 @@ const ariaPropertyToVirtualLabelMap: Record<
     vertical: "orientated vertically",
   }),
   "aria-owns": null, // TODO: decide what to announce here
-  "aria-placeholder": string("placeholder"), // TODO: don't announce if have a value
+  "aria-placeholder": string("placeholder"),
   "aria-posinset": integer("item set position"),
   "aria-pressed": tristate(State.PRESSED, State.PARTIALLY_PRESSED),
   "aria-readonly": state(State.READ_ONLY),
@@ -97,7 +102,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-required": state(State.REQUIRED),
   "aria-roledescription": null, // Handled by accessible description
   "aria-rowcount": integer("row count"),
-  "aria-rowindex": integer("row index"), // TODO: don't announce if have an aria-colindextext
+  "aria-rowindex": integer("row index"),
   "aria-rowindextext": string("row index"),
   "aria-rowspan": integer("row span"),
   "aria-selected": state(State.SELECTED),
@@ -114,8 +119,14 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-valuetext": string("current value"),
 };
 
+interface MapperArgs {
+  attributeValue: string;
+  container?: Node;
+  negative?: boolean;
+}
+
 function state(stateValue: State) {
-  return function stateMapper({ attributeValue, negative }) {
+  return function stateMapper({ attributeValue, negative }: MapperArgs) {
     if (negative) {
       return attributeValue !== "false" ? `not ${stateValue}` : stateValue;
     }
@@ -124,8 +135,28 @@ function state(stateValue: State) {
   };
 }
 
+function idref(propertyName: string) {
+  return function mapper({ attributeValue: idref, container }: MapperArgs) {
+    if (!isElement(container) || !idref) {
+      return "";
+    }
+
+    const node = container.querySelector(`#${idref}`);
+
+    if (!node) {
+      return "";
+    }
+
+    const accessibleName = getAccessibleName(node);
+    const accessibleValue = getAccessibleValue(node);
+    const itemText = getItemText({ accessibleName, accessibleValue });
+
+    return concat(propertyName)({ attributeValue: itemText });
+  };
+}
+
 function tristate(stateValue: State, mixedValue: State) {
-  return function stateMapper({ attributeValue }) {
+  return function stateMapper({ attributeValue }: MapperArgs) {
     if (attributeValue === "mixed") {
       return mixedValue;
     }
@@ -135,13 +166,13 @@ function tristate(stateValue: State, mixedValue: State) {
 }
 
 function token(tokenMap: Record<string, string>) {
-  return function tokenMapper({ attributeValue }) {
+  return function tokenMapper({ attributeValue }: MapperArgs) {
     return tokenMap[attributeValue];
   };
 }
 
 function concat(propertyName: string) {
-  return function mapper({ attributeValue }) {
+  return function mapper({ attributeValue }: MapperArgs) {
     return attributeValue ? `${propertyName} ${attributeValue}` : "";
   };
 }
@@ -161,10 +192,12 @@ function string(propertyName: string) {
 export const mapAttributeNameAndValueToLabel = ({
   attributeName,
   attributeValue,
+  container,
   negative = false,
 }: {
   attributeName: string;
   attributeValue: string | null;
+  container: Node;
   negative?: boolean;
 }) => {
   if (typeof attributeValue !== "string") {
@@ -173,5 +206,5 @@ export const mapAttributeNameAndValueToLabel = ({
 
   const mapper = ariaPropertyToVirtualLabelMap[attributeName];
 
-  return mapper?.({ attributeValue, negative }) ?? null;
+  return mapper?.({ attributeValue, container, negative }) ?? null;
 };

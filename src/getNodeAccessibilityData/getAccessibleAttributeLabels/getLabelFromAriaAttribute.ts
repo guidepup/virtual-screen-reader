@@ -2,9 +2,11 @@ import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLab
 
 export const getLabelFromAriaAttribute = ({
   attributeName,
+  container,
   node,
 }: {
   attributeName: string;
+  container: Node;
   node: HTMLElement;
 }) => {
   const attributeValue = node.getAttribute(attributeName);
@@ -13,6 +15,7 @@ export const getLabelFromAriaAttribute = ({
     label: mapAttributeNameAndValueToLabel({
       attributeName,
       attributeValue,
+      container,
     }),
     value: attributeValue,
   };

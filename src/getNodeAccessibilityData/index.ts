@@ -40,10 +40,12 @@ const getSpokenRole = ({ isGeneric, isPresentational, node, role }) => {
 
 export function getNodeAccessibilityData({
   allowedAccessibilityRoles,
+  container,
   inheritedImplicitPresentational,
   node,
 }: {
   allowedAccessibilityRoles: string[][];
+  container: Node;
   inheritedImplicitPresentational: boolean;
   node: Node;
 }) {
@@ -60,6 +62,7 @@ export function getNodeAccessibilityData({
 
   const accessibleAttributeLabels = getAccessibleAttributeLabels({
     accessibleValue,
+    container,
     node,
     role,
   });
