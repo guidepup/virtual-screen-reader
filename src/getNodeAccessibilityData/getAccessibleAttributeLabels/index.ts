@@ -8,10 +8,12 @@ import { postProcessLabels } from "./postProcessLabels";
 
 export const getAccessibleAttributeLabels = ({
   accessibleValue,
+  container,
   node,
   role,
 }: {
   accessibleValue: string;
+  container: Node;
   node: Node;
   role: string;
 }): string[] => {
@@ -28,6 +30,7 @@ export const getAccessibleAttributeLabels = ({
       value: valueFromHtmlEquivalentAttribute,
     } = getLabelFromHtmlEquivalentAttribute({
       attributeName,
+      container,
       node,
     });
 
@@ -43,6 +46,7 @@ export const getAccessibleAttributeLabels = ({
     const { label: labelFromAriaAttribute, value: valueFromAriaAttribute } =
       getLabelFromAriaAttribute({
         attributeName,
+        container,
         node,
       });
 
@@ -60,6 +64,7 @@ export const getAccessibleAttributeLabels = ({
       value: valueFromImplicitHtmlElementValue,
     } = getLabelFromImplicitHtmlElementValue({
       attributeName,
+      container,
       node,
     });
 
@@ -76,6 +81,7 @@ export const getAccessibleAttributeLabels = ({
       {
         attributeName,
         attributeValue: implicitAttributeValue,
+        container,
       }
     );
 

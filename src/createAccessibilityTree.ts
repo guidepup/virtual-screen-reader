@@ -20,6 +20,7 @@ interface AccessibilityNodeTree extends AccessibilityNode {
 }
 
 interface AccessibilityContext {
+  container: Node;
   ownedNodes: Set<Node>;
   visitedNodes: Set<Node>;
 }
@@ -135,7 +136,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 function growTree(
   node: Node,
   tree: AccessibilityNodeTree,
-  { ownedNodes, visitedNodes }: AccessibilityContext
+  { container, ownedNodes, visitedNodes }: AccessibilityContext
 ): AccessibilityNodeTree {
   /**
    * Authors MUST NOT create circular references with aria-owns. In the case of
@@ -171,6 +172,7 @@ function growTree(
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
+      container,
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
     });
@@ -190,7 +192,7 @@ function growTree(
           role,
           spokenRole,
         },
-        { ownedNodes, visitedNodes }
+        { container, ownedNodes, visitedNodes }
       )
     );
   });
@@ -224,6 +226,7 @@ function growTree(
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
+      container,
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
     });
@@ -243,7 +246,7 @@ function growTree(
           role,
           spokenRole,
         },
-        { ownedNodes, visitedNodes }
+        { container, ownedNodes, visitedNodes }
       )
     );
   });
@@ -270,6 +273,7 @@ export function createAccessibilityTree(node: Node) {
     spokenRole,
   } = getNodeAccessibilityData({
     allowedAccessibilityRoles: [],
+    container: node,
     node,
     inheritedImplicitPresentational: false,
   });
@@ -289,6 +293,7 @@ export function createAccessibilityTree(node: Node) {
       spokenRole,
     },
     {
+      container: node,
       ownedNodes,
       visitedNodes,
     }

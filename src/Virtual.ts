@@ -33,23 +33,6 @@ const defaultUserEventOptions = {
   skipHover: true,
 };
 
-const observedAttributes = [
-  ...aria.keys(),
-  "alt",
-  "class",
-  "checked",
-  "control",
-  "disabled",
-  "for",
-  "hidden",
-  "label",
-  "labels",
-  "style",
-  "title",
-  "type",
-  "value",
-];
-
 /**
  * TODO: handle live region roles:
  *
@@ -82,12 +65,6 @@ const observedAttributes = [
  */
 
 /**
- * TODO: handle logical descendants via aria-activedescendant and aria-owns
- *
- * REF: https://w3c.github.io/aria/#state_prop_def
- */
-
-/**
  * TODO: When a modal element is displayed, assistive technologies SHOULD
  * navigate to the element unless focus has explicitly been set elsewhere. Some
  * assistive technologies limit navigation to the modal element's contents. If
@@ -113,7 +90,6 @@ const observeDOM = (function () {
 
       mutationObserver.observe(node, {
         attributes: true,
-        attributeFilter: observedAttributes,
         childList: true,
         subtree: true,
       });
@@ -190,24 +166,36 @@ export class Virtual implements ScreenReader {
     });
   }
 
-  #handleFocusChange({ target }: FocusEvent) {
+  async #handleFocusChange({ target }: FocusEvent) {
+    await tick();
+
+    this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
     const nextIndex = tree.findIndex(({ node }) => node === target);
     const newActiveNode = tree.at(nextIndex);
 
-    this.#updateState(newActiveNode);
+    this.#updateState(newActiveNode, true);
   }
 
-  #updateState(accessibilityNode: AccessibilityNode) {
+  #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
     const spokenPhrase = getSpokenPhrase(accessibilityNode);
     const itemText = getItemText(accessibilityNode);
 
     this.#activeNode = accessibilityNode;
+
+    if (
+      ignoreIfNoChange &&
+      spokenPhrase === this.#spokenPhraseLog.at(-1) &&
+      itemText === this.#itemTextLog.at(-1)
+    ) {
+      return;
+    }
+
     this.#itemTextLog.push(itemText);
     this.#spokenPhraseLog.push(spokenPhrase);
   }
 
-  async #refreshState() {
+  async #refreshState(ignoreIfNoChange) {
     await tick();
 
     this.#invalidateTreeCache();
@@ -215,7 +203,7 @@ export class Virtual implements ScreenReader {
     const currentIndex = this.#getCurrentIndexByNode(tree);
     const newActiveNode = tree.at(currentIndex);
 
-    this.#updateState(newActiveNode);
+    this.#updateState(newActiveNode, ignoreIfNoChange);
   }
 
   #getCurrentIndex(tree: AccessibilityNode[]) {
@@ -437,13 +425,13 @@ export class Virtual implements ScreenReader {
 
     const keyboardCommand = [
       ...modifiers.map((modifier) => `{${modifier}>}`),
-      ...keys,
+      ...keys.map((key) => `{${key}}`),
       ...modifiers.reverse().map((modifier) => `{/${modifier}}`),
     ].join("");
 
     await this.click();
     await userEvent.keyboard(keyboardCommand, defaultUserEventOptions);
-    await this.#refreshState();
+    await this.#refreshState(true);
 
     return;
   }
@@ -470,7 +458,7 @@ export class Virtual implements ScreenReader {
 
     const target = this.#activeNode.node as HTMLElement;
     await userEvent.type(target, text, defaultUserEventOptions);
-    await this.#refreshState();
+    await this.#refreshState(true);
 
     return;
   }
@@ -603,6 +591,7 @@ export class Virtual implements ScreenReader {
    */
   async lastSpokenPhrase() {
     this.#checkContainer();
+    await tick();
 
     return this.#spokenPhraseLog.at(-1) ?? "";
   }
@@ -614,6 +603,7 @@ export class Virtual implements ScreenReader {
    */
   async itemText() {
     this.#checkContainer();
+    await tick();
 
     return this.#itemTextLog.at(-1) ?? "";
   }
@@ -626,6 +616,8 @@ export class Virtual implements ScreenReader {
   async spokenPhraseLog() {
     this.#checkContainer();
 
+    await tick();
+
     return this.#spokenPhraseLog;
   }
 
@@ -636,6 +628,8 @@ export class Virtual implements ScreenReader {
    */
   async itemTextLog() {
     this.#checkContainer();
+
+    await tick();
 
     return this.#itemTextLog;
   }
