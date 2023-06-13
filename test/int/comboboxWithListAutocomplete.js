@@ -4,7 +4,7 @@
  *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
  */
 
-function setup() {
+function setupComboboxWithListAutocomplete() {
   class ComboboxAutocomplete {
     constructor(comboboxNode, buttonNode, listboxNode) {
       this.comboboxNode = comboboxNode;
@@ -685,4 +685,4 @@ function setup() {
   return () => window.removeEventListener("load", onload);
 }
 
-module.exports = { setup };
+module.exports = { setupComboboxWithListAutocomplete };
