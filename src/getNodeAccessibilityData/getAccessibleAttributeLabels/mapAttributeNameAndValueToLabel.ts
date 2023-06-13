@@ -41,7 +41,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-colindex": integer("column index"),
   "aria-colindextext": string("column index"),
   "aria-colspan": integer("column span"),
-  "aria-controls": null, // TODO: decide what to announce here
+  "aria-controls": null, // Handled by virtual.perform()
   "aria-current": token({
     page: "current page",
     step: "current step",
@@ -93,7 +93,7 @@ const ariaPropertyToVirtualLabelMap: Record<
     horizontal: "orientated horizontally",
     vertical: "orientated vertically",
   }),
-  "aria-owns": null, // TODO: decide what to announce here
+  "aria-owns": null, // Handled by accessibility tree construction
   "aria-placeholder": string("placeholder"),
   "aria-posinset": integer("item set position"),
   "aria-pressed": tristate(State.PRESSED, State.PARTIALLY_PRESSED),

@@ -47,15 +47,14 @@ describe("press", () => {
   });
 
   it("should handle requests to press on a non-element gracefully", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const container = document.createTextNode("hello world") as any;
+    const container = document.createTextNode("text node");
 
     await virtual.start({ container });
 
     await virtual.press("Shift+a+b+c");
 
-    expect(await virtual.itemTextLog()).toEqual(["hello world"]);
-    expect(await virtual.spokenPhraseLog()).toEqual(["hello world"]);
+    expect(await virtual.itemTextLog()).toEqual(["text node"]);
+    expect(await virtual.spokenPhraseLog()).toEqual(["text node"]);
 
     await virtual.stop();
   });
