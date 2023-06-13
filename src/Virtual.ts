@@ -12,7 +12,6 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
-import { aria } from "aria-query";
 import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
@@ -175,6 +174,14 @@ export class Virtual implements ScreenReader {
     const newActiveNode = tree.at(nextIndex);
 
     this.#updateState(newActiveNode, true);
+  }
+
+  #focusActiveElement() {
+    if (!this.#activeNode || !isElement(this.#activeNode.node)) {
+      return;
+    }
+
+    this.#activeNode.node.focus();
   }
 
   #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
@@ -395,7 +402,7 @@ export class Virtual implements ScreenReader {
    * modifier, modifier is pressed and being held while the subsequent key is being pressed.
    *
    * ```ts
-   * await keyboard.press("Control+f");
+   * await virtual.press("Control+f");
    * ```
    *
    * @param {string} key Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
@@ -429,7 +436,7 @@ export class Virtual implements ScreenReader {
       ...modifiers.reverse().map((modifier) => `{/${modifier}}`),
     ].join("");
 
-    await this.click();
+    this.#focusActiveElement();
     await userEvent.keyboard(keyboardCommand, defaultUserEventOptions);
     await this.#refreshState(true);
 
