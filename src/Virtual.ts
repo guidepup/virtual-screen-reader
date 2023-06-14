@@ -8,6 +8,7 @@ import {
   ScreenReader,
   WindowsModifiers,
 } from "@guidepup/guidepup";
+import { commands, VirtualCommandKey, VirtualCommands } from "./commands";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -15,8 +16,8 @@ import {
 import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
-import { notImplemented } from "./notImplemented";
 import userEvent from "@testing-library/user-event";
+import { VirtualCommandArgs } from "./commands/types";
 
 export interface StartOptions extends CommandOptions {
   /**
@@ -24,7 +25,7 @@ export interface StartOptions extends CommandOptions {
    *
    * To use the entire page pass `document.body`.
    */
-  container: HTMLElement;
+  container: Node;
 }
 
 const defaultUserEventOptions = {
@@ -234,6 +235,20 @@ export class Virtual implements ScreenReader {
 
   #getCurrentIndexByNode(tree: AccessibilityNode[]) {
     return tree.findIndex(({ node }) => node === this.#activeNode?.node);
+  }
+
+  /**
+   * Getter for screen reader commands.
+   *
+   * Use with `await virtual.perform(command)`.
+   */
+  get commands() {
+    return Object.fromEntries(
+      Object.keys(commands).map((command: VirtualCommandKey) => [
+        command,
+        command,
+      ])
+    );
   }
 
   /**
@@ -473,97 +488,38 @@ export class Virtual implements ScreenReader {
   /**
    * Perform a screen reader command.
    *
-   * Currently not implemented.
+   * @param {string} command Screen reader command.
+   * @param {object} [options] Command options.
    */
-  async perform() {
+  async perform<
+    T extends VirtualCommandKey,
+    K extends Omit<Parameters<VirtualCommands[T]>[0], keyof VirtualCommandArgs>
+  >(command: T, options?: { [L in keyof K]: K[L] } & CommandOptions) {
     this.#checkContainer();
     await tick();
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role banner.
-     *
-     * REF: https://w3c.github.io/aria/#banner
-     */
+    const tree = this.#getAccessibilityTree();
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role complementary.
-     *
-     * REF: https://w3c.github.io/aria/#complementary
-     */
+    if (!tree.length) {
+      return;
+    }
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role contentinfo.
-     *
-     * REF: https://w3c.github.io/aria/#contentinfo
-     */
+    const currentIndex = this.#getCurrentIndex(tree);
+    const nextIndex = commands[command]?.({
+      ...options,
+      container: this.#container,
+      currentIndex,
+      tree,
+    });
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * figures.
-     *
-     * REF: https://w3c.github.io/aria/#figure
-     */
+    if (!nextIndex) {
+      return;
+    }
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role form.
-     *
-     * REF: https://w3c.github.io/aria/#form
-     */
+    const newActiveNode = tree.at(nextIndex);
+    this.#updateState(newActiveNode);
 
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * landmark regions.
-     *
-     * REF: https://w3c.github.io/aria/#landmark
-     */
-
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role main.
-     *
-     * REF: https://w3c.github.io/aria/#main
-     */
-
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role navigation.
-     *
-     * REF: https://w3c.github.io/aria/#navigation
-     */
-
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role region.
-     *
-     * REF: https://w3c.github.io/aria/#region
-     */
-
-    /**
-     * TODO: Assistive technologies SHOULD enable users to quickly navigate to
-     * elements with role search.
-     *
-     * REF: https://w3c.github.io/aria/#search
-     */
-
-    /**
-     * TODO:  However, when aria-flowto is provided with multiple ID
-     * references, assistive technologies SHOULD present the referenced
-     * elements as path choices.
-     *
-     * In the case of one or more ID references, user agents or assistive
-     * technologies SHOULD give the user the option of navigating to any of the
-     * targeted elements. The name of the path can be determined by the name of
-     * the target element of the aria-flowto attribute. Accessibility APIs can
-     * provide named path relationships.
-     *
-     * REF: https://w3c.github.io/aria/#aria-flowto
-     */
-
-    notImplemented();
+    return;
   }
 
   /**

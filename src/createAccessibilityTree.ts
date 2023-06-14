@@ -11,6 +11,7 @@ export interface AccessibilityNode {
   allowedAccessibilityChildRoles: string[][];
   childrenPresentational: boolean;
   node: Node;
+  parent: Node | null;
   role: string;
   spokenRole: string;
 }
@@ -25,13 +26,18 @@ interface AccessibilityContext {
   visitedNodes: Set<Node>;
 }
 
-function addOwnedNodes(owningNode: Element, ownedNodes: Set<Node>) {
+function addOwnedNodes(
+  owningNode: Element,
+  ownedNodes: Set<Node>,
+  container: Element
+) {
   const ownedNodesIdRefs = (owningNode.getAttribute("aria-owns") ?? "")
     .trim()
-    .split(" ");
+    .split(" ")
+    .filter(Boolean);
 
-  ownedNodesIdRefs.filter(Boolean).forEach((id) => {
-    const ownedNode = document.querySelector(`#${id}`);
+  ownedNodesIdRefs.forEach((id) => {
+    const ownedNode = container.querySelector(`#${id}`);
 
     if (!!ownedNode && !ownedNodes.has(ownedNode)) {
       ownedNodes.add(ownedNode);
@@ -48,19 +54,19 @@ function getAllOwnedNodes(node: Node) {
 
   node
     .querySelectorAll("[aria-owns]")
-    .forEach((owningNode) => addOwnedNodes(owningNode, ownedNodes));
+    .forEach((owningNode) => addOwnedNodes(owningNode, ownedNodes, node));
 
   return ownedNodes;
 }
 
-function getOwnedNodes(node: Node) {
+function getOwnedNodes(node: Node, container: Node) {
   const ownedNodes = new Set<Node>();
 
-  if (!isElement(node)) {
+  if (!isElement(node) || !isElement(container)) {
     return ownedNodes;
   }
 
-  addOwnedNodes(node, ownedNodes);
+  addOwnedNodes(node, ownedNodes, container);
 
   return ownedNodes;
 }
@@ -125,6 +131,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       allowedAccessibilityChildRoles: treeNode.allowedAccessibilityChildRoles,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
+      parent: treeNode.parent,
       role: treeNode.role,
       spokenRole: `end of ${treeNode.spokenRole}`,
     });
@@ -189,6 +196,7 @@ function growTree(
           children: [],
           childrenPresentational,
           node: childNode,
+          parent: node,
           role,
           spokenRole,
         },
@@ -208,7 +216,7 @@ function growTree(
    *
    * REF: https://w3c.github.io/aria/#aria-owns
    */
-  const ownedChildNodes = getOwnedNodes(node);
+  const ownedChildNodes = getOwnedNodes(node, container);
 
   ownedChildNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
@@ -243,6 +251,7 @@ function growTree(
           children: [],
           childrenPresentational,
           node: childNode,
+          parent: node,
           role,
           spokenRole,
         },
@@ -289,6 +298,7 @@ export function createAccessibilityTree(node: Node) {
       children: [],
       childrenPresentational,
       node,
+      parent: null,
       role,
       spokenRole,
     },
