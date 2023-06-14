@@ -8,7 +8,7 @@ import {
   ScreenReader,
   WindowsModifiers,
 } from "@guidepup/guidepup";
-import { commands, VirtualCommand } from "./commands";
+import { commands, VirtualCommandKey, VirtualCommands } from "./commands";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -17,6 +17,7 @@ import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
 import userEvent from "@testing-library/user-event";
+import { VirtualCommandArgs } from "./commands/types";
 
 export interface StartOptions extends CommandOptions {
   /**
@@ -243,10 +244,10 @@ export class Virtual implements ScreenReader {
    */
   get commands() {
     return Object.fromEntries(
-      Object.keys(commands).map((command) => [command, command]) as [
-        VirtualCommand,
-        VirtualCommand
-      ][]
+      Object.keys(commands).map((command: VirtualCommandKey) => [
+        command,
+        command,
+      ])
     );
   }
 
@@ -490,10 +491,10 @@ export class Virtual implements ScreenReader {
    * @param {string} command Screen reader command.
    * @param {object} [options] Command options.
    */
-  async perform(
-    command: VirtualCommand,
-    options: Record<string, unknown> = {}
-  ) {
+  async perform<
+    T extends VirtualCommandKey,
+    K extends Omit<Parameters<VirtualCommands[T]>[0], keyof VirtualCommandArgs>
+  >(command: T, options?: { [L in keyof K]: K[L] } & CommandOptions) {
     this.#checkContainer();
     await tick();
 

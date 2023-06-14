@@ -88,4 +88,5 @@ export const commands = {
   jumpToControlledElement,
 };
 
-export type VirtualCommand = keyof typeof commands;
+export type VirtualCommands = typeof commands;
+export type VirtualCommandKey = keyof VirtualCommands;
