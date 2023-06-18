@@ -4,18 +4,18 @@ import { getNodeByIdRef } from "../getNodeByIdRef";
 import { isElement } from "../isElement";
 import { VirtualCommandArgs } from "./types";
 
-export interface MoveToNextIdRefElement extends VirtualCommandArgs {
+export interface GetNextIndexByIdRefsAttributeArgs extends VirtualCommandArgs {
   attributeName: string;
   index?: number;
 }
 
-export function moveToNextIdRefElement({
+export function getNextIndexByIdRefsAttribute({
   attributeName,
   index = 0,
   container,
   currentIndex,
   tree,
-}: MoveToNextIdRefElement) {
+}: GetNextIndexByIdRefsAttributeArgs) {
   if (!isElement(container)) {
     return;
   }
