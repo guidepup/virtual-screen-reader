@@ -8,11 +8,13 @@ import { postProcessLabels } from "./postProcessLabels";
 
 export const getAccessibleAttributeLabels = ({
   accessibleValue,
+  alternateReadingOrderParents,
   container,
   node,
   role,
 }: {
   accessibleValue: string;
+  alternateReadingOrderParents: Node[];
   container: Node;
   node: Node;
   role: string;
@@ -95,5 +97,26 @@ export const getAccessibleAttributeLabels = ({
     }
   });
 
-  return postProcessLabels({ labels, role });
+  const processedLabels = postProcessLabels({ labels, role }).filter(Boolean);
+
+  /**
+   * aria-flowto MUST requirements:
+   *
+   * The reading order goes both directions, and a user needs to be aware of the
+   * alternate reading order so that they can invoke the functionality.
+   *
+   * The reading order goes both directions, and a user needs to be able to
+   * travel backwards through their chosen reading order.
+   *
+   * REF: https://a11ysupport.io/tech/aria/aria-flowto_attribute
+   */
+  if (alternateReadingOrderParents.length > 0) {
+    processedLabels.push(
+      `${alternateReadingOrderParents.length} previous alternate reading ${
+        alternateReadingOrderParents.length === 1 ? "order" : "orders"
+      }`
+    );
+  }
+
+  return processedLabels;
 };

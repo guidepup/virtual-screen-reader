@@ -1,4 +1,6 @@
+import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
+import { getNodeByIdRef } from "./getNodeByIdRef";
 import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
@@ -9,6 +11,7 @@ export interface AccessibilityNode {
   accessibleName: string;
   accessibleValue: string;
   allowedAccessibilityChildRoles: string[][];
+  alternateReadingOrderParents: Node[];
   childrenPresentational: boolean;
   node: Node;
   parent: Node | null;
@@ -21,23 +24,66 @@ interface AccessibilityNodeTree extends AccessibilityNode {
 }
 
 interface AccessibilityContext {
+  alternateReadingOrderMap: Map<Node, Set<Node>>;
   container: Node;
   ownedNodes: Set<Node>;
   visitedNodes: Set<Node>;
 }
 
+function addAlternateReadingOrderNodes(
+  node: Element,
+  alternateReadingOrderMap: Map<Node, Set<Node>>,
+  container: Element
+) {
+  const idRefs = getIdRefsByAttribute({
+    attributeName: "aria-flowto",
+    node,
+  });
+
+  idRefs.forEach((idRef) => {
+    const childNode = getNodeByIdRef({ container, idRef });
+
+    if (!childNode) {
+      return;
+    }
+
+    const currentParentNodes =
+      alternateReadingOrderMap.get(childNode) ?? new Set<Node>();
+
+    currentParentNodes.add(node);
+
+    alternateReadingOrderMap.set(childNode, currentParentNodes);
+  });
+}
+
+function mapAlternateReadingOrder(node: Node) {
+  const alternateReadingOrderMap = new Map<Node, Set<Node>>();
+
+  if (!isElement(node)) {
+    return alternateReadingOrderMap;
+  }
+
+  node
+    .querySelectorAll("[aria-flowto]")
+    .forEach((parentNode) =>
+      addAlternateReadingOrderNodes(parentNode, alternateReadingOrderMap, node)
+    );
+
+  return alternateReadingOrderMap;
+}
+
 function addOwnedNodes(
-  owningNode: Element,
+  node: Element,
   ownedNodes: Set<Node>,
   container: Element
 ) {
-  const ownedNodesIdRefs = (owningNode.getAttribute("aria-owns") ?? "")
-    .trim()
-    .split(" ")
-    .filter(Boolean);
+  const idRefs = getIdRefsByAttribute({
+    attributeName: "aria-owns",
+    node,
+  });
 
-  ownedNodesIdRefs.forEach((id) => {
-    const ownedNode = container.querySelector(`#${id}`);
+  idRefs.forEach((idRef) => {
+    const ownedNode = getNodeByIdRef({ container, idRef });
 
     if (!!ownedNode && !ownedNodes.has(ownedNode)) {
       ownedNodes.add(ownedNode);
@@ -105,9 +151,10 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
 function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
   const { children, ...treeNode } = tree;
   const isAnnounced =
-    treeNode.accessibleName ||
-    treeNode.accessibleDescription ||
-    treeNode.spokenRole;
+    !!treeNode.accessibleName ||
+    !!treeNode.accessibleDescription ||
+    treeNode.accessibleAttributeLabels.length > 0 ||
+    !!treeNode.spokenRole;
 
   const ignoreChildren = shouldIgnoreChildren(tree);
 
@@ -129,6 +176,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       accessibleName: treeNode.accessibleName,
       accessibleValue: treeNode.accessibleValue,
       allowedAccessibilityChildRoles: treeNode.allowedAccessibilityChildRoles,
+      alternateReadingOrderParents: treeNode.alternateReadingOrderParents,
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
       parent: treeNode.parent,
@@ -143,7 +191,12 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
 function growTree(
   node: Node,
   tree: AccessibilityNodeTree,
-  { container, ownedNodes, visitedNodes }: AccessibilityContext
+  {
+    alternateReadingOrderMap,
+    container,
+    ownedNodes,
+    visitedNodes,
+  }: AccessibilityContext
 ): AccessibilityNodeTree {
   /**
    * Authors MUST NOT create circular references with aria-owns. In the case of
@@ -168,6 +221,10 @@ function growTree(
       return;
     }
 
+    const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
+      ? Array.from(alternateReadingOrderMap.get(childNode))
+      : [];
+
     const {
       accessibleAttributeLabels,
       accessibleDescription,
@@ -179,6 +236,7 @@ function growTree(
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
+      alternateReadingOrderParents,
       container,
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
@@ -193,6 +251,7 @@ function growTree(
           accessibleName,
           accessibleValue,
           allowedAccessibilityChildRoles,
+          alternateReadingOrderParents,
           children: [],
           childrenPresentational,
           node: childNode,
@@ -200,7 +259,7 @@ function growTree(
           role,
           spokenRole,
         },
-        { container, ownedNodes, visitedNodes }
+        { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
       )
     );
   });
@@ -223,6 +282,10 @@ function growTree(
       return;
     }
 
+    const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
+      ? Array.from(alternateReadingOrderMap.get(childNode))
+      : [];
+
     const {
       accessibleAttributeLabels,
       accessibleDescription,
@@ -234,6 +297,7 @@ function growTree(
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
+      alternateReadingOrderParents,
       container,
       node: childNode,
       inheritedImplicitPresentational: tree.childrenPresentational,
@@ -248,6 +312,7 @@ function growTree(
           accessibleName,
           accessibleValue,
           allowedAccessibilityChildRoles,
+          alternateReadingOrderParents,
           children: [],
           childrenPresentational,
           node: childNode,
@@ -255,7 +320,7 @@ function growTree(
           role,
           spokenRole,
         },
-        { container, ownedNodes, visitedNodes }
+        { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
       )
     );
   });
@@ -268,6 +333,7 @@ export function createAccessibilityTree(node: Node) {
     return [];
   }
 
+  const alternateReadingOrderMap = mapAlternateReadingOrder(node);
   const ownedNodes = getAllOwnedNodes(node);
   const visitedNodes = new Set<Node>();
 
@@ -282,6 +348,7 @@ export function createAccessibilityTree(node: Node) {
     spokenRole,
   } = getNodeAccessibilityData({
     allowedAccessibilityRoles: [],
+    alternateReadingOrderParents: [],
     container: node,
     node,
     inheritedImplicitPresentational: false,
@@ -295,6 +362,7 @@ export function createAccessibilityTree(node: Node) {
       accessibleName,
       accessibleValue,
       allowedAccessibilityChildRoles,
+      alternateReadingOrderParents: [],
       children: [],
       childrenPresentational,
       node,
@@ -303,6 +371,7 @@ export function createAccessibilityTree(node: Node) {
       spokenRole,
     },
     {
+      alternateReadingOrderMap,
       container: node,
       ownedNodes,
       visitedNodes,

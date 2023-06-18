@@ -24,7 +24,7 @@ describe("perform", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Target",
+      "button, Target, 1 control",
       "list",
       "listitem",
       "Item 1",
@@ -57,7 +57,7 @@ describe("perform", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Target",
+      "button, Target, 2 controls",
       "list",
       "listitem",
       "Item 3",
@@ -79,7 +79,7 @@ describe("perform", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Target",
+      "button, Target, 1 control",
       "content 2",
     ]);
 
@@ -102,7 +102,7 @@ describe("perform", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Target",
+      "button, Target, 2 controls",
       "content 3",
     ]);
 
@@ -193,7 +193,7 @@ describe("perform", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Target",
+      "button, Target, 1 control",
     ]);
 
     await virtual.stop();

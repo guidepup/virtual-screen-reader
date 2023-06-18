@@ -40,11 +40,13 @@ const getSpokenRole = ({ isGeneric, isPresentational, node, role }) => {
 
 export function getNodeAccessibilityData({
   allowedAccessibilityRoles,
+  alternateReadingOrderParents,
   container,
   inheritedImplicitPresentational,
   node,
 }: {
   allowedAccessibilityRoles: string[][];
+  alternateReadingOrderParents: Node[];
   container: Node;
   inheritedImplicitPresentational: boolean;
   node: Node;
@@ -62,6 +64,7 @@ export function getNodeAccessibilityData({
 
   const accessibleAttributeLabels = getAccessibleAttributeLabels({
     accessibleValue,
+    alternateReadingOrderParents,
     container,
     node,
     role,
@@ -74,7 +77,12 @@ export function getNodeAccessibilityData({
   const isPresentational = presentationRoles.includes(role);
   const isGeneric = role === "generic";
 
-  const spokenRole = getSpokenRole({ isGeneric, isPresentational, node, role });
+  const spokenRole = getSpokenRole({
+    isGeneric,
+    isPresentational,
+    node,
+    role,
+  });
 
   const { requiredOwnedElements: allowedAccessibilityChildRoles } = (roles.get(
     role as ARIARoleDefinitionKey

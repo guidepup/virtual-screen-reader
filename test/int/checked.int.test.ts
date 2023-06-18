@@ -211,7 +211,7 @@ describe("Checked Attribute State", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "checkbox, All condiments, partially checked"
+      "checkbox, All condiments, partially checked, 4 controls"
     );
 
     await virtual.stop();
