@@ -1,6 +1,6 @@
 import { virtual } from "../../src";
 
-describe("Allowed Accessibility Child Roles", () => {
+describe("Aria Owns", () => {
   afterEach(async () => {
     await virtual.stop();
     document.body.innerHTML = "";

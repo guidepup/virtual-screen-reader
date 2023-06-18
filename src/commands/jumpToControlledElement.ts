@@ -1,4 +1,4 @@
-import { moveToNextIdRefElement } from "./moveToNextIdRefElement";
+import { getNextIndexByIdRefsAttribute } from "./getNextIndexByIdRefsAttribute";
 import { VirtualCommandArgs } from "./types";
 
 export interface JumpToControlledElementCommandArgs extends VirtualCommandArgs {
@@ -27,11 +27,11 @@ export function jumpToControlledElement({
   currentIndex,
   tree,
 }: JumpToControlledElementCommandArgs) {
-  return moveToNextIdRefElement({
+  return getNextIndexByIdRefsAttribute({
     attributeName: "aria-controls",
     index,
     container,
     currentIndex,
     tree,
-  })
+  });
 }

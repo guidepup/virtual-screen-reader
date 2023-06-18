@@ -1,4 +1,4 @@
-import { moveToNextIdRefElement } from "./moveToNextIdRefElement";
+import { getNextIndexByIdRefsAttribute } from "./getNextIndexByIdRefsAttribute";
 import { VirtualCommandArgs } from "./types";
 
 export interface MoveToNextAlternateReadingOrderElement
@@ -36,7 +36,7 @@ export function moveToNextAlternateReadingOrderElement({
   currentIndex,
   tree,
 }: MoveToNextAlternateReadingOrderElement) {
-  return moveToNextIdRefElement({
+  return getNextIndexByIdRefsAttribute({
     attributeName: "aria-flowto",
     index,
     container,
