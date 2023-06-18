@@ -53,7 +53,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   }),
   "aria-describedby": null, // Handled by accessible description
   "aria-description": null, // Handled by accessible description
-  "aria-details": null, // TODO: work out if handled by accessible description or if need logic here
+  "aria-details": idRefs("linked details", "linked details", false),
   "aria-disabled": state(State.DISABLED),
   "aria-dropeffect": null, // Deprecated in WAI-ARIA 1.1
   "aria-errormessage": null, // TODO: decide what to announce here
@@ -137,7 +137,8 @@ function state(stateValue: State) {
 
 function idRefs(
   propertyDescriptionSuffixSingular: string,
-  propertyDescriptionSuffixPlural: string
+  propertyDescriptionSuffixPlural: string,
+  printCount = true
 ) {
   return function mapper({ attributeValue, container }: MapperArgs) {
     const idRefsCount = attributeValue
@@ -149,7 +150,7 @@ function idRefs(
       return "";
     }
 
-    return `${idRefsCount} ${
+    return `${printCount ? `${idRefsCount} ` : ""}${
       idRefsCount === 1
         ? propertyDescriptionSuffixSingular
         : propertyDescriptionSuffixPlural

@@ -1,6 +1,6 @@
 import { virtual } from "../../src";
 
-describe("perform", () => {
+describe("jumpToControlledElement", () => {
   afterEach(async () => {
     await virtual.stop();
     document.body.innerHTML = "";

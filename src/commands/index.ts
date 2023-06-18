@@ -1,6 +1,7 @@
 import { getNextIndexByRole } from "./getNextIndexByRole";
 import { getPreviousIndexByRole } from "./getPreviousIndexByRole";
 import { jumpToControlledElement } from "./jumpToControlledElement";
+import { jumpToDetailsElement } from "./jumpToDetailsElement";
 import { moveToNextAlternateReadingOrderElement } from "./moveToNextAlternateReadingOrderElement";
 import { moveToPreviousAlternateReadingOrderElement } from "./moveToPreviousAlternateReadingOrderElement";
 import { VirtualCommandArgs } from "./types";
@@ -104,6 +105,7 @@ const quickLandmarkNavigationCommands = quickLandmarkNavigationRoles.reduce<
 
 export const commands = {
   jumpToControlledElement,
+  jumpToDetailsElement,
   moveToNextAlternateReadingOrderElement,
   moveToPreviousAlternateReadingOrderElement,
   ...quickLandmarkNavigationCommands,

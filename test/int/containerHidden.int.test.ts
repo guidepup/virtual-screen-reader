@@ -1,6 +1,6 @@
 import { virtual } from "../../src";
 
-describe("Inherited Implicit Presentational Role", () => {
+describe("Container Hidden", () => {
   beforeEach(async () => {
     document.body.innerHTML = `
     <div id="container" style="display: none;">This content is not announced</div>
