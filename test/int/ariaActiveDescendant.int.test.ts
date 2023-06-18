@@ -31,7 +31,7 @@ describe("Aria Active Descendant", () => {
     await virtual.stop();
   });
 
-  it("should gracefully handle an invalid idref", async () => {
+  it("should gracefully handle an invalid idRef", async () => {
     document.body.innerHTML = `
     <input type="text" aria-activedescendant="cb1-opt8" aria-readonly="true" aria-owns="cb1-list" aria-autocomplete="list" role="combobox" id="cb1-edit">
     <ul aria-expanded="true" role="listbox" id="cb1-list">

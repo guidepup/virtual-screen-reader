@@ -1,7 +1,7 @@
 import { getAccessibleName } from "../getAccessibleName";
 import { getAccessibleValue } from "../getAccessibleValue";
 import { getItemText } from "../../getItemText";
-import { isElement } from "../../isElement";
+import { getNodeByIdRef } from "../../getNodeByIdRef";
 
 enum State {
   BUSY = "busy",
@@ -25,7 +25,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   string,
   ((...args: unknown[]) => string) | null
 > = {
-  "aria-activedescendant": idref("active descendant"),
+  "aria-activedescendant": idRef("active descendant"),
   "aria-atomic": null, // Handled by live region logic
   "aria-autocomplete": token({
     inline: "autocomplete inlined",
@@ -41,7 +41,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-colindex": integer("column index"),
   "aria-colindextext": string("column index"),
   "aria-colspan": integer("column span"),
-  "aria-controls": null, // Handled by virtual.perform()
+  "aria-controls": idRefs("control", "controls"), // Handled by virtual.perform()
   "aria-current": token({
     page: "current page",
     step: "current step",
@@ -58,7 +58,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-dropeffect": null, // Deprecated in WAI-ARIA 1.1
   "aria-errormessage": null, // TODO: decide what to announce here
   "aria-expanded": state(State.EXPANDED),
-  "aria-flowto": null, // TODO: decide what to announce here + implement focus logic
+  "aria-flowto": idRefs("alternate reading order", "alternate reading orders"), // Handled by virtual.perform()
   "aria-grabbed": null, // Deprecated in WAI-ARIA 1.1
   "aria-haspopup": token({
     /**
@@ -135,13 +135,31 @@ function state(stateValue: State) {
   };
 }
 
-function idref(propertyName: string) {
-  return function mapper({ attributeValue: idref, container }: MapperArgs) {
-    if (!isElement(container) || !idref) {
+function idRefs(
+  propertyDescriptionSuffixSingular: string,
+  propertyDescriptionSuffixPlural: string
+) {
+  return function mapper({ attributeValue, container }: MapperArgs) {
+    const idRefsCount = attributeValue
+      .trim()
+      .split(" ")
+      .filter((idRef) => !!getNodeByIdRef({ container, idRef })).length;
+
+    if (idRefsCount === 0) {
       return "";
     }
 
-    const node = container.querySelector(`#${idref}`);
+    return `${idRefsCount} ${
+      idRefsCount === 1
+        ? propertyDescriptionSuffixSingular
+        : propertyDescriptionSuffixPlural
+    }`;
+  };
+}
+
+function idRef(propertyName: string) {
+  return function mapper({ attributeValue: idRef, container }: MapperArgs) {
+    const node = getNodeByIdRef({ container, idRef });
 
     if (!node) {
       return "";

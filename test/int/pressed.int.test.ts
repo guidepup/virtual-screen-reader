@@ -89,7 +89,7 @@ describe("Checked Attribute State", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "button, All systems, partially pressed"
+      "button, All systems, partially pressed, 3 controls"
     );
 
     await virtual.stop();

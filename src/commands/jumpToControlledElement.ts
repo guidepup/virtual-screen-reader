@@ -1,4 +1,4 @@
-import { isElement } from "../isElement";
+import { moveToNextIdRefElement } from "./moveToNextIdRefElement";
 import { VirtualCommandArgs } from "./types";
 
 export interface JumpToControlledElementCommandArgs extends VirtualCommandArgs {
@@ -27,50 +27,11 @@ export function jumpToControlledElement({
   currentIndex,
   tree,
 }: JumpToControlledElementCommandArgs) {
-  if (!isElement(container)) {
-    return;
-  }
-
-  const currentNode = tree.at(currentIndex)?.node;
-
-  if (!currentNode || !isElement(currentNode)) {
-    return;
-  }
-
-  const controlledNodesIdRefs = (
-    currentNode.getAttribute("aria-controls") ?? ""
-  )
-    .trim()
-    .split(" ")
-    .filter(Boolean);
-
-  const controlledNodeId = controlledNodesIdRefs[index];
-
-  if (!controlledNodeId) {
-    return;
-  }
-
-  const controlledNode = container.querySelector(`#${controlledNodeId}`);
-
-  if (!controlledNode) {
-    return;
-  }
-
-  const controlledNodeIndex = tree.findIndex(
-    ({ node }) => node === controlledNode
-  );
-
-  if (controlledNodeIndex !== -1) {
-    return controlledNodeIndex;
-  }
-
-  const controlledNodeIndexByParent = tree.findIndex(
-    ({ parent }) => parent === controlledNode
-  );
-
-  if (controlledNodeIndexByParent !== -1) {
-    return controlledNodeIndexByParent;
-  }
-
-  return;
+  return moveToNextIdRefElement({
+    attributeName: "aria-controls",
+    index,
+    container,
+    currentIndex,
+    tree,
+  })
 }

@@ -243,12 +243,12 @@ export class Virtual implements ScreenReader {
    * Use with `await virtual.perform(command)`.
    */
   get commands() {
-    return Object.fromEntries(
+    return Object.fromEntries<VirtualCommandKey>(
       Object.keys(commands).map((command: VirtualCommandKey) => [
         command,
         command,
       ])
-    );
+    ) as { [K in VirtualCommandKey]: K };
   }
 
   /**
@@ -512,7 +512,7 @@ export class Virtual implements ScreenReader {
       tree,
     });
 
-    if (!nextIndex) {
+    if (typeof nextIndex !== "number") {
       return;
     }
 

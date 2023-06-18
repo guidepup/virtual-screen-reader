@@ -1,4 +1,6 @@
 import { jumpToControlledElement } from "./jumpToControlledElement";
+import { moveToNextAlternateReadingOrderElement } from "./moveToNextAlternateReadingOrderElement";
+import { moveToPreviousAlternateReadingOrderElement } from "./moveToPreviousAlternateReadingOrderElement";
 
 /**
  * TODO: Assistive technologies SHOULD enable users to quickly navigate to
@@ -70,22 +72,10 @@ import { jumpToControlledElement } from "./jumpToControlledElement";
  * REF: https://w3c.github.io/aria/#search
  */
 
-/**
- * TODO: However, when aria-flowto is provided with multiple ID
- * references, assistive technologies SHOULD present the referenced
- * elements as path choices.
- *
- * In the case of one or more ID references, user agents or assistive
- * technologies SHOULD give the user the option of navigating to any of the
- * targeted elements. The name of the path can be determined by the name of
- * the target element of the aria-flowto attribute. Accessibility APIs can
- * provide named path relationships.
- *
- * REF: https://w3c.github.io/aria/#aria-flowto
- */
-
 export const commands = {
   jumpToControlledElement,
+  moveToNextAlternateReadingOrderElement,
+  moveToPreviousAlternateReadingOrderElement,
 };
 
 export type VirtualCommands = typeof commands;
