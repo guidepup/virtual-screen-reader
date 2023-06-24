@@ -1,12 +1,12 @@
-<h1 align="center">Guidepup Virtual Screen Reader</h1>
+<h1 align="center">Virtual Screen Reader</h1>
 <p align="center">
   <i>Virtual screen reader driver for unit test automation.</i>
 </p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/@guidepup/virtual-screen-reader"><img alt="Guidepup Virtual Screen Reader available on NPM" src="https://img.shields.io/npm/v/@guidepup/virtual-screen-reader" /></a>
-  <a href="https://www.npmjs.com/package/@guidepup/virtual-screen-reader"><img alt="Guidepup Virtual Screen Reader available on NPM" src="https://img.shields.io/npm/dt/@guidepup/virtual-screen-reader"></a>
-  <a href="https://github.com/guidepup/virtual-screen-reader/actions/workflows/test.yml"><img alt="Guidepup Virtual Screen Reader test workflows" src="https://github.com/guidepup/virtual-screen-reader/workflows/Test/badge.svg" /></a>
-  <a href="https://github.com/guidepup/virtual-screen-reader/blob/main/LICENSE"><img alt="Guidepup Virtual Screen Reader uses the MIT license" src="https://img.shields.io/github/license/guidepup/virtual-screen-reader" /></a>
+  <a href="https://www.npmjs.com/package/@guidepup/virtual-screen-reader"><img alt="Virtual Screen Reader available on NPM" src="https://img.shields.io/npm/v/@guidepup/virtual-screen-reader" /></a>
+  <a href="https://www.npmjs.com/package/@guidepup/virtual-screen-reader"><img alt="Virtual Screen Reader available on NPM" src="https://img.shields.io/npm/dt/@guidepup/virtual-screen-reader"></a>
+  <a href="https://github.com/guidepup/virtual-screen-reader/actions/workflows/test.yml"><img alt="Virtual Screen Reader test workflows" src="https://github.com/guidepup/virtual-screen-reader/workflows/Test/badge.svg" /></a>
+  <a href="https://github.com/guidepup/virtual-screen-reader/blob/main/LICENSE"><img alt="Virtual Screen Reader uses the MIT license" src="https://img.shields.io/github/license/guidepup/virtual-screen-reader" /></a>
 </p>
 <p align="center">
   Reliable unit testing for your screen reader a11y workflows through JavaScript.
@@ -16,7 +16,7 @@
 
 A11y static analysis tools [only cover 25% of WCAG](https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/) and don't assure on the quality of the user experience for screen reader users. This means teams need to perform lots of manual tests with multiple screen readers to ensure great UX which can take a lot of time... **not anymore!**
 
-With Guidepup Virtual Screen Reader you can automate your screen reader unit test workflows the same you as would for mouse or keyboard based scenarios, no sweat!
+With Virtual Screen Reader you can automate your screen reader unit test workflows the same you as would for mouse or keyboard based scenarios, no sweat!
 
 ## Features
 
@@ -27,7 +27,7 @@ With Guidepup Virtual Screen Reader you can automate your screen reader unit tes
 
 ## Getting Started
 
-Install Guidepup to your project:
+Install Virtual Screen Reader to your project:
 
 ```bash
 npm install --save-dev @guidepup/virtual-screen-reader
@@ -113,4 +113,4 @@ Here are some similar unaffiliated projects:
 
 ## License
 
-[MIT](https://github.com/guidepup/guidepup/blob/main/LICENSE)
+[MIT](https://github.com/guidepup/virtual-screen-reader/blob/main/LICENSE)
