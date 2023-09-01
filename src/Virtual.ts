@@ -14,8 +14,11 @@ import {
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
 import { getItemText } from "./getItemText";
+import { getLiveSpokenPhrase } from "./getLiveSpokenPhrase";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { isElement } from "./isElement";
+import { observeDOM } from "./observeDOM";
+import { tick } from "./tick";
 import userEvent from "@testing-library/user-event";
 import { VirtualCommandArgs } from "./commands/types";
 
@@ -34,37 +37,6 @@ const defaultUserEventOptions = {
 };
 
 /**
- * TODO: handle live region roles:
- *
- * - alert
- * - log
- * - marquee
- * - status
- * - timer
- * - alertdialog
- *
- * And handle live region attributes:
- *
- * - aria-atomic
- * - aria-busy
- * - aria-live
- * - aria-relevant
- *
- * When live regions are marked as polite, assistive technologies SHOULD
- * announce updates at the next graceful opportunity, such as at the end of
- * speaking the current sentence or when the user pauses typing. When live
- * regions are marked as assertive, assistive technologies SHOULD notify the
- * user immediately.
- *
- * REF:
- *
- * - https://w3c.github.io/aria/#live_region_roles
- * - https://w3c.github.io/aria/#window_roles
- * - https://w3c.github.io/aria/#attrs_liveregions
- * - https://w3c.github.io/aria/#aria-live
- */
-
-/**
  * TODO: When a modal element is displayed, assistive technologies SHOULD
  * navigate to the element unless focus has explicitly been set elsewhere. Some
  * assistive technologies limit navigation to the modal element's contents. If
@@ -73,42 +45,6 @@ const defaultUserEventOptions = {
  *
  * REF: https://w3c.github.io/aria/#aria-modal
  */
-
-const observeDOM = (function () {
-  const MutationObserver = window.MutationObserver;
-
-  return function observeDOM(
-    node: Node,
-    onChange: MutationCallback
-  ): () => void {
-    if (!isElement(node)) {
-      return;
-    }
-
-    if (MutationObserver) {
-      const mutationObserver = new MutationObserver(onChange);
-
-      mutationObserver.observe(node, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-
-      return () => {
-        mutationObserver.disconnect();
-      };
-    }
-
-    return () => {
-      // gracefully fallback to not supporting Accessibility Tree refreshes if
-      // the DOM changes.
-    };
-  };
-})();
-
-async function tick() {
-  return await new Promise<void>((resolve) => setTimeout(() => resolve()));
-}
 
 /**
  * TODO: When an assistive technology reading cursor moves from one article to
@@ -183,6 +119,24 @@ export class Virtual implements ScreenReader {
     }
 
     this.#activeNode.node.focus();
+  }
+
+  async #announceLiveRegions(mutations: MutationRecord[]) {
+    await tick();
+
+    const container = this.#container;
+
+    mutations
+      .map((mutation) =>
+        getLiveSpokenPhrase({
+          container,
+          mutation,
+        })
+      )
+      .filter(Boolean)
+      .forEach((spokenPhrase) => {
+        this.#spokenPhraseLog.push(spokenPhrase);
+      });
   }
 
   #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
@@ -283,7 +237,10 @@ export class Virtual implements ScreenReader {
 
     this.#disconnectDOMObserver = observeDOM(
       container,
-      this.#invalidateTreeCache.bind(this)
+      (mutations: MutationRecord[]) => {
+        this.#invalidateTreeCache();
+        this.#announceLiveRegions(mutations);
+      }
     );
 
     const tree = this.#getAccessibilityTree();
