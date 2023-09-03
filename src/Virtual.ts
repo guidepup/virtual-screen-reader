@@ -13,10 +13,10 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
+import { getElementFromNode } from "./getElementFromNode";
 import { getItemText } from "./getItemText";
 import { getLiveSpokenPhrase } from "./getLiveSpokenPhrase";
 import { getSpokenPhrase } from "./getSpokenPhrase";
-import { isElement } from "./isElement";
 import { observeDOM } from "./observeDOM";
 import { tick } from "./tick";
 import userEvent from "@testing-library/user-event";
@@ -32,7 +32,7 @@ export interface StartOptions extends CommandOptions {
 }
 
 const defaultUserEventOptions = {
-  delay: null,
+  delay: 0,
   skipHover: true,
 };
 
@@ -114,11 +114,8 @@ export class Virtual implements ScreenReader {
   }
 
   #focusActiveElement() {
-    if (!this.#activeNode || !isElement(this.#activeNode.node)) {
-      return;
-    }
-
-    this.#activeNode.node.focus();
+    const target = getElementFromNode(this.#activeNode.node);
+    target?.focus();
   }
 
   async #announceLiveRegions(mutations: MutationRecord[]) {
@@ -327,7 +324,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
 
     // TODO: verify that is appropriate for all default actions
     await userEvent.click(target, defaultUserEventOptions);
@@ -435,7 +432,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
     await userEvent.type(target, text, defaultUserEventOptions);
     await this.#refreshState(true);
 
@@ -494,7 +491,7 @@ export class Virtual implements ScreenReader {
 
     const key = `[Mouse${button[0].toUpperCase()}${button.slice(1)}]`;
     const keys = key.repeat(clickCount);
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
 
     await userEvent.pointer(
       [{ target }, { keys, target }],

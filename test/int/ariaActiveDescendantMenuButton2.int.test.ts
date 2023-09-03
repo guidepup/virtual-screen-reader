@@ -1,5 +1,4 @@
 import { setupActionsMenuButton } from "./actionsMenuButton";
-import userEvent from "@testing-library/user-event";
 import { virtual } from "../../src";
 
 describe("Aria Active Descendant Menu Button", () => {
@@ -25,12 +24,9 @@ describe("Aria Active Descendant Menu Button", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "button, Actions, has popup menu, 1 control",
-      "button, Actions, expanded, has popup menu, 1 control",
       "menu, Actions, orientated vertically, active descendant Action 1",
       "menu, Actions, orientated vertically, active descendant Action 2",
       "menu, Actions, orientated vertically, active descendant Action 3",
     ]);
-
-    await virtual.stop();
   });
 });

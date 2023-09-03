@@ -1,5 +1,7 @@
 import { getAccessibleName } from "./getNodeAccessibilityData/getAccessibleName";
 import { getAccessibleValue } from "./getNodeAccessibilityData/getAccessibleValue";
+import { getElementFromNode } from "./getElementFromNode";
+import { isElement } from "./isElement";
 import { sanitizeString } from "./sanitizeString";
 
 /**
@@ -60,9 +62,7 @@ function getSpokenPhraseForNode(node: Node) {
 }
 
 function getAdditionsSpokenPhrase({ addedNodes }: { addedNodes: NodeList }) {
-  return Array.from(addedNodes)
-    .filter((node) => node.nodeType === Node.ELEMENT_NODE)
-    .map(getSpokenPhraseForNode);
+  return Array.from(addedNodes).filter(isElement).map(getSpokenPhraseForNode);
 }
 
 function getAllSpokenPhrase({
@@ -215,10 +215,7 @@ export function getLiveSpokenPhrase({
 }): string {
   const { atomic, live, liveTarget, relevant } = getLiveRegionAttributes({
     container,
-    target:
-      target.nodeType === Node.ELEMENT_NODE
-        ? (target as Element)
-        : target.parentElement,
+    target: getElementFromNode(target),
   });
 
   if (live === Live.OFF || !liveTarget) {

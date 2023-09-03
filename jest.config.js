@@ -1,4 +1,4 @@
-/** @type {import("ts-jest/dist/types").InitialOptionsTsJest} */
+// eslint-disable-next-line no-undef
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
@@ -13,5 +13,5 @@ module.exports = {
       statements: 100,
     },
   },
-  setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
 };
