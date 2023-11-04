@@ -1,6 +1,7 @@
 import { getAccessibleName } from "./getNodeAccessibilityData/getAccessibleName";
 import { getAccessibleValue } from "./getNodeAccessibilityData/getAccessibleValue";
 import { getElementFromNode } from "./getElementFromNode";
+import { getRole } from "./getNodeAccessibilityData/getRole";
 import { isElement } from "./isElement";
 import { sanitizeString } from "./sanitizeString";
 
@@ -17,7 +18,7 @@ import { sanitizeString } from "./sanitizeString";
  * Live region attributes:
  *
  * - aria-atomic
- * - aria-busy
+ * - TODO: aria-busy
  * - aria-live
  * - aria-relevant
  *
@@ -61,10 +62,6 @@ function getSpokenPhraseForNode(node: Node) {
   );
 }
 
-function getAdditionsSpokenPhrase({ addedNodes }: { addedNodes: NodeList }) {
-  return Array.from(addedNodes).filter(isElement).map(getSpokenPhraseForNode);
-}
-
 function getAllSpokenPhrase({
   addedNodes,
   removedNodes,
@@ -91,10 +88,26 @@ function getAllSpokenPhrase({
   ];
 }
 
-function getRemovalsSpokenPhrase({ removedNodes }: { removedNodes: NodeList }) {
-  return Array.from(removedNodes).map(getSpokenPhraseForNode);
+function getAdditionsSpokenPhrase({ addedNodes }: { addedNodes: NodeList }) {
+  return Array.from(addedNodes).filter(isElement).map(getSpokenPhraseForNode);
 }
 
+function getRemovalsSpokenPhrase({ removedNodes }: { removedNodes: NodeList }) {
+  return Array.from(removedNodes).map(
+    (removedNode) => `removal: ${getSpokenPhraseForNode(removedNode)}`
+  );
+}
+
+/**
+ * TODO: When text changes are denoted as relevant, user agents MUST monitor
+ * any descendant node change that affects the text alternative computation of
+ * the live region as if the accessible name were determined from contents
+ * (nameFrom: contents). For example, a text change would be triggered if the
+ * HTML alt attribute of a contained image changed. However, no change would be
+ * triggered if there was a text change to a node outside the live region, even
+ * if that node was referenced (via aria-labelledby) by an element contained in
+ * the live region.
+ */
 function getTextSpokenPhrase({
   addedNodes,
   target,
@@ -129,6 +142,30 @@ const relevantToSpokenPhraseMap = {
   [Relevant.TEXT]: getTextSpokenPhrase,
 };
 
+const roleToImplicitLiveRegionStatesAndPropertiesMap = {
+  alert: {
+    atomic: true,
+    live: Live.ASSERTIVE,
+  },
+  log: {
+    live: Live.POLITE,
+  },
+  marquee: {
+    live: Live.OFF,
+  },
+  status: {
+    atomic: true,
+    live: Live.POLITE,
+  },
+  timer: {
+    live: Live.OFF,
+  },
+  alertdialog: {
+    atomic: true,
+    live: Live.ASSERTIVE,
+  },
+};
+
 function getLiveRegionAttributes(
   {
     container,
@@ -149,16 +186,39 @@ function getLiveRegionAttributes(
     relevant?: Relevant[];
   } = {}
 ): { atomic: boolean; live: Live; liveTarget?: Element; relevant: Relevant[] } {
-  if (!atomic && target.hasAttribute("aria-atomic")) {
+  // TODO: it would be far better if worked with the accessibility tree rather
+  // than reconstructing here and making assumptions (though probable) about
+  // the allowed roles or inherited presentational roles.
+  const accessibleName = getAccessibleName(target);
+  const { role } = getRole({
+    accessibleName,
+    allowedAccessibilityRoles: [],
+    inheritedImplicitPresentational: false,
+    node: target,
+  });
+
+  const implicitAttributes =
+    roleToImplicitLiveRegionStatesAndPropertiesMap[role];
+
+  if (typeof atomic === "undefined" && target.hasAttribute("aria-atomic")) {
     atomic = target.getAttribute("aria-atomic") === "true";
   }
 
-  if (!live && target.hasAttribute("aria-live")) {
+  if (typeof live === "undefined" && target.hasAttribute("aria-live")) {
     live = target.getAttribute("aria-live") as Live;
     liveTarget = target;
   }
 
-  if (!relevant && target.hasAttribute("aria-relevant")) {
+  if (typeof live === "undefined" && implicitAttributes) {
+    live = implicitAttributes.live;
+    liveTarget = target;
+
+    if (typeof atomic === "undefined") {
+      atomic = implicitAttributes.atomic;
+    }
+  }
+
+  if (typeof relevant === "undefined" && target.hasAttribute("aria-relevant")) {
     relevant = target
       .getAttribute("aria-relevant")
       .split(" ")
@@ -222,6 +282,20 @@ export function getLiveSpokenPhrase({
     return "";
   }
 
+  /**
+   * TODO: Indicates whether assistive technologies will present all, or only
+   * parts of, the changed region based on the change notifications defined by
+   * the aria-relevant attribute.
+   *
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-atomic
+   *
+   * This indicates that the behaviour of aria-atomic is informed by
+   * aria-relevant in some way, which is not explained well by the
+   * specification.
+   *
+   * Given the lack of aria-relevant usage this is perhaps not one to dwell on?
+   * REF: https://github.com/w3c/aria/issues/712
+   */
   if (atomic) {
     return `${live}: ${getSpokenPhraseForNode(liveTarget)}`;
   }

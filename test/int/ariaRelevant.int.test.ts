@@ -91,7 +91,7 @@ describe("Aria Relevant", () => {
       "document",
       "button, Test aria-relevant all",
       "assertive: DOM was added",
-      "assertive: DOM was removed",
+      "assertive: removal: DOM was removed",
       "assertive: Content changed",
     ]);
 
@@ -119,7 +119,7 @@ describe("Aria Relevant", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "button, Test aria-relevant removals",
-      "assertive: DOM was removed",
+      "assertive: removal: DOM was removed",
     ]);
 
     await virtual.stop();
