@@ -25,10 +25,9 @@ describe("Aria Active Descendant", () => {
       "document",
       "State",
       "combobox, State, autocomplete in list, not expanded, has popup listbox, 1 control",
+      "combobox, State, autocomplete in list, expanded, has popup listbox, 1 control",
       "combobox, State, nebr, autocomplete in list, expanded, has popup listbox, 1 control",
       "combobox, State, nebr, active descendant Nebraska, autocomplete in list, expanded, has popup listbox, 1 control",
     ]);
-
-    await virtual.stop();
   });
 });

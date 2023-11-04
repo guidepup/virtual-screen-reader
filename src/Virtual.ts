@@ -13,9 +13,12 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
+import { getElementFromNode } from "./getElementFromNode";
 import { getItemText } from "./getItemText";
+import { getLiveSpokenPhrase } from "./getLiveSpokenPhrase";
 import { getSpokenPhrase } from "./getSpokenPhrase";
-import { isElement } from "./isElement";
+import { observeDOM } from "./observeDOM";
+import { tick } from "./tick";
 import userEvent from "@testing-library/user-event";
 import { VirtualCommandArgs } from "./commands/types";
 
@@ -29,40 +32,9 @@ export interface StartOptions extends CommandOptions {
 }
 
 const defaultUserEventOptions = {
-  delay: null,
+  delay: 0,
   skipHover: true,
 };
-
-/**
- * TODO: handle live region roles:
- *
- * - alert
- * - log
- * - marquee
- * - status
- * - timer
- * - alertdialog
- *
- * And handle live region attributes:
- *
- * - aria-atomic
- * - aria-busy
- * - aria-live
- * - aria-relevant
- *
- * When live regions are marked as polite, assistive technologies SHOULD
- * announce updates at the next graceful opportunity, such as at the end of
- * speaking the current sentence or when the user pauses typing. When live
- * regions are marked as assertive, assistive technologies SHOULD notify the
- * user immediately.
- *
- * REF:
- *
- * - https://w3c.github.io/aria/#live_region_roles
- * - https://w3c.github.io/aria/#window_roles
- * - https://w3c.github.io/aria/#attrs_liveregions
- * - https://w3c.github.io/aria/#aria-live
- */
 
 /**
  * TODO: When a modal element is displayed, assistive technologies SHOULD
@@ -73,42 +45,6 @@ const defaultUserEventOptions = {
  *
  * REF: https://w3c.github.io/aria/#aria-modal
  */
-
-const observeDOM = (function () {
-  const MutationObserver = window.MutationObserver;
-
-  return function observeDOM(
-    node: Node,
-    onChange: MutationCallback
-  ): () => void {
-    if (!isElement(node)) {
-      return;
-    }
-
-    if (MutationObserver) {
-      const mutationObserver = new MutationObserver(onChange);
-
-      mutationObserver.observe(node, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-
-      return () => {
-        mutationObserver.disconnect();
-      };
-    }
-
-    return () => {
-      // gracefully fallback to not supporting Accessibility Tree refreshes if
-      // the DOM changes.
-    };
-  };
-})();
-
-async function tick() {
-  return await new Promise<void>((resolve) => setTimeout(() => resolve()));
-}
 
 /**
  * TODO: When an assistive technology reading cursor moves from one article to
@@ -178,11 +114,26 @@ export class Virtual implements ScreenReader {
   }
 
   #focusActiveElement() {
-    if (!this.#activeNode || !isElement(this.#activeNode.node)) {
-      return;
-    }
+    const target = getElementFromNode(this.#activeNode.node);
+    target?.focus();
+  }
 
-    this.#activeNode.node.focus();
+  async #announceLiveRegions(mutations: MutationRecord[]) {
+    await tick();
+
+    const container = this.#container;
+
+    mutations
+      .map((mutation) =>
+        getLiveSpokenPhrase({
+          container,
+          mutation,
+        })
+      )
+      .filter(Boolean)
+      .forEach((spokenPhrase) => {
+        this.#spokenPhraseLog.push(spokenPhrase);
+      });
   }
 
   #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
@@ -283,7 +234,10 @@ export class Virtual implements ScreenReader {
 
     this.#disconnectDOMObserver = observeDOM(
       container,
-      this.#invalidateTreeCache.bind(this)
+      (mutations: MutationRecord[]) => {
+        this.#invalidateTreeCache();
+        this.#announceLiveRegions(mutations);
+      }
     );
 
     const tree = this.#getAccessibilityTree();
@@ -370,7 +324,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
 
     // TODO: verify that is appropriate for all default actions
     await userEvent.click(target, defaultUserEventOptions);
@@ -478,7 +432,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
     await userEvent.type(target, text, defaultUserEventOptions);
     await this.#refreshState(true);
 
@@ -537,7 +491,7 @@ export class Virtual implements ScreenReader {
 
     const key = `[Mouse${button[0].toUpperCase()}${button.slice(1)}]`;
     const keys = key.repeat(clickCount);
-    const target = this.#activeNode.node as HTMLElement;
+    const target = getElementFromNode(this.#activeNode.node);
 
     await userEvent.pointer(
       [{ target }, { keys, target }],
