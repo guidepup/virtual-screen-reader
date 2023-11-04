@@ -1,8 +1,8 @@
 import { AccessibilityNode } from "../createAccessibilityTree";
-import { getNearestElement } from "../getNearestElement";
+import { getElementFromNode } from "../getElementFromNode";
 
 export function getElementNode(accessibilityNode: AccessibilityNode): Element {
   const { node } = accessibilityNode;
 
-  return getNearestElement(node);
+  return getElementFromNode(node);
 }
