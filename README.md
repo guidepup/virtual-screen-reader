@@ -14,13 +14,17 @@
 
 ## Intro
 
-A11y static analysis tools [only cover 25% of WCAG](https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/) and don't assure on the quality of the user experience for screen reader users. This means teams need to perform lots of manual tests with multiple screen readers to ensure great UX which can take a lot of time... **not anymore!**
+A11y static analysis tools [only cover 25% of WCAG](https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/) and don't assure on the quality of the user experience for screen reader users. This means teams need to perform lots of manual tests with multiple screen readers to ensure great UX which can take a lot of time...
 
-With Virtual Screen Reader you can automate your screen reader unit test workflows the same you as would for mouse or keyboard based scenarios, no sweat!
+This package aims to supplement your testing by enabling you to automate a virtual screen reader for unit test workflows the same you as would for mouse or keyboard based scenarios, no sweat!
+
+> Note: This package should not replace your manual screen reader testing, there is no substitute for testing with real screen readers and with real users.
+
+If you are looking to automate real screen readers, check out the [`@guidepup/guidepup`](https://github.com/guidepup/guidepup/) package.
 
 ## Features
 
-- **Mirrors Real User Experience** - assert on what users really do and hear when using screen readers.
+- **Mirrors Screen Reader Experience** - simulate and assert on what users would do and hear when using screen readers.
 - **Test Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
 - **UI Framework Agnostic** - want to use React, Vue, Solid, Svelte, etc.? All good here! Works with any UI framework, and plays nicely with the [Testing Library](https://testing-library.com/) suite.
 - **Fast Feedback** - avoid the cumbersome overhead of running an e2e test with a running screen reader by running virtually over the provided DOM.
@@ -64,12 +68,12 @@ describe("Screen Reader Tests", () => {
     // Start your virtual screen reader instance
     await virtual.start({ container: document.body });
 
-    // Navigate your environment with the virtual screen reader just as your users would
+    // Navigate your environment with the virtual screen reader similar to how your users would
     while ((await virtual.lastSpokenPhrase()) !== "end of document") {
       await virtual.next();
     }
 
-    // Assert on what your users would really see and hear when using screen readers
+    // Assert on the kind of things your users would see and hear when using screen readers
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "navigation",
