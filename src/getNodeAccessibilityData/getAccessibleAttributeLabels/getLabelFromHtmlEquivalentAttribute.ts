@@ -42,6 +42,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
       attributeValue,
       container,
       negative,
+      node,
     });
 
     if (label) {

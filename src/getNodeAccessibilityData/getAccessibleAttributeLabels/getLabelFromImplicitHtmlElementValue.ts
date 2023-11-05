@@ -28,6 +28,7 @@ export const getLabelFromImplicitHtmlElementValue = ({
       attributeName,
       attributeValue: implicitValue,
       container,
+      node,
     }),
     value: implicitValue,
   };
