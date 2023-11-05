@@ -16,6 +16,7 @@ export const getLabelFromAriaAttribute = ({
       attributeName,
       attributeValue,
       container,
+      node,
     }),
     value: attributeValue,
   };

@@ -56,7 +56,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-details": idRefs("linked details", "linked details", false),
   "aria-disabled": state(State.DISABLED),
   "aria-dropeffect": null, // Deprecated in WAI-ARIA 1.1
-  "aria-errormessage": null, // TODO: decide what to announce here
+  "aria-errormessage": errorMessageIdRefs("error message", "error messages"),
   "aria-expanded": state(State.EXPANDED),
   "aria-flowto": idRefs("alternate reading order", "alternate reading orders"), // Handled by virtual.perform()
   "aria-grabbed": null, // Deprecated in WAI-ARIA 1.1
@@ -123,6 +123,7 @@ interface MapperArgs {
   attributeValue: string;
   container?: Node;
   negative?: boolean;
+  node?: HTMLElement;
 }
 
 function state(stateValue: State) {
@@ -132,6 +133,27 @@ function state(stateValue: State) {
     }
 
     return attributeValue !== "false" ? stateValue : `not ${stateValue}`;
+  };
+}
+
+function errorMessageIdRefs(
+  propertyDescriptionSuffixSingular: string,
+  propertyDescriptionSuffixPlural: string,
+  printCount = true
+) {
+  return function mapper({ attributeValue, container, node }: MapperArgs) {
+    // TODO: use implicit values for aria-invalid:
+    // - spellcheck
+    // - pattern
+    if (node.getAttribute("aria-invalid") === "false") {
+      return "";
+    }
+
+    return idRefs(
+      propertyDescriptionSuffixSingular,
+      propertyDescriptionSuffixPlural,
+      printCount
+    )({ attributeValue, container });
   };
 }
 
@@ -213,11 +235,13 @@ export const mapAttributeNameAndValueToLabel = ({
   attributeValue,
   container,
   negative = false,
+  node,
 }: {
   attributeName: string;
   attributeValue: string | null;
   container: Node;
   negative?: boolean;
+  node: HTMLElement;
 }) => {
   if (typeof attributeValue !== "string") {
     return null;
@@ -225,5 +249,5 @@ export const mapAttributeNameAndValueToLabel = ({
 
   const mapper = ariaPropertyToVirtualLabelMap[attributeName];
 
-  return mapper?.({ attributeValue, container, negative }) ?? null;
+  return mapper?.({ attributeValue, container, negative, node }) ?? null;
 };

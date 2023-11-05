@@ -84,6 +84,7 @@ export const getAccessibleAttributeLabels = ({
         attributeName,
         attributeValue: implicitAttributeValue,
         container,
+        node,
       }
     );
 
