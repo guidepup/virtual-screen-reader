@@ -43,7 +43,7 @@ const defaultUserEventOptions = {
  * focus moves to an element outside the modal element, assistive technologies
  * SHOULD NOT limit navigation to the modal element.
  *
- * REF: https://w3c.github.io/aria/#aria-modal
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
  */
 
 /**
@@ -53,7 +53,7 @@ const defaultUserEventOptions = {
  * element inside the article, the assistive technology MAY set focus on that
  * element in lieu of setting focus on the containing article.
  *
- * REF: https://w3c.github.io/aria/#feed
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#feed
  */
 
 export class Virtual implements ScreenReader {

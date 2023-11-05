@@ -26,7 +26,7 @@ const getSpokenRole = ({ isGeneric, isPresentational, node, role }) => {
      * functions to navigate to regions and buttons that have an
      * aria-roledescription.
      *
-     * REF: https://w3c.github.io/aria/#aria-roledescription
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-roledescription
      */
     const roledescription = node.getAttribute("aria-roledescription");
 
@@ -102,7 +102,7 @@ export function getNodeAccessibilityData({
    * described in Presentational Roles Conflict Resolution. However, the text
    * content of any excluded descendants is included.
    *
-   * REF: https://w3c.github.io/aria/#tree_exclusion
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#tree_exclusion
    */
   const isChildrenPresentationalRole =
     childrenPresentationalRoles.includes(role);
@@ -120,7 +120,7 @@ export function getNodeAccessibilityData({
    * inherited role of presentation to any specifically allowed children that
    * do not have an explicit role defined.
    *
-   * REF: https://w3c.github.io/aria/#presentational-role-inheritance
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#presentational-role-inheritance
    */
   const isExplicitOrInheritedPresentation =
     isExplicitPresentational || inheritedImplicitPresentational;

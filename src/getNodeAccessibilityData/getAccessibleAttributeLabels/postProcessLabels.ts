@@ -7,7 +7,7 @@ const priorityReplacementMap: [string, string][] = [
    * If aria-valuetext is specified, assistive technologies SHOULD render that
    * value instead of the value of aria-valuenow.
    *
-   * REF: https://w3c.github.io/aria/#aria-valuetext
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-valuetext
    */
   ["aria-valuetext", "aria-valuenow"],
 ];

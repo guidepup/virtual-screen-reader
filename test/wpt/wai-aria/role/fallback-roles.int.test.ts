@@ -3,7 +3,7 @@ import { virtual } from "../../../../src";
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/wai-aria/role/fallback-roles.html
  *
- * Verifies Fallback Roles from https://w3c.github.io/aria/#document-handling_author-errors_roles
+ * Verifies Fallback Roles from https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
  * 9.1 Roles - handling author errors
  */
 

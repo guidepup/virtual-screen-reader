@@ -11,7 +11,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role banner.
    *
-   * REF: https://w3c.github.io/aria/#banner
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#banner
    */
   "banner",
 
@@ -19,7 +19,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role complementary.
    *
-   * REF: https://w3c.github.io/aria/#complementary
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#complementary
    */
   "complementary",
 
@@ -27,7 +27,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role contentinfo.
    *
-   * REF: https://w3c.github.io/aria/#contentinfo
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#contentinfo
    */
   "contentinfo",
 
@@ -35,7 +35,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * figures.
    *
-   * REF: https://w3c.github.io/aria/#figure
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#figure
    */
   "figure",
 
@@ -43,7 +43,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role form.
    *
-   * REF: https://w3c.github.io/aria/#form
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#form
    */
   "form",
 
@@ -51,7 +51,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role main.
    *
-   * REF: https://w3c.github.io/aria/#main
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#main
    */
   "main",
 
@@ -59,7 +59,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role navigation.
    *
-   * REF: https://w3c.github.io/aria/#navigation
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#navigation
    */
   "navigation",
 
@@ -67,7 +67,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role region.
    *
-   * REF: https://w3c.github.io/aria/#region
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#region
    */
   "region",
 
@@ -75,7 +75,7 @@ const quickLandmarkNavigationRoles = [
    * Assistive technologies SHOULD enable users to quickly navigate to
    * elements with role search.
    *
-   * REF: https://w3c.github.io/aria/#search
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#search
    */
   "search",
 ] as const;

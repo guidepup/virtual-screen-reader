@@ -7,7 +7,7 @@ import { virtual } from "../../../src";
 describe("HTML-AAM Role Verification Tests", () => {
   beforeEach(async () => {
     document.body.innerHTML = `
-    <!-- Most test names correspond to unique ID defined in the https://w3c.github.io/html-aam/ spec. -->
+    <!-- Most test names correspond to unique ID defined in the https://www.w3.org/TR/html-aam-1.0/ spec. -->
 
     <a href="#" data-testname="el-a" data-expectedrole="link" class="ex">x</a>
     <a data-testname="el-a-no-href" data-expectedrole="generic" class="ex">x</a>

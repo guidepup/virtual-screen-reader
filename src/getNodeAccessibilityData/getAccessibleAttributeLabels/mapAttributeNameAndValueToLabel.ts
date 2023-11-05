@@ -20,7 +20,7 @@ enum State {
   SELECTED = "selected",
 }
 
-// https://w3c.github.io/aria/#state_prop_def
+// https://www.w3.org/TR/wai-aria-1.2/#state_prop_def
 const ariaPropertyToVirtualLabelMap: Record<
   string,
   ((...args: unknown[]) => string) | null
@@ -65,7 +65,7 @@ const ariaPropertyToVirtualLabelMap: Record<
      * Assistive technologies SHOULD NOT expose the aria-haspopup property if
      * it has a value of false.
      *
-     * REF: // https://w3c.github.io/aria/#aria-haspopup
+     * REF: // https://www.w3.org/TR/wai-aria-1.2/#aria-haspopup
      */
     false: null,
     true: "has popup menu",

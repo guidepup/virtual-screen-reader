@@ -13,7 +13,7 @@ import { virtual } from "../../../../src";
  */
 
 /**
- * https://w3c.github.io/aria/#namefromcontent
+ * https://www.w3.org/TR/wai-aria-1.2/#namefromcontent
  */
 function allowsNameFromContent(node: Element): boolean {
   return [

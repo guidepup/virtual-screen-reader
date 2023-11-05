@@ -73,7 +73,7 @@ function getExplicitRole({
      * User agents MUST NOT map abstract roles via the standard role mechanism
      * of the accessibility API.
      *
-     * REF: https://w3c.github.io/aria/#document-handling_author-errors_roles
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
     .filter((role) => allowedNonAbstractRoles.includes(role))
     /**
@@ -88,7 +88,7 @@ function getExplicitRole({
      * - form
      * - region
      *
-     * REF: https://w3c.github.io/aria/#document-handling_author-errors_roles
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
     .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
 
@@ -103,9 +103,9 @@ function getExplicitRole({
    *
    * REF:
    *
-   * - https://w3c.github.io/aria/#conflict_resolution_presentation_none
-   * - https://w3c.github.io/aria/#tree_exclusion
-   * - https://w3c.github.io/aria/#mustContain
+   * - https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
+   * - https://www.w3.org/TR/wai-aria-1.2/#tree_exclusion
+   * - https://www.w3.org/TR/wai-aria-1.2/#mustContain
    */
 
   const isExplicitAllowedChildElement = allowedAccessibilityRoles.some(
@@ -134,7 +134,7 @@ function getExplicitRole({
      * presentational role is inherited and an explicit non-presentational role
      * is applied.
      *
-     * REF: https://w3c.github.io/aria/#conflict_resolution_presentation_none
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
      */
     .filter((role) => {
       if (!presentationRoles.includes(role)) {

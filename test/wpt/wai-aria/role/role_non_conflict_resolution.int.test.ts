@@ -3,7 +3,7 @@ import { virtual } from "../../../../src";
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/wai-aria/role/role_none_conflict_resolution.html
  *
- * Verifies https://w3c.github.io/aria/#conflict_resolution_presentation_none
+ * Verifies https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
  * conflict resolution requirements for the ARIA none and presentation roles.
  */
 

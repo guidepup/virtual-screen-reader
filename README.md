@@ -98,6 +98,25 @@ describe("Screen Reader Tests", () => {
 });
 ```
 
+## Documentation
+
+Read the docs at [guidepup.dev](https://www.guidepup.dev/docs/api/class-guidepup-virtual-screen-reader).
+
+## Principles
+
+There is currently no explicit specification for screen readers to adhere to, but there are a number of requirements laid out by specifications to inform screen reader expectations. This library aims to meet these requirements so that it can be as "spec compliant" as possible.
+
+Current W3C specifications used:
+
+- [Accessible Rich Internet Applications (WAI-ARIA) 1.2](https://www.w3.org/TR/wai-aria-1.2/)
+- [Accessible Name and Description Computation (ACCNAME) 1.2](https://www.w3.org/TR/accname-1.2/)
+- [ARIA in HTML (HTML-ARIA)](https://www.w3.org/TR/html-aria/)
+- [HTML Accessibility API Mappings (HTML-AAM) 1.0](https://www.w3.org/TR/html-aam-1.0/)
+
+In addition to the W3C specifications, <https://a11ysupport.io/> as been used as a guide for test cases in the absence of anything formal. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
+
+Please note that this library should not used as a substitute for testing with real screen readers and with real screen reader users, but a means to gain quick coverage and confidence by automating away common scenarios the same as any other unit test.
+
 ## See Also
 
 Check out some of the other Guidepup modules:
@@ -109,7 +128,10 @@ Check out some of the other Guidepup modules:
 
 Here are some similar unaffiliated projects:
 
-- [`@testing-library/dom`](https://testing-library.com/docs/dom-testing-library/intro)
+- [`@testing-library/dom`](https://github.com/testing-library/dom-testing-library/)
+- [`aria-query`](https://github.com/A11yance/aria-query)
+- [`dom-accessibility-api`](https://github.com/eps1lon/dom-accessibility-api)
+- [`aria-at`](https://github.com/w3c/aria-at)
 
 ## License
 

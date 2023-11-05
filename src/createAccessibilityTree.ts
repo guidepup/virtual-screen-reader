@@ -203,7 +203,7 @@ function growTree(
    * authoring error with aria-owns, the user agent MAY ignore some aria-owns
    * element references in order to build a consistent model of the content.
    *
-   * REF: https://w3c.github.io/aria/#aria-owns
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-owns
    */
   if (visitedNodes.has(node)) {
     return tree;
@@ -273,7 +273,7 @@ function growTree(
    * replacement for the DOM hierarchy. If the relationship is represented in
    * the DOM, do not use aria-owns.
    *
-   * REF: https://w3c.github.io/aria/#aria-owns
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-owns
    */
   const ownedChildNodes = getOwnedNodes(node, container);
 

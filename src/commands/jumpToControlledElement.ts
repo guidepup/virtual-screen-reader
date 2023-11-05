@@ -11,7 +11,7 @@ export interface JumpToControlledElementCommandArgs extends VirtualCommandArgs {
  * Identifies the element (or elements) whose contents or presence
  * are controlled by the current element. See related aria-owns.
  *
- * REF: https://w3c.github.io/aria/#aria-controls
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-controls
  *
  * MUST requirement:
  *

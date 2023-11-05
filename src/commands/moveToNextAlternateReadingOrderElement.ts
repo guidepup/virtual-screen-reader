@@ -19,7 +19,7 @@ export interface MoveToNextAlternateReadingOrderElement
  * the target element of the aria-flowto attribute. Accessibility APIs can
  * provide named path relationships.
  *
- * REF: https://w3c.github.io/aria/#aria-flowto
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-flowto
  *
  * MUST requirements:
  *

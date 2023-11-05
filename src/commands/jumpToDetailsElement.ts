@@ -4,7 +4,7 @@ import { VirtualCommandArgs } from "./types";
 /**
  * aria-details:
  *
- * REF: https://w3c.github.io/aria/#aria-details
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-details
  *
  * SHOULD requirement:
  *

@@ -11,7 +11,7 @@ const toPercentageLabel = (value: number | string) => `current value ${value}%`;
  * If aria-valuetext is specified, assistive technologies render that instead
  * of the value of aria-valuenow.
  *
- * REF: https://w3c.github.io/aria/#aria-valuenow
+ * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-valuenow
  */
 export const postProcessAriaValueNow = ({
   max,
@@ -40,7 +40,7 @@ export const postProcessAriaValueNow = ({
    * role slider and spinbutton, assistive technologies SHOULD render the
    * actual value to users.
    *
-   * REF: https://w3c.github.io/aria/#aria-valuenow
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-valuenow
    */
 
   if (isNumberLike(max) && isNumberLike(min)) {

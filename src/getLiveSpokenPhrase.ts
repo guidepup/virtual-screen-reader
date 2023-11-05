@@ -30,10 +30,10 @@ import { sanitizeString } from "./sanitizeString";
  *
  * REF:
  *
- * - https://w3c.github.io/aria/#live_region_roles
- * - https://w3c.github.io/aria/#window_roles
- * - https://w3c.github.io/aria/#attrs_liveregions
- * - https://w3c.github.io/aria/#aria-live
+ * - https://www.w3.org/TR/wai-aria-1.2/#live_region_roles
+ * - https://www.w3.org/TR/wai-aria-1.2/#window_roles
+ * - https://www.w3.org/TR/wai-aria-1.2/#attrs_liveregions
+ * - https://www.w3.org/TR/wai-aria-1.2/#aria-live
  */
 
 enum Live {
