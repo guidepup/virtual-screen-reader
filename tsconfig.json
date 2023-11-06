@@ -9,5 +9,5 @@
     "outDir": "./lib"
   },
   "include": ["src/**/*.ts", "src/test/jest.setup.ts"],
-  "exclude": ["node_modules", "lib", "src/test"]
+  "exclude": ["node_modules", "lib"]
 }

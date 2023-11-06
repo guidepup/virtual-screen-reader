@@ -189,6 +189,15 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * Getter for the active node under the Virtual Screen Reader cursor.
+   *
+   * @returns {Node}
+   */
+  get activeNode() {
+    return this.#activeNode.node;
+  }
+
+  /**
    * Getter for screen reader commands.
    *
    * Use with `await virtual.perform(command)`.
