@@ -129,6 +129,7 @@ Check out some of the other Guidepup modules:
 
 - [`@guidepup/guidepup`](https://github.com/guidepup/guidepup/) - reliable automation for your screen reader a11y workflows through JavaScript supporting VoiceOver and NVDA.
 - [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright/) - seamless integration of Guidepup with Playwright.
+- [`@guidepup/jest`](https://github.com/guidepup/jest/) - jest matchers for reliable unit testing of your screen reader a11y workflows.
 
 ## Similar
 
