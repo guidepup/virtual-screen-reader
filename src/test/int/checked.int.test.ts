@@ -33,7 +33,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });
@@ -65,7 +67,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });
@@ -126,7 +130,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });
@@ -213,6 +219,19 @@ describe("Checked Attribute State", () => {
     expect(await virtual.lastSpokenPhrase()).toBe(
       "checkbox, All condiments, partially checked, 4 controls"
     );
+
+    await virtual.stop();
+  });
+
+  it("should ignore an invalid 'checked' property on an element + properties combination that doesn't support it", async () => {
+    document.body.innerHTML = `
+      <input role="checkbox" type="text" value="Some text" checked />
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Some text");
 
     await virtual.stop();
   });
