@@ -61,7 +61,9 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Label");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Label, not checked"
+    );
 
     await virtual.stop();
   });
@@ -76,7 +78,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("radio, Label");
+    expect(await virtual.lastSpokenPhrase()).toBe("radio, Label, not checked");
 
     await virtual.stop();
   });
@@ -91,7 +93,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("radio, Label");
+    expect(await virtual.lastSpokenPhrase()).toBe("radio, Label, not checked");
 
     await virtual.stop();
   });
@@ -128,7 +130,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "listbox, second; third, orientated vertically"
+      "listbox, second; third, multi-selectable, orientated vertically"
     );
 
     await virtual.stop();
@@ -165,13 +167,13 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Loading:, 23, max value 100"
+      "progressbar, Loading:, 23, max value 100, current value 23%"
     );
 
     await virtual.stop();
   });
 
-  it("should not announce the value for a progress element which has an aria-valuenow", async () => {
+  it("should announce the value in place of aria-valuenow for a progress element", async () => {
     document.body.innerHTML = `
     <label for="element1">Loading:</label>
     <progress id="element1" max="100" value="23" aria-valuenow="24"></progress>
@@ -182,7 +184,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Loading:, max value 100, current value 24%"
+      "progressbar, Loading:, max value 100, current value 23%"
     );
 
     await virtual.stop();

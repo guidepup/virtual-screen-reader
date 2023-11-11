@@ -33,7 +33,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });
@@ -65,7 +67,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });
@@ -126,7 +130,9 @@ describe("Checked Attribute State", () => {
     await virtual.next();
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Horns");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Horns, not checked"
+    );
 
     await virtual.stop();
   });

@@ -305,9 +305,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       // PASS on missing img entry
       // PASS on missing img entry
       "button, x",
-      "checkbox",
+      "checkbox, not checked",
       "textbox",
-      "radio",
+      "radio, not checked",
       "slider, 50, orientated horizontally, max value 100, min value 0",
       "button, x",
       "searchbox",
