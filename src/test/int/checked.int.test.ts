@@ -222,4 +222,17 @@ describe("Checked Attribute State", () => {
 
     await virtual.stop();
   });
+
+  it("should ignore an invalid 'checked' property on an element + properties combination that doesn't support it", async () => {
+    document.body.innerHTML = `
+      <input role="checkbox" type="text" value="Some text" checked />
+    `;
+
+    await virtual.start({ container: document.body });
+    await virtual.next();
+
+    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Some text");
+
+    await virtual.stop();
+  });
 });
