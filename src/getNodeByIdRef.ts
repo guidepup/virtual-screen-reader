@@ -5,5 +5,5 @@ export function getNodeByIdRef({ container, idRef }) {
     return null;
   }
 
-  return container.querySelector(`#${idRef}`);
+  return container.querySelector(`#${CSS.escape(idRef)}`);
 }
