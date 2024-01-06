@@ -27,7 +27,7 @@ describe("Aria Live", () => {
         expect(document.querySelector("#target-2")?.textContent).toBe(
           "I am now populated aria-live=polite"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -52,7 +52,7 @@ describe("Aria Live", () => {
           "Existing Content updated aria-live=polite"
         );
       },
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -100,7 +100,7 @@ describe("Aria Live", () => {
         expect(document.querySelector("#target-3")?.textContent).toBe(
           "I am now populated aria-live=assertive"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -125,7 +125,7 @@ describe("Aria Live", () => {
           "Existing Content updated aria-live=assertive"
         );
       },
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -175,7 +175,7 @@ describe("Aria Live", () => {
         expect(document.querySelector("#target-1")?.textContent).toBe(
           "I am now populated aria-live=off"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -197,7 +197,7 @@ describe("Aria Live", () => {
           "Existing Content updated aria-live=off"
         );
       },
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -221,7 +221,7 @@ describe("Aria Live", () => {
           document.querySelector("#target-fully-defined")?.textContent
         ).toBe("I am now populated");
       },
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([

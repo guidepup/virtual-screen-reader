@@ -14,25 +14,28 @@ function test(index) {
 function setupAriaRelevant() {
   document.body.innerHTML = `<div id="content"></div>`;
 
-  ["additions", "removals", "text", "all", "additions text"].forEach(function (
-    attr,
-    index
-  ) {
-    const content = document.querySelector("#content");
-    const div = document.createElement("div");
+  [null, "", "additions", "removals", "text", "all", "additions text"].forEach(
+    function (attr, index) {
+      const content = document.querySelector("#content");
+      const div = document.createElement("div");
 
-    div.innerHTML = `
+      div.innerHTML = `
       <h2>aria-relevant=${attr}</h2>
-      <div id="target-${index}" aria-live="assertive" aria-relevant="${attr}">
+      <div id="target-${index}" aria-live="assertive" ${
+        attr === null ? "" : `aria-relevant="${attr}"`
+      }>
         <span data-remove>DOM was removed</span>
         <span data-change></span>
       </div>
-      <button id="trigger-${index}">Test aria-relevant ${attr}</button>
+      <button id="trigger-${index}">Test aria-relevant ${
+        attr === null ? "missing" : attr === "" ? "empty" : attr
+      }</button>
     `;
 
-    content.appendChild(div);
-    document.querySelector(`#trigger-${index}`).onclick = () => test(index);
-  });
+      content.appendChild(div);
+      document.querySelector(`#trigger-${index}`).onclick = () => test(index);
+    }
+  );
 
   return () => {
     document.body.innerHTML = "";

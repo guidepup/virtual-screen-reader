@@ -58,7 +58,10 @@ function getSpokenPhraseForNode(node: Node) {
   return (
     getAccessibleName(node) ||
     getAccessibleValue(node) ||
-    sanitizeString(node.textContent)
+    // `node.textContent` is only `null` if the `node` is a `document` or a
+    // `doctype`. We don't consider either.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    sanitizeString(node.textContent!)
   );
 }
 
@@ -219,8 +222,11 @@ function getLiveRegionAttributes(
   }
 
   if (typeof relevant === "undefined" && target.hasAttribute("aria-relevant")) {
+    // The `target.hasAttribute("aria-relevant")` check is sufficient to guard
+    // against the `target.getAttribute("aria-relevant")` being null.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     relevant = target
-      .getAttribute("aria-relevant")
+      .getAttribute("aria-relevant")!
       .split(" ")
       .filter(
         (token) => !!RELEVANT_VALUES.includes(token as Relevant)
@@ -244,7 +250,9 @@ function getLiveRegionAttributes(
     };
   }
 
-  if (target === container) {
+  const targetAncestor = target.parentElement;
+
+  if (target === container || targetAncestor === null) {
     return {
       atomic: atomic ?? DEFAULT_ATOMIC,
       live: live ?? DEFAULT_LIVE,
@@ -252,8 +260,6 @@ function getLiveRegionAttributes(
       relevant: relevant ?? DEFAULT_RELEVANT,
     };
   }
-
-  const targetAncestor = target.parentElement;
 
   return getLiveRegionAttributes(
     { container, target: targetAncestor },

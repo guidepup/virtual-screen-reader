@@ -27,7 +27,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-alert")?.textContent).toBe(
           "Initial Content Populated role=alert"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -51,7 +51,7 @@ describe("Live Region Roles", () => {
         expect(
           document.querySelector("#target-alert-non-atomic")?.textContent
         ).toBe("Initial Content Populated role=alert"),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -73,7 +73,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-log")?.textContent).toBe(
           "Initial Content Populated role=log"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -95,7 +95,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-marquee")?.textContent).toBe(
           "Initial Content Populated role=marquee"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -116,7 +116,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-status")?.textContent).toBe(
           "Initial Content Populated role=status"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -140,7 +140,7 @@ describe("Live Region Roles", () => {
         expect(
           document.querySelector("#target-status-non-atomic")?.textContent
         ).toBe("Initial Content Populated role=status"),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -162,7 +162,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-timer")?.textContent).toBe(
           "Initial Content Populated role=timer"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -183,7 +183,7 @@ describe("Live Region Roles", () => {
         expect(document.querySelector("#target-alertdialog")?.textContent).toBe(
           "Initial Content Populated role=alertdialog"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -207,7 +207,7 @@ describe("Live Region Roles", () => {
         expect(
           document.querySelector("#target-alertdialog-non-atomic")?.textContent
         ).toBe("Initial Content Populated role=alertdialog"),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([

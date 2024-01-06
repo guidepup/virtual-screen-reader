@@ -4,10 +4,12 @@
     "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
+    "jsx": "react",
     "declaration": true,
     "rootDir": "./src",
     "outDir": "./lib"
   },
-  "include": ["src/**/*.ts", "src/test/jest.setup.ts"],
+  "include": ["src/**/*.tsx?", "src/test/jest.setup.ts"],
   "exclude": ["node_modules", "lib"]
 }

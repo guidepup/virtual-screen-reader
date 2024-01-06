@@ -3,7 +3,7 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
   roots: ["src"],
-  collectCoverageFrom: ["**/*.ts"],
+  collectCoverageFrom: ["**/*.ts", "**/*.tsx"],
   coveragePathIgnorePatterns: [],
   coverageThreshold: {
     global: {
