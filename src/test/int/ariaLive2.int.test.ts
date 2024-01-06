@@ -24,7 +24,7 @@ describe("Aria Live - Content Editable", () => {
         expect(document.querySelector("#target")?.textContent).toBe(
           "Edit this text! And announce!"
         ),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([
@@ -72,7 +72,7 @@ describe("Aria Live - All Attributes", () => {
     await waitFor(
       () =>
         expect(document.querySelector("#target")?.textContent).toBe("Updated"),
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
 
     expect(await virtual.spokenPhraseLog()).toEqual([

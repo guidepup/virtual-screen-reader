@@ -14,6 +14,60 @@ describe("Aria Relevant", () => {
     teardown();
   });
 
+  it("should handle no value - applied to the div element", async () => {
+    await virtual.start({ container: document.body });
+
+    // Navigate to aria-live=polite button
+    const button = screen.getByRole("button", {
+      name: "Test aria-relevant missing",
+    });
+
+    button.focus();
+
+    await virtual.act();
+
+    await waitFor(() =>
+      expect(
+        document.querySelector("#target-0 [data-change]")?.textContent
+      ).toBe("Content changed")
+    );
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "button, Test aria-relevant missing",
+      "assertive: DOM was added",
+      "assertive: Content changed",
+    ]);
+
+    await virtual.stop();
+  });
+
+  it("should handle an empty value - applied to the div element", async () => {
+    await virtual.start({ container: document.body });
+
+    // Navigate to aria-live=polite button
+    const button = screen.getByRole("button", {
+      name: "Test aria-relevant empty",
+    });
+
+    button.focus();
+
+    await virtual.act();
+
+    await waitFor(() =>
+      expect(
+        document.querySelector("#target-1 [data-change]")?.textContent
+      ).toBe("Content changed")
+    );
+
+    expect(await virtual.spokenPhraseLog()).toEqual([
+      "document",
+      "button, Test aria-relevant empty",
+    ]);
+
+    await virtual.stop();
+  });
+
   it("should convey the 'additions' value - applied to the div element", async () => {
     await virtual.start({ container: document.body });
 
@@ -28,7 +82,7 @@ describe("Aria Relevant", () => {
 
     await waitFor(() =>
       expect(
-        document.querySelector("#target-0 [data-change]")?.textContent
+        document.querySelector("#target-2 [data-change]")?.textContent
       ).toBe("Content changed")
     );
 
@@ -55,7 +109,7 @@ describe("Aria Relevant", () => {
 
     await waitFor(() =>
       expect(
-        document.querySelector("#target-4 [data-change]")?.textContent
+        document.querySelector("#target-6 [data-change]")?.textContent
       ).toBe("Content changed")
     );
 
@@ -83,7 +137,7 @@ describe("Aria Relevant", () => {
 
     await waitFor(() =>
       expect(
-        document.querySelector("#target-3 [data-change]")?.textContent
+        document.querySelector("#target-5 [data-change]")?.textContent
       ).toBe("Content changed")
     );
 
@@ -112,7 +166,7 @@ describe("Aria Relevant", () => {
 
     await waitFor(() =>
       expect(
-        document.querySelector("#target-1 [data-change]")?.textContent
+        document.querySelector("#target-3 [data-change]")?.textContent
       ).toBe("Content changed")
     );
 
@@ -139,7 +193,7 @@ describe("Aria Relevant", () => {
 
     await waitFor(() =>
       expect(
-        document.querySelector("#target-2 [data-change]")?.textContent
+        document.querySelector("#target-4 [data-change]")?.textContent
       ).toBe("Content changed")
     );
 
