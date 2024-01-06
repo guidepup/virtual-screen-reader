@@ -117,12 +117,14 @@ function getOwnedNodes(node: Node, container: Node) {
   return ownedNodes;
 }
 
-function isHiddenFromAccessibilityTree(node: Node) {
+function isHiddenFromAccessibilityTree(node: Node | null): node is null {
   if (!node) {
     return true;
   }
 
-  if (node.nodeType === Node.TEXT_NODE && !!node.textContent.trim()) {
+  // `node.textContent` is only `null` for `document` and `doctype`.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  if (node.nodeType === Node.TEXT_NODE && !!node.textContent!.trim()) {
     return false;
   }
 
@@ -222,7 +224,9 @@ function growTree(
     }
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
-      ? Array.from(alternateReadingOrderMap.get(childNode))
+      ? // `alternateReadingOrderMap.has(childNode)` null guards here.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 
     const {
@@ -283,7 +287,9 @@ function growTree(
     }
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
-      ? Array.from(alternateReadingOrderMap.get(childNode))
+      ? // `alternateReadingOrderMap.has(childNode)` null guards here.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 
     const {
@@ -328,7 +334,7 @@ function growTree(
   return tree;
 }
 
-export function createAccessibilityTree(node: Node) {
+export function createAccessibilityTree(node: Node | null) {
   if (isHiddenFromAccessibilityTree(node)) {
     return [];
   }

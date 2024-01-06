@@ -1,6 +1,12 @@
 import { isElement } from "./isElement";
 
-export function getNodeByIdRef({ container, idRef }) {
+export function getNodeByIdRef({
+  container,
+  idRef,
+}: {
+  container: Node;
+  idRef: string;
+}) {
   if (!isElement(container) || !idRef) {
     return null;
   }

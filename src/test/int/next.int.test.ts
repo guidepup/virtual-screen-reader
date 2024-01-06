@@ -65,6 +65,20 @@ describe("next", () => {
     ]);
   });
 
+  it("should handle moving from the last element back to the first element", async () => {
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    await virtual.clearItemTextLog();
+    await virtual.clearSpokenPhraseLog();
+
+    await virtual.next();
+
+    expect(await virtual.itemTextLog()).toEqual([""]);
+    expect(await virtual.spokenPhraseLog()).toEqual(["document"]);
+  });
+
   it("should handle the current node being removed from the DOM gracefully and set the active element back to the container", async () => {
     await virtual.next();
     await virtual.next();

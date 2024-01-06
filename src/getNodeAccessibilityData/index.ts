@@ -11,7 +11,17 @@ const childrenPresentationalRoles = roles
   .filter(([, { childrenPresentational }]) => childrenPresentational)
   .map(([key]) => key) as string[];
 
-const getSpokenRole = ({ isGeneric, isPresentational, node, role }) => {
+const getSpokenRole = ({
+  isGeneric,
+  isPresentational,
+  node,
+  role,
+}: {
+  isGeneric: boolean;
+  isPresentational: boolean;
+  node: Node;
+  role: string;
+}) => {
   if (isPresentational || isGeneric) {
     return "";
   }

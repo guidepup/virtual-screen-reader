@@ -69,6 +69,16 @@ describe("previous", () => {
     ]);
   });
 
+  it("should handle moving from the first element back to the last element", async () => {
+    await virtual.clearItemTextLog();
+    await virtual.clearSpokenPhraseLog();
+
+    await virtual.previous();
+
+    expect(await virtual.itemTextLog()).toEqual([""]);
+    expect(await virtual.spokenPhraseLog()).toEqual(["end of document"]);
+  });
+
   it("should handle the current node being removed from the DOM gracefully and set the active element back to the container", async () => {
     await virtual.next();
     await virtual.next();

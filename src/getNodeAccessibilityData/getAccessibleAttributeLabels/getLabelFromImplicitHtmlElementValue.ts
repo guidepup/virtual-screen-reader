@@ -1,6 +1,6 @@
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
-const mapLocalNameToImplicitValue = {
+const mapLocalNameToImplicitValue: Record<string, Record<string, string>> = {
   "aria-level": {
     h1: "1",
     h2: "2",
@@ -19,17 +19,18 @@ export const getLabelFromImplicitHtmlElementValue = ({
   attributeName: string;
   container: Node;
   node: HTMLElement;
-}) => {
+}): { label: string; value: string } => {
   const { localName } = node;
   const implicitValue = mapLocalNameToImplicitValue[attributeName]?.[localName];
 
   return {
-    label: mapAttributeNameAndValueToLabel({
-      attributeName,
-      attributeValue: implicitValue,
-      container,
-      node,
-    }),
-    value: implicitValue,
+    label:
+      mapAttributeNameAndValueToLabel({
+        attributeName,
+        attributeValue: implicitValue,
+        container,
+        node,
+      }) ?? "",
+    value: implicitValue ?? "",
   };
 };

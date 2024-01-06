@@ -14,6 +14,16 @@ describe("press", () => {
     setupInputPage();
   });
 
+  afterEach(() => {
+    document.body.innerHTML = "";
+
+    try {
+      virtual.stop();
+    } catch {
+      // swallow
+    }
+  });
+
   it("should press keys on the active element", async () => {
     const container = document.body;
 
