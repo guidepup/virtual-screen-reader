@@ -23,7 +23,7 @@ enum State {
 // https://www.w3.org/TR/wai-aria-1.2/#state_prop_def
 const ariaPropertyToVirtualLabelMap: Record<
   string,
-  ((...args: unknown[]) => string) | null
+  ((mapperArgs: MapperArgs) => string | null) | null
 > = {
   "aria-activedescendant": idRef("active descendant"),
   "aria-atomic": null, // Handled by live region logic
@@ -145,7 +145,7 @@ function errorMessageIdRefs(
     // TODO: use implicit values for aria-invalid:
     // - spellcheck
     // - pattern
-    if (node.getAttribute("aria-invalid") === "false") {
+    if (node?.getAttribute("aria-invalid") === "false") {
       return "";
     }
 
@@ -166,7 +166,9 @@ function idRefs(
     const idRefsCount = attributeValue
       .trim()
       .split(" ")
-      .filter((idRef) => !!getNodeByIdRef({ container, idRef })).length;
+      .filter(
+        (idRef) => !!container && !!getNodeByIdRef({ container, idRef })
+      ).length;
 
     if (idRefsCount === 0) {
       return "";
@@ -182,6 +184,10 @@ function idRefs(
 
 function idRef(propertyName: string) {
   return function mapper({ attributeValue: idRef, container }: MapperArgs) {
+    if (!container) {
+      return "";
+    }
+
     const node = getNodeByIdRef({ container, idRef });
 
     if (!node) {
@@ -206,7 +212,7 @@ function tristate(stateValue: State, mixedValue: State) {
   };
 }
 
-function token(tokenMap: Record<string, string>) {
+function token(tokenMap: Record<string, string | null>) {
   return function tokenMapper({ attributeValue }: MapperArgs) {
     return tokenMap[attributeValue];
   };

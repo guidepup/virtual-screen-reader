@@ -1,9 +1,20 @@
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
-const isNotMatchingElement = ({ elements, node }) =>
-  elements.length && !elements.includes(node.localName);
+const isNotMatchingElement = ({
+  elements,
+  node,
+}: {
+  elements: string[];
+  node: HTMLElement;
+}) => elements.length && !elements.includes(node.localName);
 
-const isNotMatchingProperties = ({ node, properties }) =>
+const isNotMatchingProperties = ({
+  node,
+  properties,
+}: {
+  node: HTMLElement;
+  properties: { key: string; value: string }[];
+}) =>
   properties.length &&
   !properties.some(({ key, value }) => node.getAttribute(key) === value);
 
@@ -109,7 +120,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
   attributeName: string;
   container: Node;
   node: HTMLElement;
-}) => {
+}): { label: string; value: string } => {
   const htmlAttribute = ariaToHTMLAttributeMapping[attributeName];
 
   if (!htmlAttribute?.length) {
@@ -133,10 +144,10 @@ export const getLabelFromHtmlEquivalentAttribute = ({
     }
 
     const attributeValue = node.hasAttribute(name)
-      ? value ?? node.getAttribute(name)
+      ? value ?? node.getAttribute(name)!
       : node.hasAttribute(attributeName)
-      ? undefined
-      : implicitMissingValue;
+      ? null
+      : implicitMissingValue ?? null;
 
     const label = mapAttributeNameAndValueToLabel({
       attributeName,
@@ -147,7 +158,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
     });
 
     if (label) {
-      return { label, value: attributeValue };
+      return { label, value: attributeValue ?? "" };
     }
   }
 

@@ -1,4 +1,4 @@
-import { ARIAPropertyMap, ARIARoleDefinitionKey, roles } from "aria-query";
+import { ARIARoleDefinitionKey, roles } from "aria-query";
 import { globalStatesAndProperties } from "../getRole";
 
 const ignoreAttributesWithAccessibleValue = ["aria-placeholder"];
@@ -9,12 +9,12 @@ export const getAttributesByRole = ({
 }: {
   accessibleValue: string;
   role: string;
-}) => {
+}): [string, string | null][] => {
   const {
     props: implicitRoleAttributes = {},
     prohibitedProps: prohibitedAttributes = [],
   } = (roles.get(role as ARIARoleDefinitionKey) ?? {}) as {
-    props: ARIAPropertyMap;
+    props: Record<string, string | undefined>;
     prohibitedProps: string[];
   };
 

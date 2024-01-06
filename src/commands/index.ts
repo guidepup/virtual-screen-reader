@@ -84,11 +84,16 @@ const quickLandmarkNavigationRoles = [
 const quickLandmarkNavigationCommands = quickLandmarkNavigationRoles.reduce<
   Record<string, unknown>
 >((accumulatedCommands, role) => {
-  const moveToNextCommand = `moveToNext${role.at(0).toUpperCase()}${role.slice(
+  // The roles are defined above and all non-empty.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const moveToNextCommand = `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
     1
   )}`;
+
+  // The roles are defined above and all non-empty.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const moveToPreviousCommand = `moveToPrevious${role
-    .at(0)
+    .at(0)!
     .toUpperCase()}${role.slice(1)}`;
 
   return {

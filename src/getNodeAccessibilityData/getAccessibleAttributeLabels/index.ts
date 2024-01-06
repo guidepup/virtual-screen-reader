@@ -91,7 +91,7 @@ export const getAccessibleAttributeLabels = ({
     if (labelFromImplicitAriaAttributeValue) {
       labels[attributeName] = {
         label: labelFromImplicitAriaAttributeValue,
-        value: implicitAttributeValue,
+        value: implicitAttributeValue ?? "",
       };
 
       return;

@@ -56,13 +56,88 @@ const defaultUserEventOptions = {
  * REF: https://www.w3.org/TR/wai-aria-1.2/#feed
  */
 
+/**
+ * [API Reference](https://www.guidepup.dev/docs/api/class-virtual)
+ *
+ * A Virtual Screen Reader class that can be used to launch and control a
+ * headless JavaScript screen reader which is compatible with any specification
+ * compliant DOM implementation, e.g. jsdom, Jest, or any modern browser.
+ *
+ * Here's a typical example:
+ *
+ * ```ts
+ * import { Virtual } from "@guidepup/virtual-screen-reader";
+ *
+ * function setupBasicPage() {
+ *   document.body.innerHTML = `
+ *   <nav>Nav Text</nav>
+ *   <section>
+ *     <h1>Section Heading</h1>
+ *     <p>Section Text</p>
+ *     <article>
+ *       <header>
+ *         <h1>Article Header Heading</h1>
+ *         <p>Article Header Text</p>
+ *       </header>
+ *       <p>Article Text</p>
+ *     </article>
+ *   </section>
+ *   <footer>Footer</footer>
+ *   `;
+ * }
+ *
+ * describe("Screen Reader Tests", () => {
+ *   test("should traverse the page announcing the expected roles and content", async () => {
+ *     // Setup a page using a framework and testing library of your choice
+ *     setupBasicPage();
+ *
+ *     // Create a new Virtual Screen Reader instance
+ *     const virtual = new Virtual();
+ *
+ *     // Start your Virtual Screen Reader instance
+ *     await virtual.start({ container: document.body });
+ *
+ *     // Navigate your environment with the Virtual Screen Reader just as your users would
+ *     while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+ *       await virtual.next();
+ *     }
+ *
+ *     // Assert on what your users would really see and hear when using screen readers
+ *     expect(await virtual.spokenPhraseLog()).toEqual([
+ *       "document",
+ *       "navigation",
+ *       "Nav Text",
+ *       "end of navigation",
+ *       "region",
+ *       "heading, Section Heading, level 1",
+ *       "Section Text",
+ *       "article",
+ *       "banner",
+ *       "heading, Article Header Heading, level 1",
+ *       "Article Header Text",
+ *       "end of banner",
+ *       "Article Text",
+ *       "end of article",
+ *       "end of region",
+ *       "contentinfo",
+ *       "Footer",
+ *       "end of contentinfo",
+ *       "end of document",
+ *     ]);
+ *
+ *     // Stop your Virtual Screen Reader instance
+ *     await virtual.stop();
+ *   });
+ * });
+ * ```
+ */
 export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
   #container: Node | null = null;
   #itemTextLog: string[] = [];
   #spokenPhraseLog: string[] = [];
   #treeCache: AccessibilityNode[] | null = null;
-  #disconnectDOMObserver: () => void | null = null;
+  #disconnectDOMObserver: (() => void) | null = null;
 
   #checkContainer() {
     if (!this.#container) {
@@ -108,13 +183,21 @@ export class Virtual implements ScreenReader {
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
     const nextIndex = tree.findIndex(({ node }) => node === target);
-    const newActiveNode = tree.at(nextIndex);
+
+    // This is called when an element in the tree receives focus so it stands
+    // that we should be able to find said element in the tree (unless it can
+    // be removed somehow between the focus event firing and this code
+    // executing?).
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newActiveNode = tree.at(nextIndex)!;
 
     this.#updateState(newActiveNode, true);
   }
 
   #focusActiveElement() {
-    const target = getElementFromNode(this.#activeNode.node);
+    // Is only called following a null guard for `this.#activeNode`.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const target = getElementFromNode(this.#activeNode!.node);
     target?.focus();
   }
 
@@ -160,7 +243,12 @@ export class Virtual implements ScreenReader {
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
     const currentIndex = this.#getCurrentIndexByNode(tree);
-    const newActiveNode = tree.at(currentIndex);
+
+    // This only fires after keyboard like interactions, both of which null
+    // guard the `this.#activeNode` so it stands that we should still be able
+    // to find it in the tree.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newActiveNode = tree.at(currentIndex)!;
 
     this.#updateState(newActiveNode, ignoreIfNoChange);
   }
@@ -189,30 +277,82 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-active-node)
+   *
    * Getter for the active node under the Virtual Screen Reader cursor.
    *
-   * @returns {Node}
+   * Note that this is not always the same as the currently focused node.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the next element.
+   *   await virtual.next();
+   *
+   *   // Log the currently focused node.
+   *   console.log(virtual.activeNode);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
+   *
+   * @returns {Node|null}
    */
   get activeNode() {
-    return this.#activeNode.node;
+    return this.#activeNode?.node ?? null;
   }
 
   /**
-   * Getter for screen reader commands.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-commands)
    *
-   * Use with `await virtual.perform(command)`.
+   * Getter for all Virtual Screen Reader commands.
+   *
+   * Use with the `await virtual.perform(command)` command to invoke an action:
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Perform action to move to the next landmark.
+   *   await virtual.perform(virtual.commands.moveToNextLandmark);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    */
   get commands() {
     return Object.fromEntries<VirtualCommandKey>(
-      Object.keys(commands).map((command: VirtualCommandKey) => [
-        command,
-        command,
-      ])
+      (Object.keys(commands) as VirtualCommandKey[]).map(
+        (command: VirtualCommandKey) => [command, command]
+      )
     ) as { [K in VirtualCommandKey]: K };
   }
 
   /**
-   * Detect whether the screen reader is supported for the current OS.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-detect)
+   *
+   * Detect whether the screen reader is supported for the current OS:
+   *
+   * - `true` for all OS
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   const isVirtualSupportedScreenReader = await virtual.detect();
+   *
+   *   console.log(isVirtualSupportedScreenReader);
+   * });
+   * ```
    *
    * @returns {Promise<boolean>}
    */
@@ -221,7 +361,21 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-default)
+   *
    * Detect whether the screen reader is the default screen reader for the current OS.
+   *
+   * - `false` for all OS
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   const isVirtualDefaultScreenReader = await virtual.default();
+   *
+   *   console.log(isVirtualDefaultScreenReader);
+   * });
+   * ```
    *
    * @returns {Promise<boolean>}
    */
@@ -230,10 +384,31 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Turn the screen reader on.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-start)
+   *
+   * Turn the Virtual Screen Reader on.
+   *
+   * This must be called before any other Virtual command can be issued.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader on the entire page.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // ... perform some commands.
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @param {object} [options] Additional options.
    */
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore for non-TS users we default the container to `null` which
+  // prompts the missing container error.
   async start({ container }: StartOptions = { container: null }) {
     if (!container) {
       throw new Error(ERR_VIRTUAL_MISSING_CONTAINER);
@@ -261,7 +436,25 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Turn the screen reader off.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-stop)
+   *
+   * Turn the Virtual Screen Reader off.
+   *
+   * Calling this method will clear any item text or spoken phrases collected by Virtual.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // ... perform some commands.
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    */
   async stop() {
     this.#disconnectDOMObserver?.();
@@ -276,7 +469,24 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-previous)
+   *
    * Move the screen reader cursor to the previous location.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the previous item.
+   *   await virtual.previous();
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    */
   async previous() {
     this.#checkContainer();
@@ -290,7 +500,10 @@ export class Virtual implements ScreenReader {
 
     const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex = currentIndex === -1 ? 0 : currentIndex - 1;
-    const newActiveNode = tree.at(nextIndex);
+    // We've covered the tree having no length so there must be at least one
+    // index, and we ensure to zero-guard with the logic above.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newActiveNode = tree.at(nextIndex)!;
 
     this.#updateState(newActiveNode);
 
@@ -298,7 +511,24 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-next)
+   *
    * Move the screen reader cursor to the next location.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the next item.
+   *   await virtual.next();
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    */
   async next() {
     this.#checkContainer();
@@ -315,7 +545,10 @@ export class Virtual implements ScreenReader {
       currentIndex === -1 || currentIndex === tree.length - 1
         ? 0
         : currentIndex + 1;
-    const newActiveNode = tree.at(nextIndex);
+    // We've covered the tree having no length so there must be at least one
+    // index, and we ensure to zero-guard with the logic above.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newActiveNode = tree.at(nextIndex)!;
 
     this.#updateState(newActiveNode);
 
@@ -323,7 +556,27 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Perform the default action for the item in the screen reader cursor.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-act)
+   *
+   * Perform the default action for the item in the Virtual Screen Reader cursor.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the next item.
+   *   await virtual.next();
+   *
+   *   // Perform the default action for the item.
+   *   await virtual.act();
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    */
   async act() {
     this.#checkContainer();
@@ -342,7 +595,12 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Interact with the item under the screen reader cursor.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-interact)
+   *
+   * No-op to provide same API across screen readers.
+   *
+   * The Virtual Screen Reader does not require users to perform an additional
+   * command to interact with the item in the Virtual Screen Reader cursor.
    */
   async interact() {
     this.#checkContainer();
@@ -351,7 +609,12 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Stop interacting with the current item.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-stop-interacting)
+   *
+   * No-op to provide same API across screen readers.
+   *
+   * The Virtual Screen Reader does not require users to perform an additional
+   * command to interact with the item in the Virtual Screen Reader cursor.
    */
   async stopInteracting() {
     this.#checkContainer();
@@ -360,6 +623,8 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-press)
+   *
    * Press a key on the active item.
    *
    * `key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
@@ -380,7 +645,18 @@ export class Virtual implements ScreenReader {
    * modifier, modifier is pressed and being held while the subsequent key is being pressed.
    *
    * ```ts
-   * await virtual.press("Control+f");
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Open a find text modal.
+   *   await virtual.press("Command+f");
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
    * ```
    *
    * @param {string} key Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
@@ -393,9 +669,9 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const rawKeys = key.replaceAll("{", "{{").replaceAll("[", "[[").split("+");
-    const modifiers = [];
-    const keys = [];
+    const rawKeys = key.replace(/{/g, "{{").replace(/\[/g, "[[").split("+");
+    const modifiers: string[] = [];
+    const keys: string[] = [];
 
     rawKeys.forEach((rawKey) => {
       if (
@@ -422,13 +698,26 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-type)
+   *
    * Type text into the active item.
    *
    * To press a special key, like `Control` or `ArrowDown`, use `virtual.press(key)`.
    *
    * ```ts
-   * await virtual.type("my-username");
-   * await virtual.press("Enter");
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Type a username and key Enter.
+   *   await virtual.type("my-username");
+   *   await virtual.press("Enter");
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
    * ```
    *
    * @param {string} text Text to type into the active item.
@@ -449,7 +738,24 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Perform a screen reader command.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-perform)
+   *
+   * Perform a Virtual Screen Reader command.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Perform action to move to the next landmark.
+   *   await virtual.perform(virtual.commands.moveToNextLandmark);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @param {string} command Screen reader command.
    * @param {object} [options] Command options.
@@ -470,7 +776,9 @@ export class Virtual implements ScreenReader {
     const currentIndex = this.#getCurrentIndex(tree);
     const nextIndex = commands[command]?.({
       ...options,
-      container: this.#container,
+      // `this.#checkContainer();` above null guards us here.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      container: this.#container!,
       currentIndex,
       tree,
     });
@@ -479,14 +787,40 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const newActiveNode = tree.at(nextIndex);
+    // We know the tree has length, and we guard against the command not being
+    // able to find an index in the tree so we are fine.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newActiveNode = tree.at(nextIndex)!;
     this.#updateState(newActiveNode);
 
     return;
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-click)
+   *
    * Click the mouse.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Left-click the mouse.
+   *   await virtual.click();
+   *
+   *   // Left-click the mouse using specific options.
+   *   await virtual.click({ button: "left", clickCount: 1 });
+   *
+   *   // Double-right-click the mouse.
+   *   await virtual.click({ button: "right", clickCount: 2 });
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @param {object} [options] Click options.
    */
@@ -511,7 +845,28 @@ export class Virtual implements ScreenReader {
   }
 
   /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-last-spoken-phrase)
+   *
    * Get the last spoken phrase.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the next item.
+   *   await virtual.next();
+   *
+   *   // Get the phrase spoken by the Virtual Screen Reader from moving to the next item above.
+   *   const lastSpokenPhrase = await virtual.lastSpokenPhrase();
+   *   console.log(lastSpokenPhrase);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @returns {Promise<string>} The last spoken phrase.
    */
@@ -523,7 +878,29 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Get the text of the item in the screen reader cursor.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-item-text)
+   *
+   * Get the text of the item in the Virtual Screen Reader cursor.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move to the next item.
+   *   await virtual.next();
+   *
+   *   // Get the text (if any) for the item currently in focus by the Virtual
+   *   // screen reader cursor.
+   *   const itemText = await virtual.itemText();
+   *   console.log(itemText);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @returns {Promise<string>} The item's text.
    */
@@ -535,7 +912,31 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Get the log of all spoken phrases for this screen reader instance.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-spoken-phrase-log)
+   *
+   * Get the log of all spoken phrases for this Virtual Screen Reader instance.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move through several items.
+   *   for (let i = 0; i < 10; i++) {
+   *     await virtual.next();
+   *   }
+   *
+   *   // Get the phrase spoken by the Virtual Screen Reader from moving through the
+   *   // items above.
+   *   const spokenPhraseLog = await virtual.spokenPhraseLog();
+   *   console.log(spokenPhraseLog);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @returns {Promise<string[]>} The spoken phrase log.
    */
@@ -548,7 +949,31 @@ export class Virtual implements ScreenReader {
   }
 
   /**
-   * Get the log of all visited item text for this screen reader instance.
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-item-text-log)
+   *
+   * Get the log of all visited item text for this Virtual Screen Reader instance.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Move through several items.
+   *   for (let i = 0; i < 10; i++) {
+   *     await virtual.next();
+   *   }
+   *
+   *   // Get the text (if any) for all the items visited by the Virtual screen
+   *   // reader cursor.
+   *   const itemTextLog = await virtual.itemTextLog();
+   *   console.log(itemTextLog);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
    *
    * @returns {Promise<string[]>} The item text log.
    */
@@ -558,5 +983,67 @@ export class Virtual implements ScreenReader {
     await tick();
 
     return this.#itemTextLog;
+  }
+
+  /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-clear-spoken-phrase-log)
+   *
+   * Clear the log of all spoken phrases for this Virtual Screen Reader
+   * instance.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // ... perform some commands.
+   *
+   *   // Clear the spoken phrase log.
+   *   await virtual.clearSpokenPhraseLog();
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
+   */
+  async clearSpokenPhraseLog() {
+    this.#checkContainer();
+
+    await tick();
+
+    this.#spokenPhraseLog = [];
+  }
+
+  /**
+   * [API Reference](https://www.guidepup.dev/docs/api/class-virtual#virtual-clear-item-text-log)
+   *
+   * Clear the log of all visited item text for this Virtual Screen Reader
+   * instance.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // ... perform some commands.
+   *
+   *   // Clear the item text log.
+   *   await virtual.clearItemTextLog();
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
+   */
+  async clearItemTextLog() {
+    this.#checkContainer();
+
+    await tick();
+
+    this.#itemTextLog = [];
   }
 }
