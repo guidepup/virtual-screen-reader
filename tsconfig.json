@@ -10,6 +10,6 @@
     "rootDir": "./src",
     "outDir": "./lib"
   },
-  "include": ["src/**/*.tsx?", "src/test/jest.setup.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/test/jest.setup.ts"],
   "exclude": ["node_modules", "lib"]
 }
