@@ -8,7 +8,7 @@
 
 Virtual Screen Reader is a screen reader simulator for unit tests.
 
-This package aims to supplement your testing by enabling you to automate a Virtual Screen Reader for unit test workflows the same you as would for mouse or keyboard based scenarios.
+This package aims to supplement your testing by enabling you to automate a Virtual Screen Reader for unit test workflows the same as you would for mouse or keyboard based scenarios.
 
 > Note: This package should not replace your manual screen reader testing, there is no substitute for testing with real screen readers and with real users.
 
