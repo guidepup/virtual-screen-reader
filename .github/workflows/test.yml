@@ -26,3 +26,16 @@ jobs:
           node-version: 20
       - run: yarn install --frozen-lockfile
       - run: yarn ci
+
+  test-vue-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
+        working-directory: ./examples/vue
+      - run: yarn test
+        working-directory: ./examples/vue
