@@ -56,6 +56,8 @@ And get cracking with your first screen reader unit test automation code!
 
 Head over to the [Guidepup Website](https://www.guidepup.dev/) for guides, real world examples, and complete API documentation with examples.
 
+Some examples can also be found in the [examples section](./examples).
+
 You can also check out this project's own [integration tests](https://github.com/guidepup/virtual-screen-reader/tree/main/src/test) to learn how you could use the Virtual Screen Reader in your projects.
 
 ### Basic Navigation
