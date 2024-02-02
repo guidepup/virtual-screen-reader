@@ -13,9 +13,9 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
+import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase";
 import { getElementFromNode } from "./getElementFromNode";
 import { getItemText } from "./getItemText";
-import { getLiveSpokenPhrase } from "./getLiveSpokenPhrase";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { observeDOM } from "./observeDOM";
 import { tick } from "./tick";
@@ -219,6 +219,14 @@ export class Virtual implements ScreenReader {
       });
   }
 
+  #spokenPhraseLogWithoutLiveRegions() {
+    return this.#spokenPhraseLog.filter(
+      (spokenPhrase) =>
+        !spokenPhrase.startsWith(Live.ASSERTIVE) &&
+        !spokenPhrase.startsWith(Live.POLITE)
+    );
+  }
+
   #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
     const spokenPhrase = getSpokenPhrase(accessibilityNode);
     const itemText = getItemText(accessibilityNode);
@@ -227,7 +235,7 @@ export class Virtual implements ScreenReader {
 
     if (
       ignoreIfNoChange &&
-      spokenPhrase === this.#spokenPhraseLog.at(-1) &&
+      spokenPhrase === this.#spokenPhraseLogWithoutLiveRegions().at(-1) &&
       itemText === this.#itemTextLog.at(-1)
     ) {
       return;

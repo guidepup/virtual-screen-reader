@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/vue'
 import IncrementCounter from '../IncrementCounter.vue'
 
@@ -12,11 +12,15 @@ import IncrementCounter from '../IncrementCounter.vue'
 import { virtual } from '../../../../src'
 
 describe('Increment Counter', () => {
+  afterEach(async () => {
+    await virtual.stop()
+  })
+
   it('increments value on click', async () => {
     const { container } = render(IncrementCounter)
 
     // Start the virtual screen reader for just the Component under test
-    virtual.start({ container })
+    await virtual.start({ container })
 
     // Move to the increment button
     await virtual.next()

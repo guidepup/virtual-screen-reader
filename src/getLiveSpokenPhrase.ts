@@ -36,7 +36,7 @@ import { sanitizeString } from "./sanitizeString";
  * - https://www.w3.org/TR/wai-aria-1.2/#aria-live
  */
 
-enum Live {
+export enum Live {
   ASSERTIVE = "assertive",
   OFF = "off",
   POLITE = "polite",
