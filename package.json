@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "main": "lib/index.js",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
@@ -14,9 +14,11 @@
   },
   "homepage": "https://github.com/guidepup/virtual-screen-reader",
   "keywords": [
+    "screen reader",
     "screen-reader",
     "accessibility",
-    "a11y"
+    "a11y",
+    "guidepup"
   ],
   "scripts": {
     "build": "yarn clean && yarn compile",
