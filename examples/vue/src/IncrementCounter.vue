@@ -14,6 +14,6 @@ export default {
 
 <template>
   <h1>Increment Counter</h1>
-  <p aria-live="polite">Times clicked: {{ count }}</p>
+  <span aria-live="polite">Times clicked: {{ count }}</span>
   <button @click="increment">increment</button>
 </template>
