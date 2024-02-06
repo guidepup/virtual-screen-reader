@@ -2,6 +2,7 @@ import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
 import { getNodeByIdRef } from "./getNodeByIdRef";
 import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
+import { isDialogRole } from "./isDialogRole";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
@@ -15,6 +16,7 @@ export interface AccessibilityNode {
   childrenPresentational: boolean;
   node: Node;
   parent: Node | null;
+  parentDialog: Node | null;
   role: string;
   spokenRole: string;
 }
@@ -182,6 +184,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       childrenPresentational: treeNode.childrenPresentational,
       node: treeNode.node,
       parent: treeNode.parent,
+      parentDialog: treeNode.parentDialog,
       role: treeNode.role,
       spokenRole: `end of ${treeNode.spokenRole}`,
     });
@@ -212,6 +215,8 @@ function growTree(
   }
 
   visitedNodes.add(node);
+
+  const parentDialog = isDialogRole(tree.role) ? tree.node : tree.parentDialog;
 
   node.childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
@@ -260,6 +265,7 @@ function growTree(
           childrenPresentational,
           node: childNode,
           parent: node,
+          parentDialog,
           role,
           spokenRole,
         },
@@ -323,6 +329,7 @@ function growTree(
           childrenPresentational,
           node: childNode,
           parent: node,
+          parentDialog,
           role,
           spokenRole,
         },
@@ -373,6 +380,7 @@ export function createAccessibilityTree(node: Node | null) {
       childrenPresentational,
       node,
       parent: null,
+      parentDialog: null,
       role,
       spokenRole,
     },

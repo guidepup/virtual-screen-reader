@@ -182,14 +182,14 @@ export class Virtual implements ScreenReader {
 
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
-    const nextIndex = tree.findIndex(({ node }) => node === target);
 
     // This is called when an element in the tree receives focus so it stands
     // that we should be able to find said element in the tree (unless it can
     // be removed somehow between the focus event firing and this code
-    // executing?).
+    // executing... we are waiting for event loop tick so perhaps there is a
+    // race condition here?).
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const newActiveNode = tree.at(nextIndex)!;
+    const newActiveNode = tree.find(({ node }) => node === target);
 
     this.#updateState(newActiveNode, true);
   }
@@ -228,10 +228,41 @@ export class Virtual implements ScreenReader {
   }
 
   #updateState(accessibilityNode: AccessibilityNode, ignoreIfNoChange = false) {
-    const spokenPhrase = getSpokenPhrase(accessibilityNode);
-    const itemText = getItemText(accessibilityNode);
+    /**
+     * When the dialog is correctly labeled and focus is moved to an element
+     * (often an interactive element, such as a button) inside the dialog,
+     * screen readers should announce the dialog's accessible role, name and
+     * optionally description, along with announcing the focused element.
+     *
+     * REF: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role#possible_effects_on_user_agents_and_assistive_technology
+     */
+    if (
+      accessibilityNode.parentDialog !== null &&
+      accessibilityNode.parentDialog !== this.#activeNode.parentDialog
+    ) {
+      // One of the few cases where you will get two logs for a single
+      // interaction.
+      //
+      // We don't need to perform the `ignoreIfNoChange` check as this will
+      // only fire if the parent dialog element has changed, and if that
+      // happens we can be fairly confident that item under the virtual
+      // cursor has changed.
+      const tree = this.#getAccessibilityTree();
+      const parentDialogNode = tree.find(
+        ({ node }) => node === accessibilityNode.parentDialog
+      );
+
+      const spokenPhrase = getSpokenPhrase(parentDialogNode);
+      const itemText = getItemText(parentDialogNode);
+
+      this.#itemTextLog.push(itemText);
+      this.#spokenPhraseLog.push(spokenPhrase);
+    }
 
     this.#activeNode = accessibilityNode;
+
+    const spokenPhrase = getSpokenPhrase(accessibilityNode);
+    const itemText = getItemText(accessibilityNode);
 
     if (
       ignoreIfNoChange &&
