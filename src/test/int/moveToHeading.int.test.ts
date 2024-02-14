@@ -146,4 +146,63 @@ describe("Move To Heading", () => {
       )
     })
   });
+
+  describe("moveToPreviousHeadingLevelN", () => {
+    describe("when there are matching heading levels in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = headingLevels
+          .map((headingLevel) => `
+            <h${headingLevel} aria-label="Accessible name">
+              Heading with heading level: ${headingLevel}
+            </h${headingLevel}>
+          `)
+          .join("");
+
+        await virtual.start({ container: document.body });
+      });
+
+      it.each(headingLevels)(
+        "should let you navigate to the previous level %s heading",
+        async (headingLevel) => {
+          await virtual.perform(
+            virtual.commands[
+              `moveToPreviousHeadingLevel${headingLevel}`
+            ]
+          );
+          await virtual.next();
+          await virtual.next();
+
+          expect(await virtual.spokenPhraseLog()).toEqual([
+            "document",
+            `heading, Accessible name, level ${headingLevel}`,
+            `Heading with heading level: ${headingLevel}`,
+            `end of heading, Accessible name, level ${headingLevel}`,
+          ]);
+        }
+      );
+    });
+
+    describe("when there are no matching heading levels in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = "";
+
+        await virtual.start({ container: document.body });
+      })
+
+      it.each(headingLevels)(
+        "should gracefully handle being asked to navigate to the previous level %s heading",
+        async (headingLevel) => {
+          await virtual.perform(
+            virtual.commands[
+              `moveToPreviousHeadingLevel${headingLevel}`
+            ]
+          );
+
+          expect(await virtual.spokenPhraseLog()).toEqual([
+            "document",
+          ]);
+        }
+      )
+    })
+  });
 });
