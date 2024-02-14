@@ -9,6 +9,8 @@ const quickNavigationRoles = [
   "main",
   "navigation",
   "region",
+  // Headings are tested separately because headings must have a heading level
+  // "heading",
   "search",
 ];
 
