@@ -81,7 +81,21 @@ const quickLandmarkNavigationRoles = [
   "search",
 ] as const;
 
-const quickLandmarkNavigationCommands = quickLandmarkNavigationRoles.reduce<
+const quickAriaRoleNavigationRoles = [
+  ...quickLandmarkNavigationRoles,
+
+  /**
+    * Strangely, WAI-ARIA doesn't specify that user agents should enable users
+    * to quickly navigate to elements with role heading. However, it is very
+    * common for screen users to navigate between headings.
+    *
+    * REF: https://www.w3.org/TR/wai-aria-1.2/#heading
+    * REF: https://webaim.org/projects/screenreadersurvey9
+    */
+  "heading",
+] as const;
+
+const quickAriaRoleNavigationCommands = quickAriaRoleNavigationRoles.reduce<
   Record<string, unknown>
 >((accumulatedCommands, role) => {
   // The roles are defined above and all non-empty.
@@ -103,9 +117,9 @@ const quickLandmarkNavigationCommands = quickLandmarkNavigationRoles.reduce<
   };
 }, {}) as {
   [K in
-    | `moveToNext${Capitalize<(typeof quickLandmarkNavigationRoles)[number]>}`
+    | `moveToNext${Capitalize<(typeof quickAriaRoleNavigationRoles)[number]>}`
     | `moveToPrevious${Capitalize<
-        (typeof quickLandmarkNavigationRoles)[number]
+        (typeof quickAriaRoleNavigationRoles)[number]
       >}`]: (args: VirtualCommandArgs) => number | null;
 };
 
@@ -115,7 +129,7 @@ export const commands = {
   jumpToErrorMessageElement,
   moveToNextAlternateReadingOrderElement,
   moveToPreviousAlternateReadingOrderElement,
-  ...quickLandmarkNavigationCommands,
+  ...quickAriaRoleNavigationCommands,
   moveToNextLandmark: getNextIndexByRole(quickLandmarkNavigationRoles),
   moveToPreviousLandmark: getPreviousIndexByRole(quickLandmarkNavigationRoles),
 };
