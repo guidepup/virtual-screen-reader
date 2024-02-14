@@ -1,11 +1,13 @@
+import { HeadingLevel, VirtualCommandArgs } from "./types";
 import { getNextIndexByRole } from "./getNextIndexByRole";
 import { getPreviousIndexByRole } from "./getPreviousIndexByRole";
 import { jumpToControlledElement } from "./jumpToControlledElement";
 import { jumpToDetailsElement } from "./jumpToDetailsElement";
 import { jumpToErrorMessageElement } from "./jumpToErrorMessageElement";
 import { moveToNextAlternateReadingOrderElement } from "./moveToNextAlternateReadingOrderElement";
+import { moveToNextHeadingLevelN } from "./moveToNextHeadingLevelN";
 import { moveToPreviousAlternateReadingOrderElement } from "./moveToPreviousAlternateReadingOrderElement";
-import { VirtualCommandArgs } from "./types";
+import { moveToPreviousHeadingLevelN } from "./moveToPreviousHeadingLevelN";
 
 const quickLandmarkNavigationRoles = [
   /**
@@ -123,6 +125,24 @@ const quickAriaRoleNavigationCommands = quickAriaRoleNavigationRoles.reduce<
       >}`]: (args: VirtualCommandArgs) => number | null;
 };
 
+const headingLevels: HeadingLevel[] = ["1", "2", "3", "4", "5", "6"];
+
+const headingLevelNavigationCommands = headingLevels.reduce((accumulatedCommands, headingLevel) => {
+  const moveToNextCommand = `moveToNextHeadingLevel${headingLevel}`;
+  const moveToPreviousCommand = `moveToPreviousHeadingLevel${headingLevel}`;
+
+  return {
+    ...accumulatedCommands,
+    [moveToNextCommand]: moveToNextHeadingLevelN({ headingLevel }),
+    [moveToPreviousCommand]: moveToPreviousHeadingLevelN({ headingLevel }),
+  };
+}, {}) as {
+  [K in
+    | `moveToNextHeadingLevel${HeadingLevel}`
+    | `moveToPreviousHeadingLevel${HeadingLevel}`
+  ]: (args: VirtualCommandArgs) => number | null;
+};
+
 export const commands = {
   jumpToControlledElement,
   jumpToDetailsElement,
@@ -132,6 +152,7 @@ export const commands = {
   ...quickAriaRoleNavigationCommands,
   moveToNextLandmark: getNextIndexByRole(quickLandmarkNavigationRoles),
   moveToPreviousLandmark: getPreviousIndexByRole(quickLandmarkNavigationRoles),
+  ...headingLevelNavigationCommands,
 };
 
 export type VirtualCommands = {
