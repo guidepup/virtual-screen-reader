@@ -1,5 +1,7 @@
 import { virtual } from "../..";
 
+const headingLevels = ['1', '2', '3', '4', '5', '6'];
+
 describe("Move To Heading", () => {
   afterEach(async () => {
     await virtual.stop();
@@ -83,6 +85,65 @@ describe("Move To Heading", () => {
 
         expect(await virtual.spokenPhraseLog()).toEqual(["document"]);
       });
+    })
+  });
+
+  describe("moveToNextHeadingLevelN", () => {
+    describe("when there are matching heading levels in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = headingLevels
+          .map((headingLevel) => `
+            <h${headingLevel} aria-label="Accessible name">
+              Heading with heading level: ${headingLevel}
+            </h${headingLevel}>
+          `)
+          .join("");
+
+        await virtual.start({ container: document.body });
+      });
+
+      it.each(headingLevels)(
+        "should let you navigate to the next level %s heading",
+        async (headingLevel) => {
+          await virtual.perform(
+            virtual.commands[
+              `moveToNextHeadingLevel${headingLevel}`
+            ]
+          );
+          await virtual.next();
+          await virtual.next();
+
+          expect(await virtual.spokenPhraseLog()).toEqual([
+            "document",
+            `heading, Accessible name, level ${headingLevel}`,
+            `Heading with heading level: ${headingLevel}`,
+            `end of heading, Accessible name, level ${headingLevel}`,
+          ]);
+        }
+      );
+    });
+
+    describe("when there are no matching heading levels in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = "";
+
+        await virtual.start({ container: document.body });
+      })
+
+      it.each(headingLevels)(
+        "should gracefully handle being asked to navigate to the next level %s heading",
+        async (headingLevel) => {
+          await virtual.perform(
+            virtual.commands[
+              `moveToNextHeadingLevel${headingLevel}`
+            ]
+          );
+
+          expect(await virtual.spokenPhraseLog()).toEqual([
+            "document",
+          ]);
+        }
+      )
     })
   });
 });
