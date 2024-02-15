@@ -44,6 +44,29 @@ describe("Move To Heading", () => {
       });
     });
 
+    describe("when there are divs with role heading and aria-level 7 in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = `
+          <div role="heading" aria-level="7">Seventh-level heading A</div>
+          <div role="heading" aria-level="7">Seventh-level heading B</div>
+        `;
+
+        await virtual.start({ container: document.body });
+      });
+
+      it("should let you navigate to the next heading", async () => {
+        await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
+
+        const spokenPhraseLog = await virtual.spokenPhraseLog();
+        expect(spokenPhraseLog).toEqual([
+          "document",
+          `heading, Seventh-level heading A, level 7`,
+          `heading, Seventh-level heading B, level 7`,
+        ]);
+      });
+    });
+
     describe("when there is no heading in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = "";
@@ -91,6 +114,29 @@ describe("Move To Heading", () => {
           `heading, Heading, level 3`,
           `heading, Heading, level 2`,
           `heading, Heading, level 1`,
+        ]);
+      });
+    });
+
+    describe("when there are divs with role heading and aria-level 7 in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = `
+          <div role="heading" aria-level="7">Seventh-level heading A</div>
+          <div role="heading" aria-level="7">Seventh-level heading B</div>
+        `;
+
+        await virtual.start({ container: document.body });
+      });
+
+      it("should let you navigate to the previous heading", async () => {
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+
+        const spokenPhraseLog = await virtual.spokenPhraseLog();
+        expect(spokenPhraseLog).toEqual([
+          "document",
+          `heading, Seventh-level heading B, level 7`,
+          `heading, Seventh-level heading A, level 7`,
         ]);
       });
     });
