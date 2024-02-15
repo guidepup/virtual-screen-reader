@@ -2,7 +2,7 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  roots: ["src"],
+  roots: ["test"],
   collectCoverageFrom: ["**/*.ts", "**/*.tsx"],
   coveragePathIgnorePatterns: [],
   coverageThreshold: {
@@ -13,5 +13,8 @@ module.exports = {
       statements: 98,
     },
   },
-  setupFilesAfterEnv: ["<rootDir>/src/test/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
+  globals: {
+    "ts-jest": { tsConfigFile: "tsconfig.test.json" },
+  },
 };
