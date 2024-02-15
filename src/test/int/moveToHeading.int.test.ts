@@ -116,7 +116,10 @@ describe("Move To Heading", () => {
         document.body.innerHTML = headingLevels
           .map((headingLevel) => `
             <h${headingLevel}>
-              Heading with heading level: ${headingLevel}
+              Heading with heading level ${headingLevel} A
+            </h${headingLevel}>
+            <h${headingLevel}>
+              Heading with heading level ${headingLevel} B
             </h${headingLevel}>
           `)
           .join("");
@@ -127,15 +130,14 @@ describe("Move To Heading", () => {
       it.each(headingLevels)(
         "should let you navigate to the next level %s heading",
         async (headingLevel) => {
-          await virtual.perform(
-            virtual.commands[
-              `moveToNextHeadingLevel${headingLevel}`
-            ]
-          );
+          const command = virtual.commands[`moveToNextHeadingLevel${headingLevel}`];
+          await virtual.perform(command);
+          await virtual.perform(command);
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `heading, Heading with heading level: ${headingLevel}, level ${headingLevel}`,
+            `heading, Heading with heading level ${headingLevel} A, level ${headingLevel}`,
+            `heading, Heading with heading level ${headingLevel} B, level ${headingLevel}`,
           ]);
         }
       );
@@ -171,7 +173,10 @@ describe("Move To Heading", () => {
         document.body.innerHTML = headingLevels
           .map((headingLevel) => `
             <h${headingLevel}>
-              Heading with heading level: ${headingLevel}
+              Heading with heading level ${headingLevel} A
+            </h${headingLevel}>
+            <h${headingLevel}>
+              Heading with heading level ${headingLevel} B
             </h${headingLevel}>
           `)
           .join("");
@@ -182,15 +187,14 @@ describe("Move To Heading", () => {
       it.each(headingLevels)(
         "should let you navigate to the previous level %s heading",
         async (headingLevel) => {
-          await virtual.perform(
-            virtual.commands[
-              `moveToPreviousHeadingLevel${headingLevel}`
-            ]
-          );
+          const command = virtual.commands[`moveToPreviousHeadingLevel${headingLevel}`];
+          await virtual.perform(command);
+          await virtual.perform(command);
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `heading, Heading with heading level: ${headingLevel}, level ${headingLevel}`,
+            `heading, Heading with heading level ${headingLevel} B, level ${headingLevel}`,
+            `heading, Heading with heading level ${headingLevel} A, level ${headingLevel}`,
           ]);
         }
       );
