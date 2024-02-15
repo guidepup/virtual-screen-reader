@@ -9,10 +9,15 @@ describe("Move To Heading", () => {
   });
 
   describe("moveToNextHeading", () => {
-    describe("when there is a level 1 heading in the container", () => {
+    describe("when there are headings in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = `
           <h1>Heading</h1>
+          <h2>Heading</h2>
+          <h3>Heading</h3>
+          <h4>Heading</h4>
+          <h5>Heading</h5>
+          <h6>Heading</h6>
         `;
 
         await virtual.start({ container: document.body });
@@ -20,11 +25,21 @@ describe("Move To Heading", () => {
 
       it("should let you navigate to the next heading", async () => {
         await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
+        await virtual.perform(virtual.commands.moveToNextHeading);
 
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
           `heading, Heading, level 1`,
+          `heading, Heading, level 2`,
+          `heading, Heading, level 3`,
+          `heading, Heading, level 4`,
+          `heading, Heading, level 5`,
+          `heading, Heading, level 6`,
         ]);
       });
     });
@@ -45,10 +60,15 @@ describe("Move To Heading", () => {
   });
 
   describe("moveToPreviousHeading", () => {
-    describe("when there is a level 1 heading in the container", () => {
+    describe("when there are headings in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = `
           <h1>Heading</h1>
+          <h2>Heading</h2>
+          <h3>Heading</h3>
+          <h4>Heading</h4>
+          <h5>Heading</h5>
+          <h6>Heading</h6>
         `;
 
         await virtual.start({ container: document.body });
@@ -56,10 +76,20 @@ describe("Move To Heading", () => {
 
       it("should let you navigate to the previous heading", async () => {
         await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
+        await virtual.perform(virtual.commands.moveToPreviousHeading);
 
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
+          `heading, Heading, level 6`,
+          `heading, Heading, level 5`,
+          `heading, Heading, level 4`,
+          `heading, Heading, level 3`,
+          `heading, Heading, level 2`,
           `heading, Heading, level 1`,
         ]);
       });
