@@ -5,9 +5,7 @@ import { jumpToControlledElement } from "./jumpToControlledElement";
 import { jumpToDetailsElement } from "./jumpToDetailsElement";
 import { jumpToErrorMessageElement } from "./jumpToErrorMessageElement";
 import { moveToNextAlternateReadingOrderElement } from "./moveToNextAlternateReadingOrderElement";
-import { moveToNextHeadingLevelN } from "./moveToNextHeadingLevelN";
 import { moveToPreviousAlternateReadingOrderElement } from "./moveToPreviousAlternateReadingOrderElement";
-import { moveToPreviousHeadingLevelN } from "./moveToPreviousHeadingLevelN";
 
 const quickLandmarkNavigationRoles = [
   /**
@@ -133,8 +131,8 @@ const headingLevelNavigationCommands = headingLevels.reduce((accumulatedCommands
 
   return {
     ...accumulatedCommands,
-    [moveToNextCommand]: moveToNextHeadingLevelN({ headingLevel }),
-    [moveToPreviousCommand]: moveToPreviousHeadingLevelN({ headingLevel }),
+    [moveToNextCommand]: getNextIndex({ headingLevels: [headingLevel] }),
+    [moveToPreviousCommand]: getPreviousIndex({ headingLevels: [headingLevel] }),
   };
 }, {}) as {
   [K in
