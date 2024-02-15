@@ -21,8 +21,10 @@
   ],
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/cjs/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
     }
