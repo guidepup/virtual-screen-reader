@@ -12,7 +12,7 @@ describe("Move To Heading", () => {
     describe("when there is a level 1 heading in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = `
-          <h1 aria-label="Accessible name">Heading</h1>
+          <h1>Heading</h1>
         `;
 
         await virtual.start({ container: document.body });
@@ -20,15 +20,11 @@ describe("Move To Heading", () => {
 
       it("should let you navigate to the next heading", async () => {
         await virtual.perform(virtual.commands.moveToNextHeading);
-        await virtual.next();
-        await virtual.next();
 
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Accessible name, level 1`,
-          `Heading`,
-          `end of heading, Accessible name, level 1`,
+          `heading, Heading, level 1`,
         ]);
       });
     });
@@ -52,7 +48,7 @@ describe("Move To Heading", () => {
     describe("when there is a level 1 heading in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = `
-          <h1 aria-label="Accessible name">Heading</h1>
+          <h1>Heading</h1>
         `;
 
         await virtual.start({ container: document.body });
@@ -60,15 +56,11 @@ describe("Move To Heading", () => {
 
       it("should let you navigate to the previous heading", async () => {
         await virtual.perform(virtual.commands.moveToPreviousHeading);
-        await virtual.next();
-        await virtual.next();
 
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Accessible name, level 1`,
-          `Heading`,
-          `end of heading, Accessible name, level 1`,
+          `heading, Heading, level 1`,
         ]);
       });
     });
@@ -93,7 +85,7 @@ describe("Move To Heading", () => {
       beforeEach(async () => {
         document.body.innerHTML = headingLevels
           .map((headingLevel) => `
-            <h${headingLevel} aria-label="Accessible name">
+            <h${headingLevel}>
               Heading with heading level: ${headingLevel}
             </h${headingLevel}>
           `)
@@ -110,14 +102,10 @@ describe("Move To Heading", () => {
               `moveToNextHeadingLevel${headingLevel}`
             ]
           );
-          await virtual.next();
-          await virtual.next();
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `heading, Accessible name, level ${headingLevel}`,
-            `Heading with heading level: ${headingLevel}`,
-            `end of heading, Accessible name, level ${headingLevel}`,
+            `heading, Heading with heading level: ${headingLevel}, level ${headingLevel}`,
           ]);
         }
       );
@@ -152,7 +140,7 @@ describe("Move To Heading", () => {
       beforeEach(async () => {
         document.body.innerHTML = headingLevels
           .map((headingLevel) => `
-            <h${headingLevel} aria-label="Accessible name">
+            <h${headingLevel}>
               Heading with heading level: ${headingLevel}
             </h${headingLevel}>
           `)
@@ -169,14 +157,10 @@ describe("Move To Heading", () => {
               `moveToPreviousHeadingLevel${headingLevel}`
             ]
           );
-          await virtual.next();
-          await virtual.next();
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `heading, Accessible name, level ${headingLevel}`,
-            `Heading with heading level: ${headingLevel}`,
-            `end of heading, Accessible name, level ${headingLevel}`,
+            `heading, Heading with heading level: ${headingLevel}, level ${headingLevel}`,
           ]);
         }
       );
