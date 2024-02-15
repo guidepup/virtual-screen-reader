@@ -1,5 +1,5 @@
-import { matchesHeadingLevels, matchesRoles } from "./nodeMatchers";
 import { type HeadingLevel, VirtualCommandArgs } from "./types";
+import { matchesHeadingLevels, matchesRoles } from "./nodeMatchers";
 
 export type GetNextIndexArgs = Omit<VirtualCommandArgs, "container">;
 
