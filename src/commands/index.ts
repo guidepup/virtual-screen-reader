@@ -1,6 +1,6 @@
 import { HeadingLevel, VirtualCommandArgs } from "./types";
-import { getNextIndexByRole } from "./getNextIndexByRole";
-import { getPreviousIndexByRole } from "./getPreviousIndexByRole";
+import { getNextIndex } from "./getNextIndex";
+import { getPreviousIndex } from "./getPreviousIndex";
 import { jumpToControlledElement } from "./jumpToControlledElement";
 import { jumpToDetailsElement } from "./jumpToDetailsElement";
 import { jumpToErrorMessageElement } from "./jumpToErrorMessageElement";
@@ -114,8 +114,8 @@ const quickAriaRoleNavigationCommands = quickAriaRoleNavigationRoles.reduce<
 
   return {
     ...accumulatedCommands,
-    [moveToNextCommand]: getNextIndexByRole([role]),
-    [moveToPreviousCommand]: getPreviousIndexByRole([role]),
+    [moveToNextCommand]: getNextIndex({ roles: [role] }),
+    [moveToPreviousCommand]: getPreviousIndex({ roles: [role] }),
   };
 }, {}) as {
   [K in
@@ -150,8 +150,8 @@ export const commands = {
   moveToNextAlternateReadingOrderElement,
   moveToPreviousAlternateReadingOrderElement,
   ...quickAriaRoleNavigationCommands,
-  moveToNextLandmark: getNextIndexByRole(quickLandmarkNavigationRoles),
-  moveToPreviousLandmark: getPreviousIndexByRole(quickLandmarkNavigationRoles),
+  moveToNextLandmark: getNextIndex({ roles: quickLandmarkNavigationRoles }),
+  moveToPreviousLandmark: getPreviousIndex({ roles: quickLandmarkNavigationRoles }),
   ...headingLevelNavigationCommands,
 };
 
