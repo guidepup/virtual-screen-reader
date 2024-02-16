@@ -8,7 +8,7 @@ import {
   ScreenReader,
   WindowsModifiers,
 } from "@guidepup/guidepup";
-import { commands, VirtualCommandKey, VirtualCommands } from "./commands";
+import { commands, VirtualCommands } from "./commands";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -369,11 +369,11 @@ export class Virtual implements ScreenReader {
    * ```
    */
   get commands() {
-    return Object.fromEntries<VirtualCommandKey>(
-      (Object.keys(commands) as VirtualCommandKey[]).map(
-        (command: VirtualCommandKey) => [command, command]
+    return Object.fromEntries<keyof VirtualCommands>(
+      (Object.keys(commands) as (keyof VirtualCommands)[]).map(
+        (command: keyof VirtualCommands) => [command, command]
       )
-    ) as { [K in VirtualCommandKey]: K };
+    ) as { [K in keyof VirtualCommands]: K };
   }
 
   /**
@@ -800,7 +800,7 @@ export class Virtual implements ScreenReader {
    * @param {object} [options] Command options.
    */
   async perform<
-    T extends VirtualCommandKey,
+    T extends keyof VirtualCommands,
     K extends Omit<Parameters<VirtualCommands[T]>[0], keyof VirtualCommandArgs>
   >(command: T, options?: { [L in keyof K]: K[L] } & CommandOptions) {
     this.#checkContainer();

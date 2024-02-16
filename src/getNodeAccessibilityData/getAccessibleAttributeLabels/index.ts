@@ -6,6 +6,11 @@ import { isElement } from "../../isElement";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 import { postProcessLabels } from "./postProcessLabels";
 
+export type AccessibleAttributeToLabelMap = Record<
+  string,
+  { label: string; value: string }
+>;
+
 export const getAccessibleAttributeLabels = ({
   accessibleValue,
   alternateReadingOrderParents,
@@ -18,12 +23,18 @@ export const getAccessibleAttributeLabels = ({
   container: Node;
   node: Node;
   role: string;
-}): string[] => {
+}): {
+  accessibleAttributeLabels: string[];
+  accessibleAttributeToLabelMap: AccessibleAttributeToLabelMap;
+} => {
   if (!isElement(node)) {
-    return [];
+    return {
+      accessibleAttributeLabels: [],
+      accessibleAttributeToLabelMap: {},
+    };
   }
 
-  const labels: Record<string, { label: string; value: string }> = {};
+  const labels: AccessibleAttributeToLabelMap = {};
   const attributes = getAttributesByRole({ accessibleValue, role });
 
   attributes.forEach(([attributeName, implicitAttributeValue]) => {
@@ -98,7 +109,10 @@ export const getAccessibleAttributeLabels = ({
     }
   });
 
-  const processedLabels = postProcessLabels({ labels, role }).filter(Boolean);
+  const accessibleAttributeToLabelMap = postProcessLabels({ labels, role });
+  const accessibleAttributeLabels = Object.values(accessibleAttributeToLabelMap)
+    .map(({ label }) => label)
+    .filter(Boolean);
 
   /**
    * aria-flowto MUST requirements:
@@ -112,12 +126,12 @@ export const getAccessibleAttributeLabels = ({
    * REF: https://a11ysupport.io/tech/aria/aria-flowto_attribute
    */
   if (alternateReadingOrderParents.length > 0) {
-    processedLabels.push(
+    accessibleAttributeLabels.push(
       `${alternateReadingOrderParents.length} previous alternate reading ${
         alternateReadingOrderParents.length === 1 ? "order" : "orders"
       }`
     );
   }
 
-  return processedLabels;
+  return { accessibleAttributeLabels, accessibleAttributeToLabelMap };
 };

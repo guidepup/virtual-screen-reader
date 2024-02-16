@@ -1,3 +1,4 @@
+import type { AccessibleAttributeToLabelMap } from "./";
 import { postProcessAriaValueNow } from "./postProcessAriaValueNow";
 
 const priorityReplacementMap: [string, string][] = [
@@ -16,7 +17,7 @@ export const postProcessLabels = ({
   labels,
   role,
 }: {
-  labels: Record<string, { label: string; value: string }>;
+  labels: AccessibleAttributeToLabelMap;
   role: string;
 }) => {
   for (const [preferred, dropped] of priorityReplacementMap) {
@@ -34,5 +35,5 @@ export const postProcessLabels = ({
     });
   }
 
-  return Object.values(labels).map(({ label }) => label);
+  return labels;
 };

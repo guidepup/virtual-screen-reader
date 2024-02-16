@@ -1,22 +1,30 @@
 import { AccessibilityNode } from "../createAccessibilityTree";
-import type { HeadingLevel } from "./types";
+import { AriaAttributes } from "./types";
 
-export function matchesRoles(node: AccessibilityNode, roles: Readonly<string[]>) {
+export function matchesRoles(
+  node: AccessibilityNode,
+  roles: Readonly<string[]>
+) {
+  if (!roles?.length) {
+    return true;
+  }
+
   return roles.includes(node.role);
 }
 
-export function matchesHeadingLevels(node: AccessibilityNode, headingLevels: Readonly<HeadingLevel[]>) {
-  if (node.node.nodeType !== Node.ELEMENT_NODE) {
-    return false;
+export function matchesAccessibleAttributes(
+  node: AccessibilityNode,
+  ariaAttributes: Readonly<AriaAttributes>
+) {
+  if (!ariaAttributes) {
+    return true;
   }
 
-  const element = node.node as HTMLElement;
-
-  if (element.ariaLevel) {
-    return (headingLevels as string[]).includes(element.ariaLevel);
+  for (const [name, value] of Object.entries(ariaAttributes)) {
+    if (node.accessibleAttributeToLabelMap[name]?.value !== value) {
+      return false;
+    }
   }
 
-  return headingLevels.some(
-    (headingLevel) => element.nodeName === `H${headingLevel}`
-  );
+  return true;
 }

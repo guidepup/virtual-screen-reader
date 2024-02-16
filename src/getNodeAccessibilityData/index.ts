@@ -72,13 +72,14 @@ export function getNodeAccessibilityData({
     node,
   });
 
-  const accessibleAttributeLabels = getAccessibleAttributeLabels({
-    accessibleValue,
-    alternateReadingOrderParents,
-    container,
-    node,
-    role,
-  });
+  const { accessibleAttributeLabels, accessibleAttributeToLabelMap } =
+    getAccessibleAttributeLabels({
+      accessibleValue,
+      alternateReadingOrderParents,
+      container,
+      node,
+      role,
+    });
 
   const amendedAccessibleDescription =
     accessibleDescription === accessibleName ? "" : accessibleDescription;
@@ -146,6 +147,7 @@ export function getNodeAccessibilityData({
 
   return {
     accessibleAttributeLabels,
+    accessibleAttributeToLabelMap,
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
     accessibleValue,
