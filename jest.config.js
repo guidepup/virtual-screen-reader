@@ -13,8 +13,8 @@ module.exports = {
       statements: 98,
     },
   },
-  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
-  globals: {
-    "ts-jest": { tsConfigFile: "tsconfig.test.json" },
+  setupFilesAfterEnv: ["./test/jest.setup.ts"],
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", { tsconfig: "./tsconfig.test.json" }],
   },
 };

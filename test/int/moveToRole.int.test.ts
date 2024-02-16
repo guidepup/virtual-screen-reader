@@ -12,7 +12,11 @@ const quickNavigationRoles = [
   "search",
 ];
 
-const quickNavigationRolesWithLandmark = [...quickNavigationRoles, "landmark"];
+const quickNavigationRolesWithHeading = [...quickNavigationRoles, "heading"];
+
+const roleAttributesMap = {
+  heading: ", level 2",
+};
 
 describe("Move To Role", () => {
   afterEach(async () => {
@@ -23,7 +27,7 @@ describe("Move To Role", () => {
   describe("moveToNextRole", () => {
     describe("when there are matching roles in the container", () => {
       beforeEach(async () => {
-        document.body.innerHTML = quickNavigationRoles
+        document.body.innerHTML = quickNavigationRolesWithHeading
           .map(
             (role) =>
               `<div role="${role}" aria-label="Accessible name">Node with role: ${role}</div>`
@@ -33,23 +37,24 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRoles)(
+      it.each(quickNavigationRolesWithHeading)(
         "should let you navigate to the next %s",
         async (role) => {
-          await virtual.perform(
-            virtual.commands[
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              `moveToNext${role.at(0)!.toUpperCase()}${role.slice(1)}`
-            ]
-          );
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const command = `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
+            1
+          )}`;
+          const roleAttributes = roleAttributesMap[role] ?? "";
+
+          await virtual.perform(virtual.commands[command]);
           await virtual.next();
           await virtual.next();
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `${role}, Accessible name`,
+            `${role}, Accessible name${roleAttributes}`,
             `Node with role: ${role}`,
-            `end of ${role}, Accessible name`,
+            `end of ${role}, Accessible name${roleAttributes}`,
           ]);
         }
       );
@@ -62,7 +67,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRoles)(
+      it.each(quickNavigationRolesWithHeading)(
         "should gracefully handle being asked to move to the next %s",
         async (role) => {
           await virtual.perform(
@@ -81,7 +86,7 @@ describe("Move To Role", () => {
   describe("moveToPreviousRole", () => {
     describe("when there are matching roles in the container", () => {
       beforeEach(async () => {
-        document.body.innerHTML = quickNavigationRoles
+        document.body.innerHTML = quickNavigationRolesWithHeading
           .map(
             (role) =>
               `<div role="${role}" aria-label="Accessible name">Node with role: ${role}</div>`
@@ -91,23 +96,24 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRoles)(
+      it.each(quickNavigationRolesWithHeading)(
         "should let you navigate to the previous %s",
         async (role) => {
-          await virtual.perform(
-            virtual.commands[
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              `moveToPrevious${role.at(0)!.toUpperCase()}${role.slice(1)}`
-            ]
-          );
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const command = `moveToPrevious${role
+            .at(0)!
+            .toUpperCase()}${role.slice(1)}`;
+          const roleAttributes = roleAttributesMap[role] ?? "";
+
+          await virtual.perform(virtual.commands[command]);
           await virtual.next();
           await virtual.next();
 
           expect(await virtual.spokenPhraseLog()).toEqual([
             "document",
-            `${role}, Accessible name`,
+            `${role}, Accessible name${roleAttributes}`,
             `Node with role: ${role}`,
-            `end of ${role}, Accessible name`,
+            `end of ${role}, Accessible name${roleAttributes}`,
           ]);
         }
       );
@@ -120,7 +126,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRoles)(
+      it.each(quickNavigationRolesWithHeading)(
         "should gracefully handle being asked to move to the previous %s",
         async (role) => {
           await virtual.perform(
@@ -139,7 +145,7 @@ describe("Move To Role", () => {
   describe("landmark", () => {
     describe("when there are matching roles in the container", () => {
       beforeEach(async () => {
-        document.body.innerHTML = quickNavigationRolesWithLandmark
+        document.body.innerHTML = quickNavigationRoles
           .map(
             (role) =>
               `<div role="${role}" aria-label="Accessible name">Node with role: ${role}</div>`
@@ -151,22 +157,32 @@ describe("Move To Role", () => {
 
       it("should let you navigate to the next landmark", async () => {
         await Promise.all(
-          quickNavigationRoles.map(() =>
-            virtual.perform(virtual.commands.moveToNextLandmark)
-          )
+          quickNavigationRoles.flatMap(() => [
+            virtual.perform(virtual.commands.moveToNextLandmark),
+            virtual.next(),
+            virtual.next(),
+          ])
         );
 
         expect(await virtual.spokenPhraseLog()).toEqual([
           "document",
-          ...quickNavigationRoles.map((role) => `${role}, Accessible name`),
+          ...quickNavigationRoles.flatMap((role) => [
+            `${role}, Accessible name`,
+            `Node with role: ${role}`,
+            `end of ${role}, Accessible name`,
+          ]),
         ]);
       });
 
       it("should let you navigate to the previous landmark", async () => {
         await Promise.all(
-          quickNavigationRoles.map(() =>
-            virtual.perform(virtual.commands.moveToPreviousLandmark)
-          )
+          quickNavigationRoles.flatMap(() => [
+            virtual.perform(virtual.commands.moveToPreviousLandmark),
+            virtual.next(),
+            virtual.next(),
+            virtual.previous(),
+            virtual.previous(),
+          ])
         );
 
         expect(await virtual.spokenPhraseLog()).toEqual([
@@ -174,7 +190,13 @@ describe("Move To Role", () => {
           ...quickNavigationRoles
             .slice()
             .reverse()
-            .map((role) => `${role}, Accessible name`),
+            .flatMap((role) => [
+              `${role}, Accessible name`,
+              `Node with role: ${role}`,
+              `end of ${role}, Accessible name`,
+              `Node with role: ${role}`,
+              `${role}, Accessible name`,
+            ]),
         ]);
       });
     });

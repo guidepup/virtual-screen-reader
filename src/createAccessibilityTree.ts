@@ -1,3 +1,4 @@
+import { AccessibleAttributeToLabelMap } from "./getNodeAccessibilityData/getAccessibleAttributeLabels";
 import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
 import { getNodeByIdRef } from "./getNodeByIdRef";
@@ -6,8 +7,11 @@ import { isDialogRole } from "./isDialogRole";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
+export const END_OF_ROLE_PREFIX = "end of";
+
 export interface AccessibilityNode {
   accessibleAttributeLabels: string[];
+  accessibleAttributeToLabelMap: AccessibleAttributeToLabelMap;
   accessibleDescription: string;
   accessibleName: string;
   accessibleValue: string;
@@ -176,6 +180,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
   if (isRoleContainer) {
     flattenedTree.push({
       accessibleAttributeLabels: treeNode.accessibleAttributeLabels,
+      accessibleAttributeToLabelMap: treeNode.accessibleAttributeToLabelMap,
       accessibleDescription: treeNode.accessibleDescription,
       accessibleName: treeNode.accessibleName,
       accessibleValue: treeNode.accessibleValue,
@@ -186,7 +191,7 @@ function flattenTree(tree: AccessibilityNodeTree): AccessibilityNode[] {
       parent: treeNode.parent,
       parentDialog: treeNode.parentDialog,
       role: treeNode.role,
-      spokenRole: `end of ${treeNode.spokenRole}`,
+      spokenRole: `${END_OF_ROLE_PREFIX} ${treeNode.spokenRole}`,
     });
   }
 
@@ -236,6 +241,7 @@ function growTree(
 
     const {
       accessibleAttributeLabels,
+      accessibleAttributeToLabelMap,
       accessibleDescription,
       accessibleName,
       accessibleValue,
@@ -256,6 +262,7 @@ function growTree(
         childNode,
         {
           accessibleAttributeLabels,
+          accessibleAttributeToLabelMap,
           accessibleDescription,
           accessibleName,
           accessibleValue,
@@ -300,6 +307,7 @@ function growTree(
 
     const {
       accessibleAttributeLabels,
+      accessibleAttributeToLabelMap,
       accessibleDescription,
       accessibleName,
       accessibleValue,
@@ -320,6 +328,7 @@ function growTree(
         childNode,
         {
           accessibleAttributeLabels,
+          accessibleAttributeToLabelMap,
           accessibleDescription,
           accessibleName,
           accessibleValue,
@@ -352,6 +361,7 @@ export function createAccessibilityTree(node: Node | null) {
 
   const {
     accessibleAttributeLabels,
+    accessibleAttributeToLabelMap,
     accessibleDescription,
     accessibleName,
     accessibleValue,
@@ -371,6 +381,7 @@ export function createAccessibilityTree(node: Node | null) {
     node,
     {
       accessibleAttributeLabels,
+      accessibleAttributeToLabelMap,
       accessibleDescription,
       accessibleName,
       accessibleValue,
