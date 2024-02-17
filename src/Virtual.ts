@@ -19,7 +19,7 @@ import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
 import { observeDOM } from "./observeDOM";
 import { tick } from "./tick";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 import { VirtualCommandArgs } from "./commands/types";
 
 export interface StartOptions extends CommandOptions {
