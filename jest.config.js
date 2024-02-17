@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   preset: "ts-jest",
+  resolver: "ts-jest-resolver",
   testEnvironment: "jsdom",
   roots: ["test"],
   collectCoverageFrom: ["**/*.ts", "**/*.tsx"],
