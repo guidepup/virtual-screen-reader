@@ -1,5 +1,5 @@
-import { AccessibilityNode } from "../createAccessibilityTree";
-import { AriaAttributes } from "./types";
+import { AccessibilityNode } from '../createAccessibilityTree.js';
+import { AriaAttributes } from './types.js';
 
 export function matchesRoles(
   node: AccessibilityNode,

@@ -1,4 +1,4 @@
-import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
+import { mapAttributeNameAndValueToLabel } from './mapAttributeNameAndValueToLabel.js';
 
 const isNotMatchingElement = ({
   elements,

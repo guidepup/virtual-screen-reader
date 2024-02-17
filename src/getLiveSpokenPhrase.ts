@@ -1,9 +1,9 @@
-import { getAccessibleName } from "./getNodeAccessibilityData/getAccessibleName";
-import { getAccessibleValue } from "./getNodeAccessibilityData/getAccessibleValue";
-import { getElementFromNode } from "./getElementFromNode";
-import { getRole } from "./getNodeAccessibilityData/getRole";
-import { isElement } from "./isElement";
-import { sanitizeString } from "./sanitizeString";
+import { getAccessibleName } from './getNodeAccessibilityData/getAccessibleName.js';
+import { getAccessibleValue } from './getNodeAccessibilityData/getAccessibleValue.js';
+import { getElementFromNode } from './getElementFromNode.js';
+import { getRole } from './getNodeAccessibilityData/getRole.js';
+import { isElement } from './isElement.js';
+import { sanitizeString } from './sanitizeString.js';
 
 /**
  * Live region roles:

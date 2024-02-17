@@ -1,5 +1,5 @@
-import { isElement } from "../isElement";
-import { VirtualCommandArgs } from "./types";
+import { isElement } from '../isElement.js';
+import { VirtualCommandArgs } from './types.js';
 
 export interface MoveToNextAlternateReadingOrderElement
   extends VirtualCommandArgs {

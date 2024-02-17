@@ -1,26 +1,26 @@
 import {
   AccessibilityNode,
   createAccessibilityTree,
-} from "./createAccessibilityTree";
+} from './createAccessibilityTree.js';
 import {
   CommandOptions,
   MacOSModifiers,
   ScreenReader,
   WindowsModifiers,
 } from "@guidepup/guidepup";
-import { commands, VirtualCommands } from "./commands";
+import { commands, VirtualCommands } from './commands/index.js';
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
-} from "./errors";
-import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase";
-import { getElementFromNode } from "./getElementFromNode";
-import { getItemText } from "./getItemText";
-import { getSpokenPhrase } from "./getSpokenPhrase";
-import { observeDOM } from "./observeDOM";
-import { tick } from "./tick";
-import userEvent from "@testing-library/user-event";
-import { VirtualCommandArgs } from "./commands/types";
+} from './errors.js';
+import { getLiveSpokenPhrase, Live } from './getLiveSpokenPhrase.js';
+import { getElementFromNode } from './getElementFromNode.js';
+import { getItemText } from './getItemText.js';
+import { getSpokenPhrase } from './getSpokenPhrase.js';
+import { observeDOM } from './observeDOM.js';
+import { tick } from './tick.js';
+import { userEvent } from "@testing-library/user-event";
+import { VirtualCommandArgs } from './commands/types.js';
 
 export interface StartOptions extends CommandOptions {
   /**

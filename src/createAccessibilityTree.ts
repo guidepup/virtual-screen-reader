@@ -1,10 +1,10 @@
-import { AccessibleAttributeToLabelMap } from "./getNodeAccessibilityData/getAccessibleAttributeLabels";
-import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
-import { getNodeAccessibilityData } from "./getNodeAccessibilityData";
-import { getNodeByIdRef } from "./getNodeByIdRef";
-import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
-import { isDialogRole } from "./isDialogRole";
-import { isElement } from "./isElement";
+import { AccessibleAttributeToLabelMap } from './getNodeAccessibilityData/getAccessibleAttributeLabels/index.js';
+import { getIdRefsByAttribute } from './getIdRefsByAttribute.js';
+import { getNodeAccessibilityData } from './getNodeAccessibilityData/index.js';
+import { getNodeByIdRef } from './getNodeByIdRef.js';
+import { HTMLElementWithValue } from './getNodeAccessibilityData/getAccessibleValue.js';
+import { isDialogRole } from './isDialogRole.js';
+import { isElement } from './isElement.js';
 import { isInaccessible } from "dom-accessibility-api";
 
 export const END_OF_ROLE_PREFIX = "end of";

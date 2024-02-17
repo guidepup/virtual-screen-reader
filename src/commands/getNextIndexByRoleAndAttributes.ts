@@ -1,8 +1,8 @@
 import {
   getIndexByRoleAndAttributes,
   type GetIndexFilters,
-} from "./getIndexByRoleAndAttributes";
-import type { VirtualCommandArgs } from "./types";
+} from './getIndexByRoleAndAttributes.js';
+import type { VirtualCommandArgs } from './types.js';
 
 export type GetNextIndexArgs = Omit<VirtualCommandArgs, "container">;
 

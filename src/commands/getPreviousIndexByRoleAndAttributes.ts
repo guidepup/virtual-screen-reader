@@ -1,8 +1,8 @@
 import {
   getIndexByRoleAndAttributes,
   type GetIndexFilters,
-} from "./getIndexByRoleAndAttributes";
-import type { GetNextIndexArgs } from "./getNextIndexByRoleAndAttributes";
+} from './getIndexByRoleAndAttributes.js';
+import type { GetNextIndexArgs } from './getNextIndexByRoleAndAttributes.js';
 
 type GetPreviousIndexArgs = GetNextIndexArgs;
 

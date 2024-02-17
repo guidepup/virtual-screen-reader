@@ -1,10 +1,10 @@
 import { ARIARoleDefinitionKey, roles } from "aria-query";
-import { getRole, presentationRoles } from "./getRole";
-import { getAccessibleAttributeLabels } from "./getAccessibleAttributeLabels";
-import { getAccessibleDescription } from "./getAccessibleDescription";
-import { getAccessibleName } from "./getAccessibleName";
-import { getAccessibleValue } from "./getAccessibleValue";
-import { isElement } from "../isElement";
+import { getRole, presentationRoles } from './getRole.js';
+import { getAccessibleAttributeLabels } from './getAccessibleAttributeLabels/index.js';
+import { getAccessibleDescription } from './getAccessibleDescription.js';
+import { getAccessibleName } from './getAccessibleName.js';
+import { getAccessibleValue } from './getAccessibleValue.js';
+import { isElement } from '../isElement.js';
 
 const childrenPresentationalRoles = roles
   .entries()

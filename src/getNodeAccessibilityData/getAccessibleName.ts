@@ -1,6 +1,6 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { isElement } from "../isElement";
-import { sanitizeString } from "../sanitizeString";
+import { isElement } from '../isElement.js';
+import { sanitizeString } from '../sanitizeString.js';
 
 export function getAccessibleName(node: Node) {
   return isElement(node)
