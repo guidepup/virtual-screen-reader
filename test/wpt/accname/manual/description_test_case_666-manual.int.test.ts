@@ -1,4 +1,4 @@
-import { virtual } from "../../../../src";
+import { virtual } from '../../../../src/index.js';
 
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/accname/manual/description_test_case_666-manual.html

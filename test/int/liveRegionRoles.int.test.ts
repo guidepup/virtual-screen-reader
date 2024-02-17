@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { setupLiveRegionRoles } from "./liveRegionRoles";
-import { virtual } from "../../src";
+import { setupLiveRegionRoles } from './liveRegionRoles.js';
+import { virtual } from '../../src/index.js';
 import { waitFor } from "@testing-library/dom";
 
 describe("Live Region Roles", () => {

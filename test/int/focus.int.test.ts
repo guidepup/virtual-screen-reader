@@ -1,5 +1,5 @@
 import { getByText } from "@testing-library/dom";
-import { virtual } from "../../src";
+import { virtual } from '../../src/index.js';
 
 function setupFocusChangePage() {
   document.body.innerHTML = `

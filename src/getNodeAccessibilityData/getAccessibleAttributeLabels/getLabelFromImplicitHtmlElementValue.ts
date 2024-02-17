@@ -1,4 +1,4 @@
-import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
+import { mapAttributeNameAndValueToLabel } from './mapAttributeNameAndValueToLabel.js';
 
 const mapLocalNameToImplicitValue: Record<string, Record<string, string>> = {
   "aria-level": {

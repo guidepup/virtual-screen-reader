@@ -1,4 +1,4 @@
-import { virtual } from "../../src";
+import { virtual } from '../../src/index.js';
 
 describe("Detection", () => {
   it("should return true for Virtual being a supported screen reader for the OS", async () => {

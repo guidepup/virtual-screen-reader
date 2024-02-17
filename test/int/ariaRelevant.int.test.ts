@@ -1,6 +1,6 @@
 import { screen, waitFor } from "@testing-library/dom";
-import { setupAriaRelevant } from "./ariaRelevant";
-import { virtual } from "../../src";
+import { setupAriaRelevant } from './ariaRelevant.js';
+import { virtual } from '../../src/index.js';
 
 describe("Aria Relevant", () => {
   let teardown;

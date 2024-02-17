@@ -1,4 +1,4 @@
-import { virtual } from "../../src";
+import { virtual } from '../../src/index.js';
 
 const quickNavigationRoles = [
   "banner",

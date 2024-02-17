@@ -1,4 +1,4 @@
-import { virtual } from "../../src";
+import { virtual } from '../../src/index.js';
 
 const headingLevels = ["1", "2", "3", "4", "5", "6"];
 

@@ -1,4 +1,4 @@
-import { virtual } from "../../../../src";
+import { virtual } from '../../../../src/index.js';
 
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/accname/manual/description_from_content_of_describedby_element-manual.html

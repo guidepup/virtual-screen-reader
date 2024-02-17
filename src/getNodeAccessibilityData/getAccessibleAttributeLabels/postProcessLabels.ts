@@ -1,5 +1,5 @@
-import type { AccessibleAttributeToLabelMap } from "./";
-import { postProcessAriaValueNow } from "./postProcessAriaValueNow";
+import type { AccessibleAttributeToLabelMap } from './/index.js';
+import { postProcessAriaValueNow } from './postProcessAriaValueNow.js';
 
 const priorityReplacementMap: [string, string][] = [
   ["aria-colindextext", "aria-colindex"],

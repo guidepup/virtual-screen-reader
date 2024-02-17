@@ -1,4 +1,4 @@
-import { virtual } from "../../src";
+import { virtual } from '../../src/index.js';
 import { waitFor } from "@testing-library/dom";
 
 describe("Aria Live - Content Editable", () => {

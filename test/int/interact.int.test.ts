@@ -1,5 +1,5 @@
-import { setupBasicPage } from "../utils";
-import { virtual } from "../../src";
+import { setupBasicPage } from '../utils.js';
+import { virtual } from '../../src/index.js';
 
 describe("interact / stopInteracting", () => {
   beforeEach(() => {
