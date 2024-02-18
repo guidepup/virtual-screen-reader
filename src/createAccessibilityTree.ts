@@ -20,7 +20,7 @@ export interface AccessibilityNode {
   childrenPresentational: boolean;
   node: Node;
   parent: Node | null;
-  parentDialog: Node | null;
+  parentDialog: HTMLElement | null;
   role: string;
   spokenRole: string;
 }
@@ -223,7 +223,9 @@ function growTree(
 
   visitedNodes.add(node);
 
-  const parentDialog = isDialogRole(tree.role) ? tree.node : tree.parentDialog;
+  const parentDialog = isDialogRole(tree.role)
+    ? (tree.node as HTMLElement)
+    : tree.parentDialog;
 
   node.childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {

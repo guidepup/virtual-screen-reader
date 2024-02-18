@@ -49,10 +49,7 @@ const defaultUserEventOptions = {
 
 /**
  * TODO: When a modal element is displayed, assistive technologies SHOULD
- * navigate to the element unless focus has explicitly been set elsewhere. Some
- * assistive technologies limit navigation to the modal element's contents. If
- * focus moves to an element outside the modal element, assistive technologies
- * SHOULD NOT limit navigation to the modal element.
+ * navigate to the element unless focus has explicitly been set elsewhere.
  *
  * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
  */
@@ -163,6 +160,31 @@ export class Virtual implements ScreenReader {
     }
 
     return this.#treeCache;
+  }
+
+  #getModalAccessibilityTree() {
+    const tree = this.#getAccessibilityTree();
+
+    if (!this.#activeNode) {
+      return tree;
+    }
+
+    const isModal =
+      this.#activeNode.parentDialog?.getAttribute("aria-modal") === "true";
+
+    if (!isModal) {
+      return tree;
+    }
+
+    /**
+     * Assistive technologies MAY limit navigation to the modal element's
+     * contents.
+     *
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
+     */
+    return tree.filter(
+      ({ parentDialog }) => parentDialog === this.#activeNode.parentDialog
+    );
   }
 
   #invalidateTreeCache() {
@@ -551,7 +573,7 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
     await tick();
 
-    const tree = this.#getAccessibilityTree();
+    const tree = this.#getModalAccessibilityTree();
 
     if (!tree.length) {
       return;
@@ -593,7 +615,7 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
     await tick();
 
-    const tree = this.#getAccessibilityTree();
+    const tree = this.#getModalAccessibilityTree();
 
     if (!tree.length) {
       return;
@@ -826,7 +848,7 @@ export class Virtual implements ScreenReader {
     this.#checkContainer();
     await tick();
 
-    const tree = this.#getAccessibilityTree();
+    const tree = this.#getModalAccessibilityTree();
 
     if (!tree.length) {
       return;

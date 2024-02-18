@@ -75,6 +75,9 @@ const ariaToHTMLAttributeMapping: Record<
   // REF: https://www.w3.org/TR/html-aam-1.0/#att-open-details
   // "aria-expanded": [{ elements: ["details"], name: "open" }],
 
+  // TODO: Set properties on the dialog element.
+  // REF: https://www.w3.org/TR/html-aam-1.0/#att-open-dialog
+
   // Not announced, indeed it will be hidden from the accessibility tree.
   // "aria-hidden": [{ name: "hidden" }],
 
