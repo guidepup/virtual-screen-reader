@@ -1,7 +1,8 @@
-import { isElement } from './isElement.js';
+import { isElement } from "./isElement.js";
 
 export const observeDOM = (function () {
-  const MutationObserver = window.MutationObserver;
+  const MutationObserver =
+    typeof window !== "undefined" ? window.MutationObserver : null;
 
   return function observeDOM(
     node: Node,
