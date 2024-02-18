@@ -1,4 +1,4 @@
-import { StartOptions, Virtual } from './Virtual.js';
+import { StartOptions, Virtual } from "./Virtual.js";
 
 /**
  * [API Reference](https://www.guidepup.dev/docs/api/class-virtual)

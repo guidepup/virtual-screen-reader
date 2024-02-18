@@ -1,4 +1,4 @@
-import { mapAttributeNameAndValueToLabel } from './mapAttributeNameAndValueToLabel.js';
+import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
 
 export const getLabelFromAriaAttribute = ({
   attributeName,

@@ -1,6 +1,6 @@
 import { getByRole } from "@testing-library/dom";
-import { setupBasicPage } from '../utils.js';
-import { virtual } from '../../src/index.js';
+import { setupBasicPage } from "../utils.js";
+import { virtual } from "../../src/index.js";
 
 describe("next", () => {
   beforeEach(async () => {

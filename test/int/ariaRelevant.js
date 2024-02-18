@@ -12,7 +12,7 @@ function test(index) {
 }
 
 function setupAriaRelevant() {
-  document.body.innerHTML = `<div id="content"></div>`;
+  document.body.innerHTML = "<div id=\"content\"></div>";
 
   [null, "", "additions", "removals", "text", "all", "additions text"].forEach(
     function (attr, index) {

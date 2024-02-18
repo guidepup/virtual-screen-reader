@@ -1,5 +1,5 @@
-import { setupBasicPage } from '../utils.js';
-import { virtual } from '../../src/index.js';
+import { setupBasicPage } from "../utils.js";
+import { virtual } from "../../src/index.js";
 
 describe("Active Node", () => {
   beforeEach(() => {

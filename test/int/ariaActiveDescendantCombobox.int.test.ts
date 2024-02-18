@@ -1,5 +1,5 @@
-import { setupComboboxWithListAutocomplete } from './comboboxWithListAutocomplete.js';
-import { virtual } from '../../src/index.js';
+import { setupComboboxWithListAutocomplete } from "./comboboxWithListAutocomplete.js";
+import { virtual } from "../../src/index.js";
 
 describe("Aria Active Descendant", () => {
   let teardown;

@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 describe("Aria Error Message", () => {
   beforeEach(async () => {
@@ -24,24 +24,24 @@ describe("Aria Error Message", () => {
 
   afterEach(async () => {
     await virtual.stop();
-    document.body.innerHTML = ``;
+    document.body.innerHTML = "";
   });
 
-  it('should not convey the error when the error message is NOT pertinent - applied to the input[type="text"] element', async () => {
+  it("should not convey the error when the error message is NOT pertinent - applied to the input[type=\"text\"] element", async () => {
     document.querySelector<HTMLInputElement>("#invalid-false")!.focus();
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      'textbox, Input with aria-invalid="false", not invalid',
+      "textbox, Input with aria-invalid=\"false\", not invalid",
     ]);
   });
 
-  it('should convey that the referenced error message is pertinent - applied to the input[type="text"] element', async () => {
+  it("should convey that the referenced error message is pertinent - applied to the input[type=\"text\"] element", async () => {
     document.querySelector<HTMLInputElement>("#invalid-true")!.focus();
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      'textbox, Input with aria-invalid="true", 1 error message, invalid',
+      "textbox, Input with aria-invalid=\"true\", 1 error message, invalid",
     ]);
   });
 });

@@ -1,6 +1,6 @@
 import React, { useId } from "react";
 import { render } from "@testing-library/react";
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 const ComponentWithReactUseId = () => {
   const childId = useId();

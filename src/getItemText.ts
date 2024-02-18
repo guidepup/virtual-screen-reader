@@ -1,4 +1,4 @@
-import { AccessibilityNode } from './createAccessibilityTree.js';
+import { AccessibilityNode } from "./createAccessibilityTree.js";
 
 export const getItemText = (
   accessibilityNode: Pick<

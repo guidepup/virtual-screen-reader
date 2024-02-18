@@ -1,5 +1,5 @@
 import { getByText, queryByText } from "@testing-library/dom";
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 function setupButtonPage() {
   document.body.innerHTML = `
@@ -22,7 +22,7 @@ function setupButtonPage() {
 
   document.body.addEventListener("contextmenu", () => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    document.getElementById("status")!.innerHTML = `Right Clicked`;
+    document.getElementById("status")!.innerHTML = "Right Clicked";
   });
 }
 

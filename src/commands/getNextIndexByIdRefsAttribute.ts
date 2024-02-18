@@ -1,8 +1,8 @@
-import { getElementNode } from './getElementNode.js';
-import { getIdRefsByAttribute } from '../getIdRefsByAttribute.js';
-import { getNodeByIdRef } from '../getNodeByIdRef.js';
-import { isElement } from '../isElement.js';
-import { VirtualCommandArgs } from './types.js';
+import { getElementNode } from "./getElementNode.js";
+import { getIdRefsByAttribute } from "../getIdRefsByAttribute.js";
+import { getNodeByIdRef } from "../getNodeByIdRef.js";
+import { isElement } from "../isElement.js";
+import { VirtualCommandArgs } from "./types.js";
 
 export interface GetNextIndexByIdRefsAttributeArgs extends VirtualCommandArgs {
   attributeName: string;

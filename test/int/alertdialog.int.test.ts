@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/dom";
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 function setupDialogPage() {
   document.body.innerHTML = `

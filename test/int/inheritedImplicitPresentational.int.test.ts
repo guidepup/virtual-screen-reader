@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 describe("Inherited Implicit Presentational Role", () => {
   afterEach(async () => {

@@ -1,9 +1,9 @@
 import {
   AccessibilityNode,
   END_OF_ROLE_PREFIX,
-} from '../createAccessibilityTree.js';
-import { matchesAccessibleAttributes, matchesRoles } from './nodeMatchers.js';
-import type { AriaAttributes } from './types.js';
+} from "../createAccessibilityTree.js";
+import { matchesAccessibleAttributes, matchesRoles } from "./nodeMatchers.js";
+import type { AriaAttributes } from "./types.js";
 
 export interface GetIndexFilters {
   /** Matches a node only if the node has any of these roles */

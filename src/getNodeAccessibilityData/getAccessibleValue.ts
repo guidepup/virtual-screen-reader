@@ -1,4 +1,4 @@
-import { isElement } from '../isElement.js';
+import { isElement } from "../isElement.js";
 
 export type HTMLElementWithValue =
   | HTMLButtonElement

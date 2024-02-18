@@ -1,10 +1,10 @@
-import { AccessibleAttributeToLabelMap } from './getNodeAccessibilityData/getAccessibleAttributeLabels/index.js';
-import { getIdRefsByAttribute } from './getIdRefsByAttribute.js';
-import { getNodeAccessibilityData } from './getNodeAccessibilityData/index.js';
-import { getNodeByIdRef } from './getNodeByIdRef.js';
-import { HTMLElementWithValue } from './getNodeAccessibilityData/getAccessibleValue.js';
-import { isDialogRole } from './isDialogRole.js';
-import { isElement } from './isElement.js';
+import { AccessibleAttributeToLabelMap } from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index.js";
+import { getIdRefsByAttribute } from "./getIdRefsByAttribute.js";
+import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index.js";
+import { getNodeByIdRef } from "./getNodeByIdRef.js";
+import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue.js";
+import { isDialogRole } from "./isDialogRole.js";
+import { isElement } from "./isElement.js";
 import { isInaccessible } from "dom-accessibility-api";
 
 export const END_OF_ROLE_PREFIX = "end of";
@@ -123,6 +123,8 @@ function getOwnedNodes(node: Node, container: Node) {
   return ownedNodes;
 }
 
+const TEXT_NODE = 3;
+
 function isHiddenFromAccessibilityTree(node: Node | null): node is null {
   if (!node) {
     return true;
@@ -130,7 +132,7 @@ function isHiddenFromAccessibilityTree(node: Node | null): node is null {
 
   // `node.textContent` is only `null` for `document` and `doctype`.
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (node.nodeType === Node.TEXT_NODE && !!node.textContent!.trim()) {
+  if (node.nodeType === TEXT_NODE && !!node.textContent!.trim()) {
     return false;
   }
 

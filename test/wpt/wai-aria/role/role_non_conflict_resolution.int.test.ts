@@ -1,4 +1,4 @@
-import { virtual } from '../../../../src/index.js';
+import { virtual } from "../../../../src/index.js";
 
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/wai-aria/role/role_none_conflict_resolution.html

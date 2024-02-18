@@ -1,35 +1,38 @@
 import { isElement } from "./isElement.js";
 
-export const observeDOM = (function () {
+interface Root {
+  MutationObserver?: typeof MutationObserver;
+}
+
+export function observeDOM(
+  root: Root,
+  node: Node,
+  onChange: MutationCallback
+): () => void {
+  if (!isElement(node)) {
+    return () => {};
+  }
+
   const MutationObserver =
-    typeof window !== "undefined" ? window.MutationObserver : null;
+    typeof root !== "undefined" ? root?.MutationObserver : null;
 
-  return function observeDOM(
-    node: Node,
-    onChange: MutationCallback
-  ): () => void {
-    if (!isElement(node)) {
-      return;
-    }
+  if (MutationObserver) {
+    const mutationObserver = new MutationObserver(onChange);
 
-    if (MutationObserver) {
-      const mutationObserver = new MutationObserver(onChange);
-
-      mutationObserver.observe(node, {
-        attributes: true,
-        characterData: true,
-        childList: true,
-        subtree: true,
-      });
-
-      return () => {
-        mutationObserver.disconnect();
-      };
-    }
+    mutationObserver.observe(node, {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
 
     return () => {
-      // gracefully fallback to not supporting Accessibility Tree refreshes if
-      // the DOM changes.
+      mutationObserver.disconnect();
     };
+  }
+
+  return () => {
+    // gracefully fallback to not supporting Accessibility Tree refreshes if
+    // the DOM changes.
   };
-})();
+}

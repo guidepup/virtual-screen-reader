@@ -7,6 +7,16 @@ module.exports = {
     "plugin:require-extensions/recommended",
     "prettier",
   ],
-  plugins: ["@typescript-eslint", "require-extensions"],
-  rules: { "sort-imports": ["error", { ignoreCase: true }] },
+  plugins: ["require-extensions", "@typescript-eslint"],
+  rules: {
+    "sort-imports": ["error", { ignoreCase: true }],
+    quotes: ["error", "double"],
+  },
+  env: {
+    browser: true,
+    node: true,
+  },
+  globals: {
+    jest: "readonly",
+  },
 };
