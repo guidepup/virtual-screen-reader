@@ -183,9 +183,7 @@ export class Virtual implements ScreenReader {
      * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
      */
     return tree.filter(
-      ({ parentDialog }) =>
-        this.#activeNode.parentDialog === parentDialog ||
-        this.#activeNode.node === parentDialog
+      ({ parentDialog }) => this.#activeNode.parentDialog === parentDialog
     );
   }
 
@@ -273,7 +271,7 @@ export class Virtual implements ScreenReader {
      */
     if (
       accessibilityNode.parentDialog !== null &&
-      accessibilityNode.parentDialog !== this.#activeNode.parentDialog
+      accessibilityNode.parentDialog !== this.#activeNode?.parentDialog
     ) {
       // One of the few cases where you will get two logs for a single
       // interaction.

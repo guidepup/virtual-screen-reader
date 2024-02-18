@@ -57,6 +57,8 @@ describe("Aria Modal", () => {
         "button, Verify Address",
         "button, Add",
         "button, Cancel",
+        "end of dialog, Add Delivery Address, modal",
+        "dialog, Add Delivery Address, modal",
         "heading, Add Delivery Address, level 2",
         "Street:",
         "textbox, Street:",
@@ -74,6 +76,8 @@ describe("Aria Modal", () => {
       expect(await virtual.spokenPhraseLog()).toEqual([
         "Street:",
         "heading, Add Delivery Address, level 2",
+        "dialog, Add Delivery Address, modal",
+        "end of dialog, Add Delivery Address, modal",
         "button, Cancel",
         "button, Add",
         "button, Verify Address",

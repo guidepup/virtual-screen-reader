@@ -227,6 +227,10 @@ function growTree(
     ? (tree.node as HTMLElement)
     : tree.parentDialog;
 
+  if (parentDialog) {
+    tree.parentDialog = parentDialog;
+  }
+
   node.childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
