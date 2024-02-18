@@ -1,4 +1,4 @@
-import { virtual } from '../../../../src/index.js';
+import { virtual } from "../../../../src/index.js";
 
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/accname/manual/description_1.0_combobox-focusable-manual.html

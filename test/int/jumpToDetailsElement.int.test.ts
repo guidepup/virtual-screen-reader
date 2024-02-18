@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 describe("jumpToDetailsElement", () => {
   afterEach(async () => {
@@ -77,7 +77,7 @@ describe("jumpToDetailsElement", () => {
   });
 
   it("should ignore the command on a non-element node", async () => {
-    document.body.innerHTML = `Hello World`;
+    document.body.innerHTML = "Hello World";
 
     await virtual.start({ container: document.body });
     await virtual.next();

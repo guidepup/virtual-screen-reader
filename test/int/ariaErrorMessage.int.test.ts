@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 describe("Aria Error Message", () => {
   beforeEach(async () => {
@@ -24,7 +24,7 @@ describe("Aria Error Message", () => {
 
   afterEach(async () => {
     await virtual.stop();
-    document.body.innerHTML = ``;
+    document.body.innerHTML = "";
   });
 
   it('should not convey the error when the error message is NOT pertinent - applied to the input[type="text"] element', async () => {

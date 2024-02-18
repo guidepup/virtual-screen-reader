@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 const headingLevels = ["1", "2", "3", "4", "5", "6"];
 
@@ -31,12 +31,12 @@ describe("Move To Heading", () => {
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Heading Level 1, level 1`,
-          `heading, Heading Level 2, level 2`,
-          `heading, Heading Level 3, level 3`,
-          `heading, Heading Level 4, level 4`,
-          `heading, Heading Level 5, level 5`,
-          `heading, Heading Level 6, level 6`,
+          "heading, Heading Level 1, level 1",
+          "heading, Heading Level 2, level 2",
+          "heading, Heading Level 3, level 3",
+          "heading, Heading Level 4, level 4",
+          "heading, Heading Level 5, level 5",
+          "heading, Heading Level 6, level 6",
         ]);
       });
     });
@@ -72,18 +72,18 @@ describe("Move To Heading", () => {
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Heading Level 1, level 1`,
-          `heading, Heading Level 2, level 2`,
-          `heading, Heading Level 3, level 3`,
-          `heading, Heading Level 4, level 4`,
-          `heading, Heading Level 5, level 5`,
-          `heading, Heading Level 6, level 6`,
-          `heading, Heading Level 7, level 7`,
-          `heading, Heading Level 8, level 8`,
-          `heading, Heading Level 9, level 9`,
-          `heading, Heading Level 10, level 10`,
-          `heading, Heading Level 11, level 11`,
-          `heading, Heading Level 12, level 12`,
+          "heading, Heading Level 1, level 1",
+          "heading, Heading Level 2, level 2",
+          "heading, Heading Level 3, level 3",
+          "heading, Heading Level 4, level 4",
+          "heading, Heading Level 5, level 5",
+          "heading, Heading Level 6, level 6",
+          "heading, Heading Level 7, level 7",
+          "heading, Heading Level 8, level 8",
+          "heading, Heading Level 9, level 9",
+          "heading, Heading Level 10, level 10",
+          "heading, Heading Level 11, level 11",
+          "heading, Heading Level 12, level 12",
         ]);
       });
     });
@@ -128,12 +128,12 @@ describe("Move To Heading", () => {
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Heading Level 6, level 6`,
-          `heading, Heading Level 5, level 5`,
-          `heading, Heading Level 4, level 4`,
-          `heading, Heading Level 3, level 3`,
-          `heading, Heading Level 2, level 2`,
-          `heading, Heading Level 1, level 1`,
+          "heading, Heading Level 6, level 6",
+          "heading, Heading Level 5, level 5",
+          "heading, Heading Level 4, level 4",
+          "heading, Heading Level 3, level 3",
+          "heading, Heading Level 2, level 2",
+          "heading, Heading Level 1, level 1",
         ]);
       });
     });
@@ -171,18 +171,18 @@ describe("Move To Heading", () => {
         const spokenPhraseLog = await virtual.spokenPhraseLog();
         expect(spokenPhraseLog).toEqual([
           "document",
-          `heading, Heading Level 12, level 12`,
-          `heading, Heading Level 11, level 11`,
-          `heading, Heading Level 10, level 10`,
-          `heading, Heading Level 9, level 9`,
-          `heading, Heading Level 8, level 8`,
-          `heading, Heading Level 7, level 7`,
-          `heading, Heading Level 6, level 6`,
-          `heading, Heading Level 5, level 5`,
-          `heading, Heading Level 4, level 4`,
-          `heading, Heading Level 3, level 3`,
-          `heading, Heading Level 2, level 2`,
-          `heading, Heading Level 1, level 1`,
+          "heading, Heading Level 12, level 12",
+          "heading, Heading Level 11, level 11",
+          "heading, Heading Level 10, level 10",
+          "heading, Heading Level 9, level 9",
+          "heading, Heading Level 8, level 8",
+          "heading, Heading Level 7, level 7",
+          "heading, Heading Level 6, level 6",
+          "heading, Heading Level 5, level 5",
+          "heading, Heading Level 4, level 4",
+          "heading, Heading Level 3, level 3",
+          "heading, Heading Level 2, level 2",
+          "heading, Heading Level 1, level 1",
         ]);
       });
     });

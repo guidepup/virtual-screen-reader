@@ -14,7 +14,7 @@ module.exports = {
       statements: 98,
     },
   },
-  setupFilesAfterEnv: ["./test/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "./tsconfig.test.json" }],
   },

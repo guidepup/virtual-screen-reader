@@ -1,6 +1,6 @@
 import { getRole as getImplicitRole } from "dom-accessibility-api";
 import { getRoles } from "@testing-library/dom";
-import { isElement } from '../isElement.js';
+import { isElement } from "../isElement.js";
 import { roles } from "aria-query";
 
 export const presentationRoles = ["presentation", "none"];

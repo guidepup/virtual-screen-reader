@@ -1,10 +1,10 @@
-import { getAttributesByRole } from './getAttributesByRole.js';
-import { getLabelFromAriaAttribute } from './getLabelFromAriaAttribute.js';
-import { getLabelFromHtmlEquivalentAttribute } from './getLabelFromHtmlEquivalentAttribute.js';
-import { getLabelFromImplicitHtmlElementValue } from './getLabelFromImplicitHtmlElementValue.js';
-import { isElement } from '../../isElement.js';
-import { mapAttributeNameAndValueToLabel } from './mapAttributeNameAndValueToLabel.js';
-import { postProcessLabels } from './postProcessLabels.js';
+import { getAttributesByRole } from "./getAttributesByRole.js";
+import { getLabelFromAriaAttribute } from "./getLabelFromAriaAttribute.js";
+import { getLabelFromHtmlEquivalentAttribute } from "./getLabelFromHtmlEquivalentAttribute.js";
+import { getLabelFromImplicitHtmlElementValue } from "./getLabelFromImplicitHtmlElementValue.js";
+import { isElement } from "../../isElement.js";
+import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
+import { postProcessLabels } from "./postProcessLabels.js";
 
 export type AccessibleAttributeToLabelMap = Record<
   string,

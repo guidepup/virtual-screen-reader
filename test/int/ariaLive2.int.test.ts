@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 import { waitFor } from "@testing-library/dom";
 
 describe("Aria Live - Content Editable", () => {
@@ -12,7 +12,7 @@ describe("Aria Live - Content Editable", () => {
 
   afterEach(async () => {
     await virtual.stop();
-    document.body.innerHTML = ``;
+    document.body.innerHTML = "";
   });
 
   it("should announce changes to a live region - applied to the contenteditable element", async () => {
@@ -62,7 +62,7 @@ describe("Aria Live - All Attributes", () => {
 
   afterEach(async () => {
     await virtual.stop();
-    document.body.innerHTML = ``;
+    document.body.innerHTML = "";
   });
 
   it("should announce changes to a live region - all attributes short-circuit", async () => {

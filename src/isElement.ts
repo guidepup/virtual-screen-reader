@@ -1,3 +1,5 @@
+const ELEMENT_NODE = 1;
+
 export function isElement(node: Node): node is HTMLElement {
-  return node.nodeType === Node.ELEMENT_NODE;
+  return node.nodeType === ELEMENT_NODE;
 }

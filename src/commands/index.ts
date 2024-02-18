@@ -1,11 +1,11 @@
-import { getNextIndexByRoleAndAttributes } from './getNextIndexByRoleAndAttributes.js';
-import { getPreviousIndexByRoleAndAttributes } from './getPreviousIndexByRoleAndAttributes.js';
-import { jumpToControlledElement } from './jumpToControlledElement.js';
-import { jumpToDetailsElement } from './jumpToDetailsElement.js';
-import { jumpToErrorMessageElement } from './jumpToErrorMessageElement.js';
-import { moveToNextAlternateReadingOrderElement } from './moveToNextAlternateReadingOrderElement.js';
-import { moveToPreviousAlternateReadingOrderElement } from './moveToPreviousAlternateReadingOrderElement.js';
-import { VirtualCommandArgs } from './types.js';
+import { getNextIndexByRoleAndAttributes } from "./getNextIndexByRoleAndAttributes.js";
+import { getPreviousIndexByRoleAndAttributes } from "./getPreviousIndexByRoleAndAttributes.js";
+import { jumpToControlledElement } from "./jumpToControlledElement.js";
+import { jumpToDetailsElement } from "./jumpToDetailsElement.js";
+import { jumpToErrorMessageElement } from "./jumpToErrorMessageElement.js";
+import { moveToNextAlternateReadingOrderElement } from "./moveToNextAlternateReadingOrderElement.js";
+import { moveToPreviousAlternateReadingOrderElement } from "./moveToPreviousAlternateReadingOrderElement.js";
+import { VirtualCommandArgs } from "./types.js";
 
 const quickLandmarkNavigationRoles = [
   /**

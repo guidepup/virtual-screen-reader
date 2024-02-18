@@ -1,6 +1,6 @@
 import { screen, waitFor } from "@testing-library/dom";
-import { setupAriaAtomic } from './ariaAtomic.js';
-import { virtual } from '../../src/index.js';
+import { setupAriaAtomic } from "./ariaAtomic.js";
+import { virtual } from "../../src/index.js";
 
 describe("Aria Atomic", () => {
   let teardown;

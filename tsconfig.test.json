@@ -3,5 +3,6 @@
   "compilerOptions": {
     "rootDir": "./test",
     "target": "esnext",
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts"],
 }

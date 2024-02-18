@@ -1,4 +1,4 @@
-import { virtual } from '../../src/index.js';
+import { virtual } from "../../src/index.js";
 
 describe("Read only Attribute State", () => {
   afterEach(async () => {

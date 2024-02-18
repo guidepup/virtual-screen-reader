@@ -1,26 +1,26 @@
 import {
   AccessibilityNode,
   createAccessibilityTree,
-} from './createAccessibilityTree.js';
+} from "./createAccessibilityTree.js";
 import {
   CommandOptions,
   MacOSModifiers,
   ScreenReader,
   WindowsModifiers,
 } from "@guidepup/guidepup";
-import { commands, VirtualCommands } from './commands/index.js';
+import { commands, VirtualCommands } from "./commands/index.js";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
-} from './errors.js';
-import { getLiveSpokenPhrase, Live } from './getLiveSpokenPhrase.js';
-import { getElementFromNode } from './getElementFromNode.js';
-import { getItemText } from './getItemText.js';
-import { getSpokenPhrase } from './getSpokenPhrase.js';
-import { observeDOM } from './observeDOM.js';
-import { tick } from './tick.js';
+} from "./errors.js";
+import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase.js";
+import { getElementFromNode } from "./getElementFromNode.js";
+import { getItemText } from "./getItemText.js";
+import { getSpokenPhrase } from "./getSpokenPhrase.js";
+import { observeDOM } from "./observeDOM.js";
+import { tick } from "./tick.js";
 import { userEvent } from "@testing-library/user-event";
-import { VirtualCommandArgs } from './commands/types.js';
+import { VirtualCommandArgs } from "./commands/types.js";
 
 export interface StartOptions extends CommandOptions {
   /**
@@ -29,6 +29,17 @@ export interface StartOptions extends CommandOptions {
    * To use the entire page pass `document.body`.
    */
   container: Node;
+
+  /**
+   * The window instance.
+   *
+   * Only required if the `window` instance is not already globally available.
+   * For example, when you are in a Node environment and using a custom DOM
+   * implementation that is not attached to the global scope.
+   *
+   * Defaults to using the global `window` instance.
+   */
+  window?: unknown;
 }
 
 const defaultUserEventOptions = {
@@ -448,14 +459,23 @@ export class Virtual implements ScreenReader {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore for non-TS users we default the container to `null` which
   // prompts the missing container error.
-  async start({ container }: StartOptions = { container: null }) {
+  async start(
+    { container, window: root }: StartOptions = {
+      container: null,
+    }
+  ) {
     if (!container) {
       throw new Error(ERR_VIRTUAL_MISSING_CONTAINER);
+    }
+
+    if (!root && typeof window !== "undefined") {
+      root = window;
     }
 
     this.#container = container;
 
     this.#disconnectDOMObserver = observeDOM(
+      root,
       container,
       (mutations: MutationRecord[]) => {
         this.#invalidateTreeCache();

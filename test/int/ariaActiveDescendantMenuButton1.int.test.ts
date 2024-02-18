@@ -1,5 +1,5 @@
-import { setupActionsMenuButton } from './actionsMenuButton.js';
-import { virtual } from '../../src/index.js';
+import { setupActionsMenuButton } from "./actionsMenuButton.js";
+import { virtual } from "../../src/index.js";
 
 describe("Aria Active Descendant Menu Button", () => {
   let teardown;

@@ -1,4 +1,4 @@
-import { virtual } from '../../../src/index.js';
+import { virtual } from "../../../src/index.js";
 
 /**
  * https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html

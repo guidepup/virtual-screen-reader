@@ -1,9 +1,9 @@
-import { getAccessibleName } from './getNodeAccessibilityData/getAccessibleName.js';
-import { getAccessibleValue } from './getNodeAccessibilityData/getAccessibleValue.js';
-import { getElementFromNode } from './getElementFromNode.js';
-import { getRole } from './getNodeAccessibilityData/getRole.js';
-import { isElement } from './isElement.js';
-import { sanitizeString } from './sanitizeString.js';
+import { getAccessibleName } from "./getNodeAccessibilityData/getAccessibleName.js";
+import { getAccessibleValue } from "./getNodeAccessibilityData/getAccessibleValue.js";
+import { getElementFromNode } from "./getElementFromNode.js";
+import { getRole } from "./getNodeAccessibilityData/getRole.js";
+import { isElement } from "./isElement.js";
+import { sanitizeString } from "./sanitizeString.js";
 
 /**
  * Live region roles:
@@ -101,6 +101,8 @@ function getRemovalsSpokenPhrase({ removedNodes }: { removedNodes: NodeList }) {
   );
 }
 
+const TEXT_NODE = 3;
+
 /**
  * TODO: When text changes are denoted as relevant, user agents MUST monitor
  * any descendant node change that affects the text alternative computation of
@@ -127,7 +129,7 @@ function getTextSpokenPhrase({
       }
 
       return Array.from(addedNodes)
-        .filter((node) => node.nodeType === Node.TEXT_NODE)
+        .filter((node) => node.nodeType === TEXT_NODE)
         .map(getSpokenPhraseForNode);
     }
     case "characterData": {

@@ -1,5 +1,5 @@
-import { getNextIndexByIdRefsAttribute } from './getNextIndexByIdRefsAttribute.js';
-import { VirtualCommandArgs } from './types.js';
+import { getNextIndexByIdRefsAttribute } from "./getNextIndexByIdRefsAttribute.js";
+import { VirtualCommandArgs } from "./types.js";
 
 export interface MoveToNextAlternateReadingOrderElement
   extends VirtualCommandArgs {
