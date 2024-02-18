@@ -11,7 +11,7 @@ describe("HTML-AAM Role Verification Tests", () => {
 
     <a href="#" data-testname="el-a" data-expectedrole="link" class="ex">x</a>
     <a data-testname="el-a-no-href" data-expectedrole="generic" class="ex">x</a>
-    <!-- todo: abbr -->
+    
     <address data-testname="el-address" data-expectedrole="group" class="ex">x</address>
     <!-- area -> ./fragile/area-role.html -->
     <article data-testname="el-article" data-expectedrole="article" class="ex">x</article>
@@ -23,24 +23,20 @@ describe("HTML-AAM Role Verification Tests", () => {
     </nav>
     <aside data-testname="el-aside-ancestorbodymain" data-expectedrole="complementary" class="ex">x</aside>
 
-    <!-- todo: audio -->
-    <!-- todo: autonomous custom element -->
     <b data-testname="el-b" data-expectedrole="generic" class="ex">x</b>
     <!-- base (not mapped) -->
     <bdi data-testname="el-bdi" data-expectedrole="generic" class="ex">x</bdi>
     <bdo data-testname="el-bdo" data-expectedrole="generic" class="ex">x</bdo>
     <blockquote data-testname="el-blockquote" data-expectedrole="blockquote" class="ex">x</blockquote>
-    <!-- todo: body -->
+    
     <!-- br (not mapped) -->
     <button data-testname="el-button" data-expectedrole="button" class="ex">x</button>
-    <!-- todo: canvas -->
+    
     <!-- caption -> ./table-roles.html -->
-    <!-- todo: cite -->
+    
     <code data-testname="el-code" data-expectedrole="code" class="ex">x</code>
-    <!-- todo: col -->
-    <!-- todo: colgroup -->
+    
     <data value="1" data-testname="el-data" data-expectedrole="generic" class="ex">x</data>
-    <!-- todo: datalist -->
 
     <!-- el-dd -->
     <dl>
@@ -52,7 +48,6 @@ describe("HTML-AAM Role Verification Tests", () => {
     <details data-testname="el-details" data-expectedrole="group" class="ex"><summary>x</summary>x</details>
     <dfn data-testname="el-dfn" data-expectedrole="term" class="ex">x</dfn>
     <div open data-testname="el-div" data-expectedrole="generic" class="ex">x</div>
-    <!-- todo: dl -->
 
     <!-- el-dt -->
     <dl>
@@ -61,9 +56,9 @@ describe("HTML-AAM Role Verification Tests", () => {
     </dl>
 
     <em data-testname="el-em" data-expectedrole="emphasis" class="ex">x</em>
-    <!-- todo: embed -->
+
     <fieldset data-testname="el-fieldset" data-expectedrole="group" class="ex"><legend>x</legend><input></fieldset>
-    <!-- todo: figcaption -->
+
     <figure data-testname="el-figure" data-expectedrole="figure" class="ex"><img src="#" alt="x"><figcaption>x</figcaption></figure>
 
     <!-- el-footer -->
@@ -73,7 +68,6 @@ describe("HTML-AAM Role Verification Tests", () => {
     <footer data-testname="el-footer-ancestorbody" data-expectedrole="contentinfo" class="ex">x</footer>
 
     <form data-testname="el-form" data-expectedrole="form" class="ex"><input></form>
-    <!-- todo: form-associated custom element -->
 
     <!-- el-h1-h6 -->
     <h1 data-testname="el-h1" data-expectedrole="heading" class="ex">x</h1>
@@ -93,9 +87,9 @@ describe("HTML-AAM Role Verification Tests", () => {
 
     <hgroup data-testname="el-hgroup" data-expectedrole="group" class="ex"><h1>x</h1></hgroup>
     <hr data-testname="el-hr" data-expectedrole="separator" class="ex">
-    <!-- todo: html -->
+    
     <i data-testname="el-i" data-expectedrole="generic" class="ex">x</i>
-    <!-- todo: iframe -->
+    
     <img src="#" alt="x" data-testname="el-img" data-expectedrole="image" class="ex">
 
     <!-- Implementations might also be valid if ignored rather than returning 'none' for the following images. -->
@@ -104,19 +98,14 @@ describe("HTML-AAM Role Verification Tests", () => {
 
     <input type="button" value="x" data-testname="el-input-button" data-expectedrole="button" class="ex">
     <input type="checkbox" data-testname="el-input-checkbox" data-expectedrole="checkbox" class="ex">
-    <!-- todo: input type="color" -->
-    <!-- todo: input type="date" -->
-    <!-- todo: input type="datetime" -->
-    <!-- todo: input type="datetime-local" -->
+
     <input type="email" data-testname="el-input-email" data-expectedrole="textbox" class="ex">
-    <!-- todo: input type="file" -->
+    
     <!-- input type="hidden" (not mapped) -->
-    <!-- todo: input type="month" -->
 
     <!-- Blocked: HTML-AAM Issue #467 -->
     <!-- <input type="number" data-testname="el-input-number" data-expectedrole="spinbutton" class="ex"> -->
 
-    <!-- todo: input type="password" -->
     <input type="radio" data-testname="el-input-radio" data-expectedrole="radio" class="ex">
     <input type="range" data-testname="el-input-range" data-expectedrole="slider" class="ex">
     <input type="reset" value="x" data-testname="el-input-reset" data-expectedrole="button" class="ex">
@@ -124,14 +113,10 @@ describe("HTML-AAM Role Verification Tests", () => {
     <input type="submit" value="x" data-testname="el-input-submit" data-expectedrole="button" class="ex">
     <input type="tel" data-testname="el-input-tel" data-expectedrole="textbox" class="ex">
     <input type="text" data-testname="el-input-text" data-expectedrole="textbox" class="ex">
-    <!-- todo: input (type attribute in the Text, Search, Telephone, URL, or E-mail states with a suggestions source element) -->
-    <!-- todo: input type="time" -->
+
     <input type="url" data-testname="el-input-url" data-expectedrole="textbox" class="ex">
-    <!-- todo: input type="week" -->
+
     <ins data-testname="el-ins" data-expectedrole="insertion" class="ex">x</ins>
-    <!-- todo: kbd -->
-    <!-- todo: label -->
-    <!-- todo: legend -->
 
     <!-- el-li -->
     <li data-testname="el-li-orphaned" data-expectedrole="generic" class="ex">x</li>
@@ -142,7 +127,7 @@ describe("HTML-AAM Role Verification Tests", () => {
     <main data-testname="el-main" data-expectedrole="main" class="ex">x</main>
     <!-- map (not mapped) -->
     <mark data-testname="el-mark" data-expectedrole="mark" class="ex">x</mark>
-    <!-- todo: math -->
+    
     <menu data-testname="el-menu" data-expectedrole="list" class="ex"><li>x</li></menu>
     <!-- meta (not mapped) -->
     <meter data-testname="el-meter" data-expectedrole="meter" class="ex" min="0" max="100" low="20" high="80" optimum="60" value="50">x</meter>
@@ -162,13 +147,11 @@ describe("HTML-AAM Role Verification Tests", () => {
     <output data-testname="el-output" data-expectedrole="status" class="ex">x</output>
     <p data-testname="el-p" data-expectedrole="paragraph" class="ex">x</p>
     <!-- param (not mapped) -->
-    <!-- todo: picture -->
+    
     <pre data-testname="el-pre" data-expectedrole="generic" class="ex">x</pre>
     <progress data-testname="el-progress" data-expectedrole="progressbar" class="ex">x</progress>
     <q data-testname="el-q" data-expectedrole="generic" class="ex">x</q>
-    <!-- todo: rp -> /ruby-aam? -->
-    <!-- todo: rt -> /ruby-aam? -->
-    <!-- todo: ruby -> /ruby-aam? -->
+
     <s data-testname="el-s" data-expectedrole="deletion" class="ex">x</s>
     <samp data-testname="el-samp" data-expectedrole="generic" class="ex">x</samp>
     <!-- script (not mapped) -->
@@ -190,9 +173,9 @@ describe("HTML-AAM Role Verification Tests", () => {
     <strong data-testname="el-strong" data-expectedrole="strong" class="ex">x</strong>
     <!-- style (not mapped) -->
     <sub data-testname="el-sub" data-expectedrole="subscript" class="ex">x</sub>
-    <!-- todo: summary -->
+    
     <sup data-testname="el-sup" data-expectedrole="superscript" class="ex">x</sup>
-    <!-- todo: svg (see /graphics-aam and /svg-aam tests) -->
+    
     <!-- table -> ./table-roles.html -->
     <!-- tbody -> ./table-roles.html -->
     <!-- td -> ./table-roles.html -->
@@ -208,7 +191,7 @@ describe("HTML-AAM Role Verification Tests", () => {
     <u data-testname="el-u" data-expectedrole="generic" class="ex">x</u>
     <ul data-testname="el-ul" data-expectedrole="list" class="ex"><li>x</li><li>x</li></ul>
     <!-- var (not mapped) -->
-    <!-- todo: video -->
+    
     <!-- wbr (not mapped) -->
     `;
 
@@ -229,8 +212,10 @@ describe("HTML-AAM Role Verification Tests", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "link, x",
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // TODO: FAIL address should have role group
+      "x", // WONTFIX: generic ignored by screen readers
+      // TODO: FAIL address should have role group
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "article",
       "x",
       "end of article",
@@ -243,20 +228,26 @@ describe("HTML-AAM Role Verification Tests", () => {
       "complementary",
       "x",
       "end of complementary",
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // TODO: FAIL blockquote should have role blockquote
+      "x", // WONTFIX: generic ignored by screen readers
+      "x", // WONTFIX: generic ignored by screen readers
+      "x", // WONTFIX: generic ignored by screen readers
+      // TODO: FAIL blockquote should have role blockquote
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "button, x",
-      "x", // TODO: FAIL code should have role code
-      "x", // WONTFIX generic ignored by screen readers
+      // TODO: FAIL code should have role code
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      "x", // WONTFIX: generic ignored by screen readers
       "term",
       "x",
       "end of term",
       "definition",
       "x",
       "end of definition",
-      "x", // TODO: FAIL del should have role deletion
+      // TODO: FAIL del should have role deletion
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "group",
       "button, x",
       "x",
@@ -264,14 +255,16 @@ describe("HTML-AAM Role Verification Tests", () => {
       "term",
       "x",
       "end of term",
-      "x", // WONTFIX generic ignored by screen readers
+      "x", // WONTFIX: generic ignored by screen readers
       "term",
       "x",
       "end of term",
       "definition",
       "x",
       "end of definition",
-      "x", // TODO: FAIL em should have role emphasis
+      // TODO: FAIL em should have role emphasis
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "group, x",
       "figure",
       "img, x",
@@ -293,15 +286,21 @@ describe("HTML-AAM Role Verification Tests", () => {
       "heading, x, level 5",
       "heading, x, level 6",
       "navigation",
-      "banner, x", // TODO: FAIL header role should be generic
+      // TODO: FAIL header role should be generic
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "banner, x",
       "end of navigation",
       "banner",
       "x",
       "end of banner",
-      "heading, x, level 1", // TODO: FAIL hgroup missing role
+      // TODO: FAIL hgroup missing role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "heading, x, level 1",
       "separator, orientated horizontally, max value 100, min value 0",
-      "x", // WONTFIX generic ignored by screen readers
-      "img, x", // TODO: FAIL img role should be image
+      "x", // WONTFIX: generic ignored by screen readers
+      // TODO: FAIL img role should be image
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "img, x",
       // PASS on missing img entry
       // PASS on missing img entry
       "button, x",
@@ -315,8 +314,12 @@ describe("HTML-AAM Role Verification Tests", () => {
       "textbox",
       "textbox",
       "textbox",
-      "x", // TODO: FAIL ins missing insertion role
-      "listitem", // TODO: FAIL orphaned li should not be announced
+      // TODO: FAIL ins missing insertion role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      // TODO: FAIL orphaned li should not be announced
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "listitem",
       "x",
       "end of listitem",
       "list",
@@ -338,13 +341,17 @@ describe("HTML-AAM Role Verification Tests", () => {
       "main",
       "x",
       "end of main",
-      "x", // TODO: FAIL mark should have mark role
+      // TODO: FAIL mark should have mark role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "list",
       "listitem",
       "x",
       "end of listitem",
       "end of list",
-      "x", // TODO: FAIL meter should have meter role
+      // TODO: FAIL meter should have meter role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "navigation",
       "x",
       "end of navigation",
@@ -363,33 +370,49 @@ describe("HTML-AAM Role Verification Tests", () => {
       "status",
       "x",
       "end of status",
-      "x", // TODO: FAIL p should have paragraph role
-      "x", // WONTFIX generic ignored by screen readers
+      // TODO: FAIL p should have paragraph role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      "x", // WONTFIX: generic ignored by screen readers
       "progressbar, 0",
       "x",
       "end of progressbar, 0",
       "x",
-      "x", // TODO: FAIL s should have deletion role
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // TODO: FAIL search should have search role
+      // TODO: FAIL s should have deletion role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      "x", // WONTFIX: generic ignored by screen readers
+      // TODO: FAIL search should have search role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "region, x",
-      "region", // TODO: FAIL section with no name should be generic
+      // TODO: FAIL section with no name should be generic
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "region",
       "x",
       "end of region",
       "listbox, orientated vertically",
       "option, b1, not selected",
       "option, b2, not selected",
       "end of listbox, orientated vertically",
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // WONTFIX generic ignored by screen readers
-      "x", // TODO: FAIL strong should have strong role
-      "x", // TODO: FAIL sub should have subscript role
-      "x", // TODO: FAIL sup should have superscript role
-      "x", // TODO: FAIL time should have time role
+      "x", // WONTFIX: generic ignored by screen readers
+      "x", // WONTFIX: generic ignored by screen readers
+      // TODO: FAIL strong should have strong role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      // TODO: FAIL sub should have subscript role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      // TODO: FAIL sup should have superscript role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
+      // TODO: FAIL time should have time role
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "x",
       "textbox",
       "x",
       "end of textbox",
-      "x", // WONTFIX generic ignored by screen readers
+      "x", // WONTFIX: generic ignored by screen readers
       "list",
       "listitem",
       "x",

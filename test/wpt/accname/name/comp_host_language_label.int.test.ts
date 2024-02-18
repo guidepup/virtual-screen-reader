@@ -9,13 +9,11 @@ describe("Name Comp: Host Language Label", () => {
     document.body.innerHTML = `
     <label for="t">label</label>
     <input id="t" data-expectedlabel="label" data-testname="host language: label[for] input[type=text]" class="ex">
-    <!-- Todo: test all remaining input types with label[for] -->
 
     <label>
       <input type="checkbox" data-expectedlabel="label" data-testname="host language: label input[type=checkbox] encapsulation" class="ex">
       label
     </label>
-    <!-- Todo: test all remaining input types with label encapsulation -->
     `;
 
     await virtual.start({ container: document.body });

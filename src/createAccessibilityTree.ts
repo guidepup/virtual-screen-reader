@@ -147,8 +147,6 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
   }
 
   return (
-    // TODO: improve comparison on whether the children are superfluous
-    // to include.
     accessibleName ===
     (
       node.textContent ||

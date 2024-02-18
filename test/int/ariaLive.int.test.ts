@@ -86,7 +86,7 @@ describe("Aria Live", () => {
     ]);
   });
 
-  // TODO: we don't actually interrupt currently, just denote that it is assertive.
+  // Note: we don't actually interrupt currently, just denote that it is assertive.
   it("should convey the assertive value by interrupting the current announcement - applied to the div element", async () => {
     await virtual.start({ container: document.body });
 

@@ -669,7 +669,12 @@ export class Virtual implements ScreenReader {
 
     const target = getElementFromNode(this.#activeNode.node);
 
-    // TODO: verify that is appropriate for all default actions
+    /**
+     * The user agent SHOULD simulate a click on the DOM element which is
+     * mapped to that accessible object.
+     *
+     * REF: https://www.w3.org/TR/core-aam-1.2/#mapping_actions
+     */
     await userEvent.click(target, defaultUserEventOptions);
 
     return;

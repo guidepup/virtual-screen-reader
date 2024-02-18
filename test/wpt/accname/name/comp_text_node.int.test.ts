@@ -36,9 +36,11 @@ describe("Name Comp: Text Node", () => {
   test("tests accessible name", async () => {
     expect(await virtual.itemTextLog()).toEqual([
       "",
-      "headinglabel", // TODO: FAIL should have whitespace
+      // TODO: FAIL should have whitespace
+      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "headinglabel",
       "heading label",
-      "heading", // TODO: FAIL should be same node
+      "heading",
       "label",
       "heading label",
       "",

@@ -31,7 +31,7 @@ describe("Name Comp: Hidden Not Referenced", () => {
     expect(await virtual.itemTextLog()).toEqual([
       "",
       "heading label",
-      "heading", // TODO: this isn't ideal, probably should just omit the contents as it matches the parent (but slight owing to the bogus element)
+      "heading",
       "label",
       "heading label",
       "",

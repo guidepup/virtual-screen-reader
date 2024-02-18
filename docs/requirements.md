@@ -133,6 +133,18 @@ https://www.w3.org/TR/wai-aria-1.2/#aria-valuetext
 
 > If aria-valuetext is specified, assistive technologies SHOULD render that value instead of the value of aria-valuenow.
 
+## CORE-AAM 1.2
+
+https://www.w3.org/TR/core-aam-1.2/
+
+### Requirements
+
+#### Reverse Relations
+
+https://www.w3.org/TR/core-aam-1.2/#mapping_additional_relations_reverse_relations
+
+> User agents MAY provide a way for the user to navigate to structured information referenced by aria-describedby and assistive technology SHOULD provide such a method.
+
 ## HTML-AAM 1.0
 
 https://www.w3.org/TR/html-aam-1.0/
