@@ -26,7 +26,7 @@ describe("jumpToControlledElement", () => {
       "document",
       "button, Target, 1 control",
       "list",
-      "listitem",
+      "listitem, position 1, group size 2",
       "Item 1",
     ]);
 
@@ -59,7 +59,7 @@ describe("jumpToControlledElement", () => {
       "document",
       "button, Target, 2 controls",
       "list",
-      "listitem",
+      "listitem, position 1, group size 2",
       "Item 3",
     ]);
 

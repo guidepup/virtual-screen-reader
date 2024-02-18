@@ -95,7 +95,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   }),
   "aria-owns": null, // Handled by accessibility tree construction
   "aria-placeholder": string("placeholder"),
-  "aria-posinset": integer("item set position"),
+  "aria-posinset": integer("position"),
   "aria-pressed": tristate(State.PRESSED, State.PARTIALLY_PRESSED),
   "aria-readonly": state(State.READ_ONLY),
   "aria-relevant": null, // Handled by live region logic
@@ -106,7 +106,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-rowindextext": string("row index"),
   "aria-rowspan": integer("row span"),
   "aria-selected": state(State.SELECTED),
-  "aria-setsize": integer("item set size"),
+  "aria-setsize": integer("group size"),
   "aria-sort": token({
     ascending: "sorted in ascending order",
     descending: "sorted in descending order",

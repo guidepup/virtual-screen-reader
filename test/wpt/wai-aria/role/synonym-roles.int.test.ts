@@ -61,22 +61,22 @@ describe("Synonym Role Verification Tests", () => {
       "x",
       "end of img",
       "list",
-      "listitem",
+      "listitem, position 1, group size 1",
       "x",
-      "end of listitem",
+      "end of listitem, position 1, group size 1",
       "end of list",
       /**
        * `directory` alias deprecated in https://www.w3.org/TR/wai-aria-1.2/#directory
        */
       "directory",
-      "listitem",
+      "listitem, position 1, group size 1",
       "x",
-      "end of listitem",
+      "end of listitem, position 1, group size 1",
       "end of directory",
       "directory",
-      "listitem",
+      "listitem, position 1, group size 1",
       "x",
-      "end of listitem",
+      "end of listitem, position 1, group size 1",
       "end of directory",
     ]);
   });

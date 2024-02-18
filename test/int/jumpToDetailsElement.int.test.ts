@@ -26,7 +26,7 @@ describe("jumpToDetailsElement", () => {
       "document",
       "button, Target, linked details",
       "list",
-      "listitem",
+      "listitem, position 1, group size 2",
       "Item 1",
     ]);
 

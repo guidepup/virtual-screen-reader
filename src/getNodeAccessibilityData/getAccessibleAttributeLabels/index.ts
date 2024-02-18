@@ -1,3 +1,4 @@
+import { AccessibilityNodeTree } from "../../createAccessibilityTree.js";
 import { getAttributesByRole } from "./getAttributesByRole.js";
 import { getLabelFromAriaAttribute } from "./getLabelFromAriaAttribute.js";
 import { getLabelFromHtmlEquivalentAttribute } from "./getLabelFromHtmlEquivalentAttribute.js";
@@ -16,12 +17,14 @@ export const getAccessibleAttributeLabels = ({
   alternateReadingOrderParents,
   container,
   node,
+  parentAccessibilityNodeTree,
   role,
 }: {
   accessibleValue: string;
   alternateReadingOrderParents: Node[];
   container: Node;
   node: Node;
+  parentAccessibilityNodeTree: AccessibilityNodeTree;
   role: string;
 }): {
   accessibleAttributeLabels: string[];
@@ -79,6 +82,8 @@ export const getAccessibleAttributeLabels = ({
       attributeName,
       container,
       node,
+      parentAccessibilityNodeTree,
+      role,
     });
 
     if (labelFromImplicitHtmlElementValue) {

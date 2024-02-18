@@ -38,12 +38,12 @@ describe("List-related Role Verification Tests", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "list",
-      "listitem",
+      "listitem, position 1, group size 2",
       "x",
-      "end of listitem",
-      "listitem",
+      "end of listitem, position 1, group size 2",
+      "listitem, position 2, group size 2",
       "x",
-      "end of listitem",
+      "end of listitem, position 2, group size 2",
       "end of list",
     ]);
   });
