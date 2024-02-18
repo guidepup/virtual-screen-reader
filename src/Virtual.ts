@@ -183,7 +183,9 @@ export class Virtual implements ScreenReader {
      * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
      */
     return tree.filter(
-      ({ parentDialog }) => parentDialog === this.#activeNode.parentDialog
+      ({ parentDialog }) =>
+        this.#activeNode.parentDialog === parentDialog ||
+        this.#activeNode.node === parentDialog
     );
   }
 
