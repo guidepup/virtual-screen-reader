@@ -121,7 +121,7 @@ const ariaPropertyToVirtualLabelMap: Record<
 
 interface MapperArgs {
   attributeValue: string;
-  container?: Node;
+  container: Node;
   negative?: boolean;
   node?: HTMLElement;
 }
@@ -184,10 +184,6 @@ function idRefs(
 
 function idRef(propertyName: string) {
   return function mapper({ attributeValue: idRef, container }: MapperArgs) {
-    if (!container) {
-      return "";
-    }
-
     const node = getNodeByIdRef({ container, idRef });
 
     if (!node) {
@@ -198,7 +194,7 @@ function idRef(propertyName: string) {
     const accessibleValue = getAccessibleValue(node);
     const itemText = getItemText({ accessibleName, accessibleValue });
 
-    return concat(propertyName)({ attributeValue: itemText });
+    return concat(propertyName)({ attributeValue: itemText, container });
   };
 }
 

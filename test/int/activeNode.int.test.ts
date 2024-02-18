@@ -36,4 +36,8 @@ describe("Active Node", () => {
       document.getElementsByTagName("section")[0]
     );
   });
+
+  it("should gracefully handle when there is no active node", async () => {
+    expect(virtual.activeNode).toBeNull();
+  });
 });
