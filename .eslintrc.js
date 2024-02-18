@@ -10,7 +10,7 @@ module.exports = {
   plugins: ["require-extensions", "@typescript-eslint"],
   rules: {
     "sort-imports": ["error", { ignoreCase: true }],
-    quotes: ["error", "double"],
+    quotes: ["error", "double", { avoidEscape: true }],
   },
   env: {
     browser: true,

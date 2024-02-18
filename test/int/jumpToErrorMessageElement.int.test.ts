@@ -20,8 +20,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", 1 error message, invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", 1 error message, invalid',
       "example error text",
     ]);
   });
@@ -43,8 +43,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", 2 error messages, invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", 2 error messages, invalid',
       "second example error text",
     ]);
   });
@@ -64,8 +64,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", 2 error messages, invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", 2 error messages, invalid',
       "first example error text",
     ]);
   });
@@ -87,8 +87,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", 2 error messages, invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", 2 error messages, invalid',
       "second example error text",
     ]);
   });
@@ -161,8 +161,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", invalid',
     ]);
 
     await virtual.stop();
@@ -182,8 +182,8 @@ describe("jumpToErrorMessageElement", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "Input with aria-invalid=\"true\"",
-      "textbox, Input with aria-invalid=\"true\", 1 error message, invalid",
+      'Input with aria-invalid="true"',
+      'textbox, Input with aria-invalid="true", 1 error message, invalid',
     ]);
   });
 });

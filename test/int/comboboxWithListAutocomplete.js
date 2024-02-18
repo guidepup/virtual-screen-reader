@@ -675,7 +675,7 @@ function setupComboboxWithListAutocomplete() {
       var combobox = comboboxes[i];
       var comboboxNode = combobox.querySelector("input");
       var buttonNode = combobox.querySelector("button");
-      var listboxNode = combobox.querySelector("[role=\"listbox\"]");
+      var listboxNode = combobox.querySelector('[role="listbox"]');
       new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
     }
   }

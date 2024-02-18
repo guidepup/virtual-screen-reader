@@ -14,7 +14,7 @@ function setupActionsMenuButton() {
       this.domNode = domNode;
       this.performMenuAction = performMenuAction;
       this.buttonNode = domNode.querySelector("button");
-      this.menuNode = domNode.querySelector("[role=\"menu\"]");
+      this.menuNode = domNode.querySelector('[role="menu"]');
       this.currentMenuitem = {};
       this.menuitemNodes = [];
       this.firstMenuitem = false;
@@ -30,7 +30,7 @@ function setupActionsMenuButton() {
 
       this.menuNode.addEventListener("keydown", this.onMenuKeydown.bind(this));
 
-      var nodes = domNode.querySelectorAll("[role=\"menuitem\"]");
+      var nodes = domNode.querySelectorAll('[role="menuitem"]');
 
       for (var i = 0; i < nodes.length; i++) {
         var menuitem = nodes[i];

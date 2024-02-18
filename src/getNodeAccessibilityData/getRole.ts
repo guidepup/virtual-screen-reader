@@ -39,8 +39,8 @@ const FOCUSABLE_SELECTOR = [
   "button:not([disabled])",
   "select:not([disabled])",
   "textarea:not([disabled])",
-  "[contenteditable=\"\"]",
-  "[contenteditable=\"true\"]",
+  '[contenteditable=""]',
+  '[contenteditable="true"]',
   "a[href]",
   "[tabindex]:not([disabled])",
 ].join(", ");
