@@ -1,0 +1,23 @@
+{
+  "name": "@guidepup/virtual-screen-reader-web-test-runner-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pretest": "yarn --cwd=../.. build",
+    "test": "web-test-runner \"test/**/*.test.js\"",
+    "test:watch": "yarn test --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@esm-bundle/chai": "4.3.4",
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@web/dev-server-rollup": "^0.6.1",
+    "@web/test-runner": "0.16.0",
+    "aria-query-esm": "^5.3.0-fix.1",
+    "rollup-plugin-node-polyfills": "^0.2.1"
+  }
+}
