@@ -1,3 +1,4 @@
+import { getLocalName } from "../getLocalName.js";
 import { isElement } from "../isElement.js";
 
 export type HTMLElementWithValue =
@@ -68,7 +69,7 @@ export function getAccessibleValue(node: Node) {
     return "";
   }
 
-  switch (node.localName) {
+  switch (getLocalName(node)) {
     case "input": {
       return getInputValue(node as HTMLInputElement);
     }

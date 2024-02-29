@@ -1,4 +1,5 @@
 import { getRole as getImplicitRole } from "dom-accessibility-api";
+import { getLocalName } from "../getLocalName.js";
 import { getRoles } from "@testing-library/dom";
 import { isElement } from "../isElement.js";
 import { roles } from "aria-query";
@@ -180,7 +181,7 @@ export function getRole({
 
   if (!implicitRole) {
     // Backwards compatibility for when was using aria-query@5.1.3
-    if (target.localName === "body") {
+    if (getLocalName(target) === "body") {
       implicitRole = "document";
     } else {
       // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
