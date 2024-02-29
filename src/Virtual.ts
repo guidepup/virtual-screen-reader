@@ -2,13 +2,8 @@ import {
   AccessibilityNode,
   createAccessibilityTree,
 } from "./createAccessibilityTree.js";
-import {
-  CommandOptions,
-  MacOSModifiers,
-  ScreenReader,
-  WindowsModifiers,
-} from "@guidepup/guidepup";
-import { commands, VirtualCommands } from "./commands/index.js";
+import type { CommandOptions, ScreenReader } from "@guidepup/guidepup";
+import { commands, type VirtualCommands } from "./commands/index.js";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -20,7 +15,58 @@ import { getSpokenPhrase } from "./getSpokenPhrase.js";
 import { observeDOM } from "./observeDOM.js";
 import { tick } from "./tick.js";
 import { userEvent } from "@testing-library/user-event";
-import { VirtualCommandArgs } from "./commands/types.js";
+import type { VirtualCommandArgs } from "./commands/types.js";
+
+/**
+ * Modifiers ported from https://github.com/guidepup/guidepup to prevent ESM
+ * issues by Guidepup's usage of node builtins etc.
+ */
+
+const MacOSModifiers = {
+  /**
+   * The Command (alias cmd, ⌘) key.
+   */
+  Command: "command",
+  CommandLeft: "command",
+  CommandRight: "command",
+  Meta: "command",
+  /**
+   * The Control (alias ctrl, ⌃) key.
+   */
+  Control: "control",
+  ControlLeft: "control",
+  ControlRight: "control",
+  /**
+   * The Option (alias alt, ⌥) key.
+   */
+  Option: "option",
+  OptionLeft: "option",
+  OptionRight: "option",
+  Alt: "option",
+  AltLeft: "option",
+  AltRight: "option",
+  /**
+   * The Shift (alias ⇧) key.
+   */
+  Shift: "shift",
+  ShiftLeft: "shift",
+  ShiftRight: "shift",
+};
+
+const WindowsModifiers = {
+  /**
+   * Hold down the Control (alias ctrl, ⌃) key.
+   */
+  Control: "control",
+  /**
+   * Hold down the Alt (alias ⎇) key.
+   */
+  Alt: "alt",
+  /**
+   * Hold down the Shift (alias ⇧) key.
+   */
+  Shift: "shift",
+};
 
 export interface StartOptions extends CommandOptions {
   /**

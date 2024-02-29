@@ -55,7 +55,7 @@ describe("HTML-AAM Table Role Verification Tests", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "table, caption",
-      "caption",
+      "caption, caption",
       "rowgroup",
       "row, a b c",
       "columnheader, a",

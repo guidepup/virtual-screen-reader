@@ -20,7 +20,7 @@ function setupDialogPage() {
   `;
 
   document
-    .querySelector("#open-alertdialog-1")
+    .querySelector("#open-alertdialog-1")!
     .addEventListener("click", () => {
       const closeButton = document.querySelector(
         "#close-alertdialog-1"
@@ -48,13 +48,17 @@ describe("alertdialog", () => {
     await virtual.act();
     await virtual.next();
     await virtual.next();
+    await virtual.next();
+    await virtual.next();
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "button, Open Alert Dialog",
       "alertdialog, Alert Dialog 1 Title",
       "button, Close Alert Dialog 1",
       "heading, Alert Dialog 1 Title, level 1",
+      "paragraph",
       "Some alertdialog 1 content",
+      "end of paragraph",
     ]);
   });
 
