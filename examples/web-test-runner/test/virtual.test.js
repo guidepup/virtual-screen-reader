@@ -10,7 +10,7 @@ import { expect } from "@esm-bundle/chai";
 import { virtual } from "../../../lib/esm/index.js";
 
 beforeEach(async () => {
-  document.body.innerHTML = "<h1>Heading level 1</h1><p>Paragraph text</p>";
+  document.body.innerHTML = "<h1>Heading</h1><p>Paragraph text</p>";
 
   await virtual.start({ container: document.body });
 });
@@ -25,5 +25,9 @@ it("renders a heading and a paragraph", async () => {
   await virtual.next();
   await virtual.next();
 
-  expect(await virtual.spokenPhraseLog).to.equal([]);
+  expect(await virtual.spokenPhraseLog()).to.eql([
+    "heading, Heading, level 1",
+    "paragraph",
+    "Paragraph text",
+  ]);
 });
