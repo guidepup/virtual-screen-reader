@@ -24,10 +24,16 @@ afterEach(async () => {
 it("renders a heading and a paragraph", async () => {
   await virtual.next();
   await virtual.next();
+  await virtual.next();
+  await virtual.next();
+  await virtual.next();
 
   expect(await virtual.spokenPhraseLog()).to.eql([
+    "document",
     "heading, Heading, level 1",
     "paragraph",
     "Paragraph text",
+    "end of paragraph",
+    "end of document",
   ]);
 });

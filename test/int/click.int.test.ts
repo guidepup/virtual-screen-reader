@@ -48,6 +48,7 @@ describe("click", () => {
     expect(getByText(container, "Clicked 1 Time(s)")).toBeInTheDocument();
 
     await virtual.previous();
+    await virtual.previous();
 
     expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 1 Time(s)");
 
@@ -70,6 +71,7 @@ describe("click", () => {
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Clicked 2 Time(s)")).toBeInTheDocument();
 
+    await virtual.previous();
     await virtual.previous();
 
     expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 2 Time(s)");
@@ -94,6 +96,7 @@ describe("click", () => {
     expect(getByText(container, "Clicked 3 Time(s)")).toBeInTheDocument();
 
     await virtual.previous();
+    await virtual.previous();
 
     expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 3 Time(s)");
 
@@ -116,6 +119,7 @@ describe("click", () => {
     expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
     expect(getByText(container, "Right Clicked")).toBeInTheDocument();
 
+    await virtual.previous();
     await virtual.previous();
 
     expect(await virtual.lastSpokenPhrase()).toEqual("Right Clicked");

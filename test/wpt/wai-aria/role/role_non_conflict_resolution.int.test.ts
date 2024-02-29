@@ -55,7 +55,7 @@ describe("Role None Conflict Resolution Verification Tests", () => {
        * Awaiting new release of dom-accessibility-api / aria-query dependencies
        * "paragraph, x"
        */
-      "x",
+      "paragraph, x",
       "x",
       "heading, level 1",
       "x",

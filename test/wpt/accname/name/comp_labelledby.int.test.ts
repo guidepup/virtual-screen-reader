@@ -31,7 +31,9 @@ describe("Name Comp: Labelledby", () => {
       "",
       "div group label",
       "div group label",
+      "",
       "text inside div group",
+      "",
       "div group label",
       "",
     ]);

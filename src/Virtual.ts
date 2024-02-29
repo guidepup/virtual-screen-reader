@@ -3,7 +3,8 @@ import {
   AccessibilityNode,
   createAccessibilityTree,
 } from "./createAccessibilityTree.js";
-import { commands, VirtualCommands } from "./commands/index.js";
+import type { CommandOptions, ScreenReader } from "@guidepup/guidepup";
+import { commands, type VirtualCommands } from "./commands/index.js";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
@@ -15,38 +16,43 @@ import { getSpokenPhrase } from "./getSpokenPhrase.js";
 import { observeDOM } from "./observeDOM.js";
 import { tick } from "./tick.js";
 import { userEvent } from "@testing-library/user-event";
-import { VirtualCommandArgs } from "./commands/types.js";
+import type { VirtualCommandArgs } from "./commands/types.js";
 
-enum MacOSModifiers {
+/**
+ * Modifiers ported from https://github.com/guidepup/guidepup to prevent ESM
+ * issues by Guidepup's usage of node builtins etc.
+ */
+
+const MacOSModifiers = {
   /**
    * The Command (alias cmd, ⌘) key.
    */
-  Command = "command",
-  CommandLeft = "command",
-  CommandRight = "command",
-  Meta = "command",
+  Command: "command",
+  CommandLeft: "command",
+  CommandRight: "command",
+  Meta: "command",
   /**
    * The Control (alias ctrl, ⌃) key.
    */
-  Control = "control",
-  ControlLeft = "control",
-  ControlRight = "control",
+  Control: "control",
+  ControlLeft: "control",
+  ControlRight: "control",
   /**
    * The Option (alias alt, ⌥) key.
    */
-  Option = "option",
-  OptionLeft = "option",
-  OptionRight = "option",
-  Alt = "option",
-  AltLeft = "option",
-  AltRight = "option",
+  Option: "option",
+  OptionLeft: "option",
+  OptionRight: "option",
+  Alt: "option",
+  AltLeft: "option",
+  AltRight: "option",
   /**
    * The Shift (alias ⇧) key.
    */
-  Shift = "shift",
-  ShiftLeft = "shift",
-  ShiftRight = "shift",
-}
+  Shift: "shift",
+  ShiftLeft: "shift",
+  ShiftRight: "shift",
+};
 
 const WindowsModifiers = {
   /**
@@ -63,7 +69,7 @@ const WindowsModifiers = {
   Shift: "shift",
 };
 
-export interface StartOptions {
+export interface StartOptions extends CommandOptions {
   /**
    * The bounding HTML element to use the Virtual Screen Reader in.
    *
@@ -180,7 +186,7 @@ const defaultUserEventOptions = {
  * });
  * ```
  */
-export class Virtual {
+export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
   #container: Node | null = null;
   #itemTextLog: string[] = [];
@@ -890,7 +896,7 @@ export class Virtual {
   async perform<
     T extends keyof VirtualCommands,
     K extends Omit<Parameters<VirtualCommands[T]>[0], keyof VirtualCommandArgs>
-  >(command: T, options?: { [L in keyof K]: K[L] }) {
+  >(command: T, options?: { [L in keyof K]: K[L] } & CommandOptions) {
     this.#checkContainer();
     await tick();
 

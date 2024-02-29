@@ -43,6 +43,7 @@ describe("act", () => {
     expect(getByText(container, "Clicked 1 Time(s)")).toBeInTheDocument();
 
     await virtual.previous();
+    await virtual.previous();
 
     expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 1 Time(s)");
 

@@ -179,8 +179,13 @@ export function getRole({
   let implicitRole = getImplicitRole(target) ?? "";
 
   if (!implicitRole) {
-    // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
-    implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
+    // Backwards compatibility for when was using aria-query@5.1.3
+    if (target.localName === "body") {
+      implicitRole = "document";
+    } else {
+      // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
+      implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
+    }
   }
 
   if (explicitRole) {
