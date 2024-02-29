@@ -105,13 +105,19 @@ describe("Screen Reader Tests", () => {
       "end of navigation",
       "region",
       "heading, Section Heading, level 1",
+      "paragraph",
       "Section Text",
+      "end of paragraph",
       "article",
       "banner",
       "heading, Article Header Heading, level 1",
+      "paragraph",
       "Article Header Text",
+      "end of paragraph",
       "end of banner",
+      "paragraph",
       "Article Text",
+      "end of paragraph",
       "end of article",
       "end of region",
       "contentinfo",
@@ -132,7 +138,7 @@ Check out some of the other Guidepup modules:
 
 - [`@guidepup/guidepup`](https://github.com/guidepup/guidepup) - Reliable automation for your screen reader a11y workflows through JavaScript supporting VoiceOver and NVDA.
 - [`@guidepup/setup`](https://github.com/guidepup/setup) - Set up your local or CI environment for screen reader test automation.
-- [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright) - Seemless integration of Guidepup with Playwright.
+- [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright) - Seamless integration of Guidepup with Playwright.
 - [`@guidepup/jest`](https://github.com/guidepup/jest) - Jest matchers for reliable unit testing of your screen reader a11y workflows.
 
 ## Similar
