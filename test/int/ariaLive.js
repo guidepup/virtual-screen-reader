@@ -8,19 +8,19 @@ function setupAriaLive() {
   <h2>aria-live=off</h2>
   <div id="target-1" aria-live="off"></div>
   <button id="trigger-1">Test aria-live off</button>
-  <p id="target-1b" contenteditable="true" tabindex="0" aria-live="off">Existing Content</p>
+  <div id="target-1b" contenteditable="true" tabindex="0" aria-live="off">Existing Content</div>
   <button id="trigger-1b">Test aria-live off</button>
 
   <h2>aria-live=polite</h2>
   <div id="target-2" aria-live="polite"></div>
   <button id="trigger-2">Test aria-live polite</button>
-  <p id="target-2b" contenteditable="true" tabindex="0" aria-live="polite">Existing Content</p>
+  <div id="target-2b" contenteditable="true" tabindex="0" aria-live="polite">Existing Content</div>
   <button id="trigger-2b">Test aria-live polite</button>
 
   <h2>aria-live=assertive</h2>
   <div id="target-3" aria-live="assertive"></div>
   <button id="trigger-3">Test aria-live assertive</button>
-  <p id="target-3b" contenteditable="true" tabindex="0" aria-live="assertive">Existing Content</p>
+  <div id="target-3b" contenteditable="true" tabindex="0" aria-live="assertive">Existing Content</div>
   <button id="trigger-3b">Test aria-live assertive</button>
 
   <div aria-live="polite" id="first-announcement-text"></div>

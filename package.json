@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
@@ -41,13 +41,13 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@guidepup/guidepup": "^0.22.0",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/user-event": "^14.5.2",
     "aria-query": "^5.3.0",
     "dom-accessibility-api": "^0.6.3"
   },
   "devDependencies": {
+    "@guidepup/guidepup": "^0.22.3",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",
@@ -67,5 +67,8 @@
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "resolutions": {
+    "aria-query": "^5.3.0"
   }
 }

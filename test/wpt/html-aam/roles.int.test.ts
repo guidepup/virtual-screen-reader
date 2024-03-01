@@ -213,9 +213,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "document",
       "link, x",
       "x", // WONTFIX: generic ignored by screen readers
-      // TODO: FAIL address should have role group
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "group",
       "x",
+      "end of group",
       "article",
       "x",
       "end of article",
@@ -231,13 +231,13 @@ describe("HTML-AAM Role Verification Tests", () => {
       "x", // WONTFIX: generic ignored by screen readers
       "x", // WONTFIX: generic ignored by screen readers
       "x", // WONTFIX: generic ignored by screen readers
-      // TODO: FAIL blockquote should have role blockquote
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "blockquote",
       "x",
+      "end of blockquote",
       "button, x",
-      // TODO: FAIL code should have role code
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "code",
       "x",
+      "end of code",
       "x", // WONTFIX: generic ignored by screen readers
       "term",
       "x",
@@ -245,9 +245,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "definition",
       "x",
       "end of definition",
-      // TODO: FAIL del should have role deletion
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "deletion",
       "x",
+      "end of deletion",
       "group",
       "button, x",
       "x",
@@ -262,9 +262,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "definition",
       "x",
       "end of definition",
-      // TODO: FAIL em should have role emphasis
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "emphasis",
       "x",
+      "end of emphasis",
       "group, x",
       "figure",
       "img, x",
@@ -314,9 +314,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "textbox",
       "textbox",
       "textbox",
-      // TODO: FAIL ins missing insertion role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "insertion",
       "x",
+      "end of insertion",
       // TODO: FAIL orphaned li should not be announced
       // Needs fix in https://github.com/eps1lon/dom-accessibility-api
       "listitem, position 1, group size 1",
@@ -341,17 +341,17 @@ describe("HTML-AAM Role Verification Tests", () => {
       "main",
       "x",
       "end of main",
-      // TODO: FAIL mark should have mark role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "mark",
       "x",
+      "end of mark",
       "list",
       "listitem, position 1, group size 1",
       "x",
       "end of listitem, position 1, group size 1",
       "end of list",
-      // TODO: FAIL meter should have meter role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "meter, 50, max value 100, min value 0, 50",
       "x",
+      "end of meter, 50, max value 100, min value 0, 50",
       "navigation",
       "x",
       "end of navigation",
@@ -370,9 +370,9 @@ describe("HTML-AAM Role Verification Tests", () => {
       "status",
       "x",
       "end of status",
-      // TODO: FAIL p should have paragraph role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "paragraph",
       "x",
+      "end of paragraph",
       "x", // WONTFIX: generic ignored by screen readers
       "progressbar, 0",
       "x",
@@ -397,18 +397,18 @@ describe("HTML-AAM Role Verification Tests", () => {
       "end of listbox, orientated vertically",
       "x", // WONTFIX: generic ignored by screen readers
       "x", // WONTFIX: generic ignored by screen readers
-      // TODO: FAIL strong should have strong role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "strong",
       "x",
-      // TODO: FAIL sub should have subscript role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "end of strong",
+      "subscript",
       "x",
-      // TODO: FAIL sup should have superscript role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "end of subscript",
+      "superscript",
       "x",
-      // TODO: FAIL time should have time role
-      // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      "end of superscript",
+      "time",
       "x",
+      "end of time",
       "textbox",
       "x",
       "end of textbox",

@@ -19,7 +19,7 @@ function setupDialogPage() {
   </div>
   `;
 
-  document.querySelector("#open-dialog-1").addEventListener("click", () => {
+  document.querySelector("#open-dialog-1")!.addEventListener("click", () => {
     const closeButton = document.querySelector(
       "#close-dialog-1"
     ) as HTMLButtonElement;
@@ -46,13 +46,17 @@ describe("dialog", () => {
     await virtual.act();
     await virtual.next();
     await virtual.next();
+    await virtual.next();
+    await virtual.next();
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "button, Open Dialog",
       "dialog, Dialog 1 Title",
       "button, Close Dialog 1",
       "heading, Dialog 1 Title, level 1",
+      "paragraph",
       "Some dialog 1 content",
+      "end of paragraph",
     ]);
   });
 

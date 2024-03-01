@@ -4,7 +4,7 @@ import { waitFor } from "@testing-library/dom";
 describe("Aria Live - Content Editable", () => {
   beforeEach(async () => {
     document.body.innerHTML = `
-    <p id="target" contenteditable="true" aria-live="polite">Edit this text!</p>
+    <div id="target" contenteditable="true" aria-live="polite">Edit this text!</div>
     `;
 
     await virtual.start({ container: document.body });
@@ -53,7 +53,7 @@ describe("Aria Live - All Attributes", () => {
   beforeEach(async () => {
     document.body.innerHTML = `
     <div aria-live="assertive" aria-relevant="additions" aria-atomic="true">
-      <p id="target" aria-live="polite" aria-relevant="text" aria-atomic="false"></p>
+      <div id="target" aria-live="polite" aria-relevant="text" aria-atomic="false"></div>
     </div>
     `;
 

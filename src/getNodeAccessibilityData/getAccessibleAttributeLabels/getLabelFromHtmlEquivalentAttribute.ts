@@ -1,3 +1,4 @@
+import { getLocalName } from "../../getLocalName.js";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
 
 const isNotMatchingElement = ({
@@ -6,7 +7,7 @@ const isNotMatchingElement = ({
 }: {
   elements: string[];
   node: HTMLElement;
-}) => elements.length && !elements.includes(node.localName);
+}) => elements.length && !elements.includes(getLocalName(node));
 
 const isNotMatchingProperties = ({
   node,

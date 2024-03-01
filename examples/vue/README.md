@@ -16,6 +16,6 @@ yarn test
 ```
 
 > [!IMPORTANT]
-> This example serves to demonstrate how you can use the Virtual screen reader. The components themselves may not be using best accessibility practices.
+> This example serves to demonstrate how you can use the Virtual Screen Reader. The components themselves may not be using best accessibility practices.
 >
 > Always evaluate your own components for accessibility and test with real users.

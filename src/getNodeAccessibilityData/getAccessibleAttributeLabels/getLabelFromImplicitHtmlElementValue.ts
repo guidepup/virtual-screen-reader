@@ -1,4 +1,5 @@
 import { AccessibilityNodeTree } from "../../createAccessibilityTree.js";
+import { getLocalName } from "../../getLocalName.js";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
 
 const headingLocalNameToLevelMap: Record<string, string> = {
@@ -52,7 +53,7 @@ const getChildrenByRole = ({
 
 const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
   "aria-level": ({ node }) => {
-    const { localName } = node;
+    const localName = getLocalName(node);
 
     return headingLocalNameToLevelMap[localName];
   },
