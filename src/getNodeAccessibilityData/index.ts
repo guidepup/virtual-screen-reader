@@ -139,6 +139,7 @@ export function getNodeAccessibilityData({
     accessibleValue,
     allowedAccessibilityChildRoles,
     childrenPresentational,
+    isExplicitPresentational,
     role,
     spokenRole,
   };

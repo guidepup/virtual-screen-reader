@@ -277,6 +277,7 @@ function growTree(
       accessibleValue,
       allowedAccessibilityChildRoles,
       childrenPresentational,
+      isExplicitPresentational,
       role,
       spokenRole,
     } = getNodeAccessibilityData({
@@ -287,27 +288,31 @@ function growTree(
       inheritedImplicitPresentational: tree.childrenPresentational,
     });
 
-    tree.children.push(
-      growTree(
-        childNode,
-        {
-          accessibleDescription,
-          accessibleName,
-          accessibleValue,
-          allowedAccessibilityChildRoles,
-          alternateReadingOrderParents,
-          children: [],
-          childrenPresentational,
-          node: childNode,
-          parentAccessibilityNodeTree: null, // Added during flattening
-          parent: node,
-          parentDialog,
-          role,
-          spokenRole,
-        },
-        { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
-      )
+    const childTree = growTree(
+      childNode,
+      {
+        accessibleDescription,
+        accessibleName,
+        accessibleValue,
+        allowedAccessibilityChildRoles,
+        alternateReadingOrderParents,
+        children: [],
+        childrenPresentational,
+        node: childNode,
+        parentAccessibilityNodeTree: null, // Added during flattening
+        parent: node,
+        parentDialog,
+        role,
+        spokenRole,
+      },
+      { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
     );
+
+    if (isExplicitPresentational) {
+      tree.children.push(...childTree.children);
+    } else {
+      tree.children.push(childTree);
+    }
   });
 
   /**
@@ -340,6 +345,7 @@ function growTree(
       accessibleValue,
       allowedAccessibilityChildRoles,
       childrenPresentational,
+      isExplicitPresentational,
       role,
       spokenRole,
     } = getNodeAccessibilityData({
@@ -350,27 +356,31 @@ function growTree(
       inheritedImplicitPresentational: tree.childrenPresentational,
     });
 
-    tree.children.push(
-      growTree(
-        childNode,
-        {
-          accessibleDescription,
-          accessibleName,
-          accessibleValue,
-          allowedAccessibilityChildRoles,
-          alternateReadingOrderParents,
-          children: [],
-          childrenPresentational,
-          node: childNode,
-          parentAccessibilityNodeTree: null, // Added during flattening
-          parent: node,
-          parentDialog,
-          role,
-          spokenRole,
-        },
-        { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
-      )
+    const childTree = growTree(
+      childNode,
+      {
+        accessibleDescription,
+        accessibleName,
+        accessibleValue,
+        allowedAccessibilityChildRoles,
+        alternateReadingOrderParents,
+        children: [],
+        childrenPresentational,
+        node: childNode,
+        parentAccessibilityNodeTree: null, // Added during flattening
+        parent: node,
+        parentDialog,
+        role,
+        spokenRole,
+      },
+      { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
     );
+
+    if (isExplicitPresentational) {
+      tree.children.push(...childTree.children);
+    } else {
+      tree.children.push(childTree);
+    }
   });
 
   return tree;

@@ -50,7 +50,9 @@ function getInputValue(node: HTMLInputElement) {
 }
 
 function getValue(node: HTMLElementWithValue) {
-  if (!allowedLocalNames.includes(node.localName)) {
+  const localName = getLocalName(node);
+
+  if (!allowedLocalNames.includes(localName)) {
     return "";
   }
 

@@ -1,4 +1,5 @@
 import { AccessibilityNodeTree } from "../../createAccessibilityTree.js";
+import { getChildrenByRole } from "./getChildrenByRole.js";
 import { getLocalName } from "../../getLocalName.js";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
 
@@ -11,26 +12,24 @@ const headingLocalNameToLevelMap: Record<string, string> = {
   h6: "6",
 };
 
-/**
- * TODO: Support these roles in aria-posinset and aria-setsize implicit
- * calculation and labelling.
- *
- * REF:
- * - https://www.w3.org/TR/wai-aria-1.2/#aria-posinset
- * - https://www.w3.org/TR/wai-aria-1.2/#aria-setsize
- */
-const ignoredSetRoles: string[] = [
-  "article",
-  "comment",
-  "menuitem",
-  "option",
-  "radio",
-  "row",
-  "tab",
-  "menuitemcheckbox",
-  "menuitemradio",
-  "treeitem",
-];
+// TODO: consider https://www.w3.org/TR/core-aam-1.2/#mapping_additional_relations_implied
+// as well for role="treeitem" where may need to ignore
+
+// const treeWalkPositionAlgorithmRoles = ["treeitem", "comment"];
+
+const getNodeSet = ({ role, tree }) => {
+  // TODO: for treeitem and comment the algorithm differs in needing to walk
+  // the tree to find elements at the same level (aria-level).
+  //
+  // if (treeWalkPositionAlgorithmRoles.includes(role)) {
+  //   return getChildrenByRoleAndLevel()
+  // }
+
+  return getChildrenByRole({
+    role,
+    tree,
+  });
+};
 
 type Mapper = ({
   node,
@@ -42,16 +41,19 @@ type Mapper = ({
   role: string;
 }) => string;
 
-const getChildrenByRole = ({
-  parentAccessibilityNodeTree,
-  role,
-}: {
-  parentAccessibilityNodeTree: AccessibilityNodeTree;
-  role: string;
-}) =>
-  parentAccessibilityNodeTree.children.filter((child) => child.role === role);
-
 const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
+  // TODO: handle for listitem, row, treeitem, and comment (WAI-ARIA 1.3)
+  //
+  // If the DOM ancestry accurately represents the level, the user agent can
+  // calculate the level of an item from the document structure. This attribute
+  // can be used to provide an explicit indication of the level when that is
+  // not possible to calculate from the document structure or the aria-owns
+  // attribute. User agent support for automatic calculation of level may vary;
+  // authors SHOULD test with user agents and assistive technologies to
+  // determine whether this attribute is needed. If the author intends for the
+  // user agent to calculate the level, the author SHOULD omit this attribute.
+  //
+  // REF: https://www.w3.org/TR/wai-aria-1.2/#aria-level
   "aria-level": ({ node }) => {
     const localName = getLocalName(node);
 
@@ -98,22 +100,11 @@ const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
       return "";
     }
 
-    if (ignoredSetRoles.includes(role)) {
-      return "";
-    }
-
-    const childrenFilteredByRole = getChildrenByRole({
-      parentAccessibilityNodeTree,
+    const nodeSet = getNodeSet({
       role,
+      tree: parentAccessibilityNodeTree,
     });
-
-    const index = childrenFilteredByRole.findIndex(
-      (child) => child.node === node
-    );
-
-    if (index === -1) {
-      return "";
-    }
+    const index = nodeSet.findIndex((child) => child.node === node);
 
     return `${index + 1}`;
   },
@@ -122,16 +113,12 @@ const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
       return "";
     }
 
-    if (ignoredSetRoles.includes(role)) {
-      return "";
-    }
-
-    const childrenFilteredByRole = getChildrenByRole({
-      parentAccessibilityNodeTree,
+    const nodeSet = getNodeSet({
       role,
+      tree: parentAccessibilityNodeTree,
     });
 
-    return `${childrenFilteredByRole.length}`;
+    return `${nodeSet.length}`;
   },
 };
 
