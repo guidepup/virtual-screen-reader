@@ -42,20 +42,20 @@ describe("React.useId()", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "list",
-      "listitem",
+      "listitem, level 1, position 1, set size 2",
       "Fruit",
       "list",
-      "listitem",
+      "listitem, level 2, position 1, set size 2",
       "Apples",
-      "end of listitem",
-      "listitem",
+      "end of listitem, level 2, position 1, set size 2",
+      "listitem, level 2, position 2, set size 2",
       "Bananas",
-      "end of listitem",
+      "end of listitem, level 2, position 2, set size 2",
       "end of list",
-      "end of listitem",
-      "listitem",
+      "end of listitem, level 1, position 1, set size 2",
+      "listitem, level 1, position 2, set size 2",
       "Vegetables",
-      "end of listitem",
+      "end of listitem, level 1, position 2, set size 2",
       "end of list",
     ]);
   });

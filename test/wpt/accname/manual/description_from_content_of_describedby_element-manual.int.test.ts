@@ -51,10 +51,11 @@ describe("Description from content of describedby element", () => {
       "document",
       // TODO: FAIL incorrectly using Zambino where it should be using Eli
       // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      // But this is incredibly contrived, and placing an aria-label on a
+      // presentation role is discouraged.
       "textbox, Important stuff, My name is Zambino the weird. (QED) Where are my marbles?",
       "My",
       "name is",
-      "Bryan",
       "Eli",
       "Garaventa",
       "Zambino",

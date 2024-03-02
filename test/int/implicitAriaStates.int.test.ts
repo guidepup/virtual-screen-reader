@@ -14,7 +14,9 @@ describe("Implicit Aria States", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("tab, A Tab, not selected");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "tab, A Tab, position 1, set size 1, not selected"
+    );
 
     await virtual.stop();
   });

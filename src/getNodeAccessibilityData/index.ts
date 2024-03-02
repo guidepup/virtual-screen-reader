@@ -1,6 +1,5 @@
 import { ARIARoleDefinitionKey, roles } from "aria-query";
 import { getRole, presentationRoles } from "./getRole.js";
-import { getAccessibleAttributeLabels } from "./getAccessibleAttributeLabels/index.js";
 import { getAccessibleDescription } from "./getAccessibleDescription.js";
 import { getAccessibleName } from "./getAccessibleName.js";
 import { getAccessibleValue } from "./getAccessibleValue.js";
@@ -50,8 +49,6 @@ const getSpokenRole = ({
 
 export function getNodeAccessibilityData({
   allowedAccessibilityRoles,
-  alternateReadingOrderParents,
-  container,
   inheritedImplicitPresentational,
   node,
 }: {
@@ -71,15 +68,6 @@ export function getNodeAccessibilityData({
     inheritedImplicitPresentational,
     node,
   });
-
-  const { accessibleAttributeLabels, accessibleAttributeToLabelMap } =
-    getAccessibleAttributeLabels({
-      accessibleValue,
-      alternateReadingOrderParents,
-      container,
-      node,
-      role,
-    });
 
   const amendedAccessibleDescription =
     accessibleDescription === accessibleName ? "" : accessibleDescription;
@@ -146,13 +134,12 @@ export function getNodeAccessibilityData({
     childrenInheritPresentationExceptAllowedRoles;
 
   return {
-    accessibleAttributeLabels,
-    accessibleAttributeToLabelMap,
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
     accessibleValue,
     allowedAccessibilityChildRoles,
     childrenPresentational,
+    isExplicitPresentational,
     role,
     spokenRole,
   };
