@@ -22,7 +22,7 @@ describe("Allowed Accessibility Child Roles", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "listbox, orientated vertically",
-      "option, option text, position 1, group size 1, not selected",
+      "option, option text, position 1, set size 1, not selected",
       "end of listbox, orientated vertically",
       "end of document",
     ]);
@@ -48,7 +48,7 @@ describe("Allowed Accessibility Child Roles", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "listbox, orientated vertically",
-      "option, option text, position 1, group size 1, not selected",
+      "option, option text, position 1, set size 1, not selected",
       "end of listbox, orientated vertically",
       "end of document",
     ]);
@@ -71,7 +71,7 @@ describe("Allowed Accessibility Child Roles", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "listbox, orientated vertically",
-      "option, option text, position 1, group size 1, not selected",
+      "option, option text, position 1, set size 1, not selected",
       "end of listbox, orientated vertically",
       "end of document",
     ]);
@@ -98,7 +98,7 @@ describe("Allowed Accessibility Child Roles", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "listbox, orientated vertically",
-      "option, option text, position 1, group size 1, not selected",
+      "option, option text, position 1, set size 1, not selected",
       "end of listbox, orientated vertically",
       "end of document",
     ]);

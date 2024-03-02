@@ -51,6 +51,8 @@ describe("Description from content of describedby element", () => {
       "document",
       // TODO: FAIL incorrectly using Zambino where it should be using Eli
       // Needs fix in https://github.com/eps1lon/dom-accessibility-api
+      // But this is incredibly contrived, and placing an aria-label on a
+      // presentation role is discouraged.
       "textbox, Important stuff, My name is Zambino the weird. (QED) Where are my marbles?",
       "My",
       "name is",
@@ -61,11 +63,11 @@ describe("Description from content of describedby element", () => {
       "(QED)",
       "table",
       "rowgroup",
-      "row, Where are my marbles?, position 1, group size 1",
+      "row, Where are my marbles?",
       "cell, Where",
       "cell",
       "cell, are my marbles?",
-      "end of row, Where are my marbles?, position 1, group size 1",
+      "end of row, Where are my marbles?",
       "end of rowgroup",
       "end of table",
       "end of document",

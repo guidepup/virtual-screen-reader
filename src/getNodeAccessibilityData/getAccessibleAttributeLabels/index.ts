@@ -1,8 +1,8 @@
-import { AccessibilityNodeTree } from "../../createAccessibilityTree.js";
+import type { AccessibilityNodeTree } from "../../createAccessibilityTree.js";
 import { getAttributesByRole } from "./getAttributesByRole.js";
 import { getLabelFromAriaAttribute } from "./getLabelFromAriaAttribute.js";
 import { getLabelFromHtmlEquivalentAttribute } from "./getLabelFromHtmlEquivalentAttribute.js";
-import { getLabelFromImplicitHtmlElementValue } from "./getLabelFromImplicitHtmlElementValue.js";
+import { getLabelFromImplicitHtmlElementValue } from "./getLabelFromImplicitHtmlElementValue/index.js";
 import { isElement } from "../../isElement.js";
 import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
 import { postProcessLabels } from "./postProcessLabels.js";

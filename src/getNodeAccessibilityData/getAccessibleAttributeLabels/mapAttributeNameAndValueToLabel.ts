@@ -106,7 +106,7 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-rowindextext": string("row index"),
   "aria-rowspan": integer("row span"),
   "aria-selected": state(State.SELECTED),
-  "aria-setsize": integer("group size"),
+  "aria-setsize": integer("set size"),
   "aria-sort": token({
     ascending: "sorted in ascending order",
     descending: "sorted in descending order",

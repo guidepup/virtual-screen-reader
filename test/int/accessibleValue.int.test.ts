@@ -79,7 +79,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "radio, Label, not checked, position 1, group size 1"
+      "radio, Label, not checked, position 1, set size 1"
     );
 
     await virtual.stop();
@@ -96,7 +96,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "radio, Label, not checked, position 1, group size 1"
+      "radio, Label, not checked, position 1, set size 1"
     );
 
     await virtual.stop();

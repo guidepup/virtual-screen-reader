@@ -17,9 +17,7 @@ describe("Aria Role Description", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe(
-      "slide, Quarterly Report, position 1, group size 1"
-    );
+    expect(await virtual.lastSpokenPhrase()).toBe("slide, Quarterly Report");
 
     await virtual.stop();
   });
@@ -35,9 +33,7 @@ describe("Aria Role Description", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe(
-      "slide, Quarterly Report, position 1, group size 1"
-    );
+    expect(await virtual.lastSpokenPhrase()).toBe("slide, Quarterly Report");
 
     await virtual.stop();
   });
