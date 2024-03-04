@@ -9,7 +9,7 @@ import {
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors.js";
 import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase.js";
-import { getElementFromNode } from "./getElementFromNode.js";
+import { getElementNode } from "./commands/getElementNode.js";
 import { getItemText } from "./getItemText.js";
 import { getSpokenPhrase } from "./getSpokenPhrase.js";
 import { observeDOM } from "./observeDOM.js";
@@ -68,6 +68,11 @@ const WindowsModifiers = {
   Shift: "shift",
 };
 
+export interface Root {
+  document?: Document;
+  MutationObserver?: typeof MutationObserver;
+}
+
 export interface StartOptions extends CommandOptions {
   /**
    * The bounding HTML element to use the Virtual Screen Reader in.
@@ -85,7 +90,16 @@ export interface StartOptions extends CommandOptions {
    *
    * Defaults to using the global `window` instance.
    */
-  window?: unknown;
+  window?: Root;
+
+  /**
+   * Display the Virtual Screen Reader cursor visually on the target element.
+   *
+   * Note: There is a performance overhead to visually rendering the cursor.
+   *
+   * Defaults to `false`.
+   */
+  displayCursor?: boolean;
 }
 
 const defaultUserEventOptions = {
@@ -188,6 +202,7 @@ const defaultUserEventOptions = {
 export class Virtual implements ScreenReader {
   #activeNode: AccessibilityNode | null = null;
   #container: Node | null = null;
+  #cursor: HTMLDivElement | null = null;
   #itemTextLog: string[] = [];
   #spokenPhraseLog: string[] = [];
   #treeCache: AccessibilityNode[] | null = null;
@@ -197,6 +212,45 @@ export class Virtual implements ScreenReader {
     if (!this.#container) {
       throw new Error(ERR_VIRTUAL_NOT_STARTED);
     }
+  }
+
+  #createCursor(root: Root) {
+    if (!root.document) {
+      return;
+    }
+
+    this.#cursor = root.document.createElement("div");
+
+    this.#cursor.ariaHidden = "true";
+    this.#cursor.style.border = "2px dashed #1f1f1f";
+    this.#cursor.style.outline = "2px dashed #f0f0f0";
+    this.#cursor.style.minHeight = "4px";
+    this.#cursor.style.minWidth = "4px";
+    this.#cursor.style.position = "absolute";
+    this.#cursor.style.left = "0px";
+    this.#cursor.style.top = "0px";
+    this.#cursor.style.margin = "0px";
+    this.#cursor.style.padding = "2px";
+    this.#cursor.style.pointerEvents = "none";
+    this.#cursor.style.zIndex = "calc(Infinity)";
+    this.#cursor.dataset.testid = "virtual-screen-reader-cursor";
+
+    this.#container.appendChild(this.#cursor);
+  }
+
+  #setActiveNode(accessibilityNode: AccessibilityNode) {
+    this.#activeNode = accessibilityNode;
+
+    if (!this.#cursor) {
+      return;
+    }
+
+    const rect = getElementNode(accessibilityNode).getBoundingClientRect();
+
+    this.#cursor.style.top = `${rect.top - 2}px`;
+    this.#cursor.style.left = `${rect.left - 4}px`;
+    this.#cursor.style.width = `${rect.width}px`;
+    this.#cursor.style.height = `${rect.height}px`;
   }
 
   #getAccessibilityTree() {
@@ -276,7 +330,7 @@ export class Virtual implements ScreenReader {
   #focusActiveElement() {
     // Is only called following a null guard for `this.#activeNode`.
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const target = getElementFromNode(this.#activeNode!.node);
+    const target = getElementNode(this.#activeNode) as HTMLElement;
     target?.focus();
   }
 
@@ -338,7 +392,7 @@ export class Virtual implements ScreenReader {
       this.#spokenPhraseLog.push(spokenPhrase);
     }
 
-    this.#activeNode = accessibilityNode;
+    this.#setActiveNode(accessibilityNode);
 
     const spokenPhrase = getSpokenPhrase(accessibilityNode);
     const itemText = getItemText(accessibilityNode);
@@ -528,8 +582,9 @@ export class Virtual implements ScreenReader {
   // @ts-ignore for non-TS users we default the container to `null` which
   // prompts the missing container error.
   async start(
-    { container, window: root }: StartOptions = {
+    { container, displayCursor = false, window: root }: StartOptions = {
       container: null,
+      displayCursor: false,
     }
   ) {
     if (!container) {
@@ -541,6 +596,10 @@ export class Virtual implements ScreenReader {
     }
 
     this.#container = container;
+
+    if (displayCursor) {
+      this.#createCursor(root);
+    }
 
     this.#disconnectDOMObserver = observeDOM(
       root,
@@ -587,7 +646,12 @@ export class Virtual implements ScreenReader {
     this.#disconnectDOMObserver?.();
     this.#invalidateTreeCache();
 
-    this.#activeNode = null;
+    if (this.#cursor) {
+      this.#container.removeChild(this.#cursor);
+      this.#cursor = null;
+    }
+
+    this.#setActiveNode(null);
     this.#container = null;
     this.#itemTextLog = [];
     this.#spokenPhraseLog = [];
@@ -713,7 +777,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = getElementFromNode(this.#activeNode.node);
+    const target = getElementNode(this.#activeNode);
 
     /**
      * The user agent SHOULD simulate a click on the DOM element which is
@@ -862,7 +926,7 @@ export class Virtual implements ScreenReader {
       return;
     }
 
-    const target = getElementFromNode(this.#activeNode.node);
+    const target = getElementNode(this.#activeNode);
     await userEvent.type(target, text, defaultUserEventOptions);
     await this.#refreshState(true);
 
@@ -966,7 +1030,7 @@ export class Virtual implements ScreenReader {
 
     const key = `[Mouse${button[0].toUpperCase()}${button.slice(1)}]`;
     const keys = key.repeat(clickCount);
-    const target = getElementFromNode(this.#activeNode.node);
+    const target = getElementNode(this.#activeNode);
 
     await userEvent.pointer(
       [{ target }, { keys, target }],

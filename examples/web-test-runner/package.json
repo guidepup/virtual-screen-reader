@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prestart": "yarn --cwd=../.. build",
+    "start": "web-dev-server --open src/ --node-resolve",
+    "start:watch": "web-dev-server --open src/ --node-resolve --watch",
     "pretest": "yarn --cwd=../.. build",
     "test": "web-test-runner \"test/**/*.test.js\"",
     "test:watch": "yarn test --watch"
