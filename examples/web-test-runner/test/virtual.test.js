@@ -1,39 +1,42 @@
 import { expect } from "@esm-bundle/chai";
-
-/**
- * Replace with:
- *
- * import { virtual } from '@guidepup/virtual-screen-reader'
- *
- * in your own code.
- */
-import { virtual } from "../../../lib/esm/index.js";
-
-beforeEach(async () => {
-  document.body.innerHTML = "<h1>Heading</h1><p>Paragraph text</p>";
-
-  await virtual.start({ container: document.body });
-});
+import "../src/index.js";
 
 afterEach(async () => {
-  await virtual.stop();
+  await window.virtual.stop();
 
   document.body.innerHTML = "";
 });
 
 it("renders a heading and a paragraph", async () => {
-  await virtual.next();
-  await virtual.next();
-  await virtual.next();
-  await virtual.next();
-  await virtual.next();
+  while ((await window.virtual.lastSpokenPhrase()) !== "end of document") {
+    await window.virtual.next();
+  }
 
-  expect(await virtual.spokenPhraseLog()).to.eql([
+  expect(await window.virtual.spokenPhraseLog()).to.eql([
     "document",
-    "heading, Heading, level 1",
+    "navigation",
+    "Nav Text",
+    "end of navigation",
+    "region",
+    "heading, Section Heading 1, level 1",
     "paragraph",
-    "Paragraph text",
+    "Section Text",
     "end of paragraph",
+    "article",
+    "banner",
+    "heading, Article Header Heading 1, level 1",
+    "paragraph",
+    "Article Header Text",
+    "end of paragraph",
+    "end of banner",
+    "paragraph",
+    "Article Text",
+    "end of paragraph",
+    "end of article",
+    "end of region",
+    "contentinfo",
+    "Footer",
+    "end of contentinfo",
     "end of document",
   ]);
 });

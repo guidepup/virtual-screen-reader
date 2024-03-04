@@ -1,8 +1,5 @@
 import { isElement } from "./isElement.js";
-
-interface Root {
-  MutationObserver?: typeof MutationObserver;
-}
+import type { Root } from "./Virtual.js";
 
 export function observeDOM(
   root: Root,
