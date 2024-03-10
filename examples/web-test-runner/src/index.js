@@ -1,7 +1,7 @@
 /**
  * Replace with:
  *
- * import { virtual } from '@guidepup/virtual-screen-reader'
+ * import { virtual } from '@guidepup/virtual-screen-reader/browser.js'
  *
  * in your own code.
  */

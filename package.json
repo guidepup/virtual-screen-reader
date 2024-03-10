@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
@@ -20,15 +20,21 @@
     "guidepup"
   ],
   "types": "./lib/esm/index.d.mts",
-  "browser": "./lib/esm/index.browser.mjs",
+  "browser": "./lib/esm/index.browser.js",
   "module": "./lib/esm/index.legacy-esm.js",
   "main": "./lib/cjs/index.min.js",
   "exports": {
     ".": {
       "types": "./lib/esm/index.d.mts",
-      "browser": "./lib/esm/index.browser.mjs",
+      "browser": "./lib/esm/index.browser.js",
       "import": "./lib/esm/index.mjs",
-      "require": "./lib/cjs/index.min.js"
+      "require": "./lib/cjs/index.min.js",
+      "default": "./lib/cjs/index.min.js"
+    },
+    "./browser.js": {
+      "browser": "./lib/esm/index.browser.js",
+      "import": "./lib/esm/index.browser.js",
+      "default": "./lib/esm/index.browser.js"
     }
   },
   "scripts": {
