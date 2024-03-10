@@ -45,7 +45,7 @@ In addition to the W3C specifications, [web-platform-tests](https://wpt.fyi/resu
 
 ## Getting Started
 
-Install Virtual Screen Reader to your project:
+Install Virtual Screen Reader to your projects:
 
 ```bash
 npm install --save-dev @guidepup/virtual-screen-reader
@@ -134,6 +134,26 @@ describe("Screen Reader Tests", () => {
     await virtual.stop();
   });
 });
+```
+
+### Browser
+
+Virtual Screen Reader also supports ESM environments such as browsers.
+
+Try it out on any website in a browser of your choice by executing the following snippet in DevTools:
+
+```ts
+const { virtual } = await import(
+  "https://unpkg.com/@guidepup/virtual-screen-reader"
+);
+
+await virtual.start({ container: document.body, displayCursor: true });
+
+await virtual.next();
+
+console.log(await virtual.spokenPhraseLog());
+
+await virtual.stop();
 ```
 
 ## Powerful Tooling
