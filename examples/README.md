@@ -6,6 +6,7 @@ projects:
 
 | Example                              | Description                                                                                                               |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| [Puppeteer](./puppeteer)             | A basic example combining [Puppeteer](https://pptr.dev/) and Virtual Screen Reader.                                       |
 | [Playwright](./playwright)           | A basic example combining [Playwright](https://playwright.dev) and Virtual Screen Reader.                                 |
 | [Vue](./vue)                         | A basic example combining Vue, Vitest, Vue Testing Library, and Virtual Screen Reader.                                    |
 | [Web Test Runner](./web-test-runner) | A basic example combining [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) and Virtual Screen Reader. |

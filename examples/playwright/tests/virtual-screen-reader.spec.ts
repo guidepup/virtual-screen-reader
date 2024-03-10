@@ -62,7 +62,7 @@ test("should match expected screen reader output for https://guidepup.dev/", asy
   await page.goto("https://guidepup.dev/");
 
   await injectVirtualScreenReader({ page });
-  await startVirtualScreenReader({ page, headless });
+  await startVirtualScreenReader({ headless, page });
 
   try {
     await navigateToEndOfDocument({ page });

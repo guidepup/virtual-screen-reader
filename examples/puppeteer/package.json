@@ -4,13 +4,14 @@
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "scripts": {
-    "test": "playwright test",
-    "test:headed": "yarn test --headed --workers 1",
+    "test": "jest",
     "test:update": "yarn test -u"
   },
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
-    "@types/node": "^20.11.25"
+    "jest": "^29.7.0",
+    "jest-puppeteer": "^10.0.1",
+    "puppeteer": "^22.4.1"
   }
 }
