@@ -20,7 +20,7 @@ If you are looking to for quick and easy Jest snapshot testing, check out the [`
 ## Capabilities
 
 - **Mirrors Screen Reader Functionality** - simulate and assert on what users can do when using screen readers.
-- **Test Framework Agnostic** - run with Jest, with Playwright, as an independent script, no vendor lock-in.
+- **Test Framework Agnostic** - run with Jest, Vitest, Web Test Runner, in Storybook, as an independent script, no vendor lock-in.
 - **UI Framework Agnostic** - want to use React, Vue, Solid, Svelte, etc.? All good here! Works with any UI framework, and plays nicely with the [Testing Library](https://testing-library.com/) suite.
 - **Fast Feedback** - avoid the cumbersome overhead of running an e2e test with a real screen reader by running virtually over the provided DOM.
 
