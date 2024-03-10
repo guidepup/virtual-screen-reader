@@ -1,6 +1,8 @@
 {
   "name": "@guidepup/virtual-screen-reader-web-test-runner-example",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "author": "Craig Morten <craig.morten@hotmail.co.uk>",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {

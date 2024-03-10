@@ -38,7 +38,7 @@ Current W3C specifications used:
 
 Extracted requirements from these specifications can be found in [docs/requirements.md](docs/requirements.md). If a requirement is not met, [please raise an issue](https://github.com/guidepup/virtual-screen-reader/issues).
 
-In addition to the W3C specifications, <https://a11ysupport.io/> as been used as a guide for test cases in the absence of anything formal. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
+In addition to the W3C specifications, [web-platform-tests](https://wpt.fyi/results/?label=master&label=experimental&aligned&view=interop&q=label%3Aaccessibility) and [a11ysupport.io](https://a11ysupport.io/) as been used as a guide for test cases in the absence of anything formal. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
 
 > [!NOTE]
 > This library should not used as a substitute for testing with real screen readers and with real screen reader users, but a means to gain quick coverage and confidence by automating away common scenarios the same as any other unit test.
