@@ -51,6 +51,10 @@ Install Virtual Screen Reader to your project:
 npm install --save-dev @guidepup/virtual-screen-reader
 ```
 
+```bash
+yarn add -D @guidepup/virtual-screen-reader
+```
+
 And get cracking with your first screen reader unit test automation code!
 
 ## Examples
