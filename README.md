@@ -67,6 +67,8 @@ You can also check out this project's own [integration tests](https://github.com
 
 ### Basic Navigation
 
+Here is a basic example for navigating through HTML in a Jest test in a Node setup:
+
 ```ts
 import { virtual } from "@guidepup/virtual-screen-reader";
 
