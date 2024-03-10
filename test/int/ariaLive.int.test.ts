@@ -4,7 +4,7 @@ import { virtual } from "../../src/index.js";
 import { waitFor } from "@testing-library/dom";
 
 describe("Aria Live", () => {
-  let teardown;
+  let teardown: () => void;
 
   beforeEach(() => {
     teardown = setupAriaLive();

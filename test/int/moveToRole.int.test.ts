@@ -14,9 +14,11 @@ const quickNavigationRoles = [
 
 const quickNavigationRolesWithHeading = [...quickNavigationRoles, "heading"];
 
-const roleAttributesMap = {
+const roleAttributesMap: Record<string, string> = {
   heading: ", level 2",
 };
+
+type VirtualCommand = keyof typeof virtual.commands;
 
 describe("Move To Role", () => {
   afterEach(async () => {
@@ -43,7 +45,7 @@ describe("Move To Role", () => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const command = `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
             1
-          )}`;
+          )}` as VirtualCommand;
           const roleAttributes = roleAttributesMap[role] ?? "";
 
           await virtual.perform(virtual.commands[command]);
@@ -73,7 +75,9 @@ describe("Move To Role", () => {
           await virtual.perform(
             virtual.commands[
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              `moveToNext${role.at(0)!.toUpperCase()}${role.slice(1)}`
+              `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
+                1
+              )}` as VirtualCommand
             ]
           );
 
@@ -102,7 +106,7 @@ describe("Move To Role", () => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const command = `moveToPrevious${role
             .at(0)!
-            .toUpperCase()}${role.slice(1)}`;
+            .toUpperCase()}${role.slice(1)}` as VirtualCommand;
           const roleAttributes = roleAttributesMap[role] ?? "";
 
           await virtual.perform(virtual.commands[command]);
@@ -132,7 +136,9 @@ describe("Move To Role", () => {
           await virtual.perform(
             virtual.commands[
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              `moveToPrevious${role.at(0)!.toUpperCase()}${role.slice(1)}`
+              `moveToPrevious${role.at(0)!.toUpperCase()}${role.slice(
+                1
+              )}` as VirtualCommand
             ]
           );
 

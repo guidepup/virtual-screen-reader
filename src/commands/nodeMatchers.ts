@@ -3,7 +3,7 @@ import { AriaAttributes } from "./types.js";
 
 export function matchesRoles(
   node: AccessibilityNode,
-  roles: Readonly<string[]>
+  roles?: Readonly<string[]>
 ) {
   if (!roles?.length) {
     return true;
@@ -14,7 +14,7 @@ export function matchesRoles(
 
 export function matchesAccessibleAttributes(
   node: AccessibilityNode,
-  ariaAttributes: Readonly<AriaAttributes>
+  ariaAttributes?: Readonly<AriaAttributes>
 ) {
   if (!ariaAttributes) {
     return true;

@@ -167,7 +167,7 @@ function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
 function flattenTree(
   container: Node,
   tree: AccessibilityNodeTree,
-  parentAccessibilityNodeTree: AccessibilityNodeTree
+  parentAccessibilityNodeTree: AccessibilityNodeTree | null
 ): AccessibilityNode[] {
   const { children, ...treeNode } = tree;
 
@@ -422,7 +422,7 @@ export function createAccessibilityTree(node: Node | null) {
       children: [],
       childrenPresentational,
       node,
-      parentAccessibilityNodeTree: null, // Added during flattening
+      parentAccessibilityNodeTree: null,
       parent: null,
       parentDialog: null,
       role,

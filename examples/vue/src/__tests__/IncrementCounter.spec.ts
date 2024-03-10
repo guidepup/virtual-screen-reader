@@ -9,7 +9,7 @@ import IncrementCounter from '../IncrementCounter.vue'
  *
  * in your own code.
  */
-import { virtual } from '../../../../lib/cjs'
+import { virtual } from '../../../../lib/cjs/index.min.js'
 
 describe('Increment Counter', () => {
   afterEach(async () => {

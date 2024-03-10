@@ -2,7 +2,7 @@ import { setupComboboxWithListAutocomplete } from "./comboboxWithListAutocomplet
 import { virtual } from "../../src/index.js";
 
 describe("Aria Active Descendant", () => {
-  let teardown;
+  let teardown: () => void;
 
   beforeEach(() => {
     teardown = setupComboboxWithListAutocomplete();

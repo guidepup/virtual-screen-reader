@@ -9,7 +9,7 @@ import ModalExample from '../OpenModal.vue'
  *
  * in your own code.
  */
-import { virtual } from '../../../../lib/cjs'
+import { virtual } from '../../../../lib/cjs/index.min.js'
 
 describe('Open Modal', () => {
   afterEach(async () => {

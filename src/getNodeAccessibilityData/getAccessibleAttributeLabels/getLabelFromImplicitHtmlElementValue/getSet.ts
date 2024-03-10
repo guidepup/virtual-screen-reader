@@ -6,7 +6,7 @@ const getFirstNestedChildrenByRole = ({
 }: {
   role: string;
   tree: AccessibilityNodeTree;
-}) =>
+}): AccessibilityNodeTree[] =>
   tree.children.flatMap((child) => {
     if (child.role === role) {
       return child;
@@ -21,7 +21,7 @@ const getSiblingsByRoleAndLevel = ({
 }: {
   role: string;
   tree: AccessibilityNodeTree;
-}) => {
+}): AccessibilityNodeTree[] => {
   let parentTree = tree;
 
   while (parentTree.role !== role && parentTree.parentAccessibilityNodeTree) {
@@ -37,7 +37,8 @@ const getChildrenByRole = ({
 }: {
   role: string;
   tree: AccessibilityNodeTree;
-}) => tree.children.filter((child) => child.role === role);
+}): AccessibilityNodeTree[] =>
+  tree.children.filter((child) => child.role === role);
 
 /**
  * aria-level, aria-posinset, and aria-setsize are all 1-based. When the

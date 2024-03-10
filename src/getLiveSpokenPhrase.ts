@@ -147,7 +147,10 @@ const relevantToSpokenPhraseMap = {
   [Relevant.TEXT]: getTextSpokenPhrase,
 };
 
-const roleToImplicitLiveRegionStatesAndPropertiesMap = {
+const roleToImplicitLiveRegionStatesAndPropertiesMap: Record<
+  string,
+  { atomic?: boolean; live: Live }
+> = {
   alert: {
     atomic: true,
     live: Live.ASSERTIVE,

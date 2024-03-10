@@ -9,7 +9,7 @@ import { virtual } from "../../src/index.js";
  * - https://a11ysupport.io/tech/aria/aria-modal_attribute
  */
 describe("Aria Modal", () => {
-  let teardown;
+  let teardown: () => void;
 
   describe("when the dialog is modal", () => {
     beforeEach(async () => {
