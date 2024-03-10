@@ -22,7 +22,7 @@ import type { VirtualCommandArgs } from "./commands/types.js";
  * issues by Guidepup's usage of node builtins etc.
  */
 
-const MacOSModifiers = {
+const MacOSModifiers: Record<string, string> = {
   /**
    * The Command (alias cmd, ⌘) key.
    */
@@ -53,7 +53,7 @@ const MacOSModifiers = {
   ShiftRight: "shift",
 };
 
-const WindowsModifiers = {
+const WindowsModifiers: Record<string, string> = {
   /**
    * Hold down the Control (alias ctrl, ⌃) key.
    */
@@ -214,8 +214,8 @@ export class Virtual implements ScreenReader {
     }
   }
 
-  #createCursor(root: Root) {
-    if (!root.document) {
+  #createCursor(root: Root | undefined) {
+    if (!root?.document) {
       return;
     }
 
@@ -235,7 +235,7 @@ export class Virtual implements ScreenReader {
     this.#cursor.style.zIndex = "calc(Infinity)";
     this.#cursor.dataset.testid = "virtual-screen-reader-cursor";
 
-    this.#container.appendChild(this.#cursor);
+    this.#container!.appendChild(this.#cursor);
   }
 
   #setActiveNode(accessibilityNode: AccessibilityNode) {
@@ -283,7 +283,7 @@ export class Virtual implements ScreenReader {
      * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-modal
      */
     return tree.filter(
-      ({ parentDialog }) => this.#activeNode.parentDialog === parentDialog
+      ({ parentDialog }) => this.#activeNode!.parentDialog === parentDialog
     );
   }
 
@@ -310,7 +310,7 @@ export class Virtual implements ScreenReader {
     });
   }
 
-  async #handleFocusChange({ target }: FocusEvent) {
+  async #handleFocusChange({ target }: Event) {
     await tick();
 
     this.#invalidateTreeCache();
@@ -322,7 +322,7 @@ export class Virtual implements ScreenReader {
     // executing... we are waiting for event loop tick so perhaps there is a
     // race condition here?).
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const newActiveNode = tree.find(({ node }) => node === target);
+    const newActiveNode = tree.find(({ node }) => node === target)!;
 
     this.#updateState(newActiveNode, true);
   }
@@ -330,7 +330,7 @@ export class Virtual implements ScreenReader {
   #focusActiveElement() {
     // Is only called following a null guard for `this.#activeNode`.
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const target = getElementNode(this.#activeNode) as HTMLElement;
+    const target = getElementNode(this.#activeNode!) as HTMLElement;
     target?.focus();
   }
 
@@ -383,7 +383,7 @@ export class Virtual implements ScreenReader {
       const tree = this.#getAccessibilityTree();
       const parentDialogNode = tree.find(
         ({ node }) => node === accessibilityNode.parentDialog
-      );
+      )!;
 
       const spokenPhrase = getSpokenPhrase(parentDialogNode);
       const itemText = getItemText(parentDialogNode);
@@ -409,7 +409,7 @@ export class Virtual implements ScreenReader {
     this.#spokenPhraseLog.push(spokenPhrase);
   }
 
-  async #refreshState(ignoreIfNoChange) {
+  async #refreshState(ignoreIfNoChange: boolean) {
     await tick();
 
     this.#invalidateTreeCache();
@@ -583,7 +583,7 @@ export class Virtual implements ScreenReader {
   // prompts the missing container error.
   async start(
     { container, displayCursor = false, window: root }: StartOptions = {
-      container: null,
+      container: null as never,
       displayCursor: false,
     }
   ) {
@@ -647,11 +647,11 @@ export class Virtual implements ScreenReader {
     this.#invalidateTreeCache();
 
     if (this.#cursor) {
-      this.#container.removeChild(this.#cursor);
+      this.#container?.removeChild(this.#cursor);
       this.#cursor = null;
     }
 
-    this.#setActiveNode(null);
+    this.#activeNode = null;
     this.#container = null;
     this.#itemTextLog = [];
     this.#spokenPhraseLog = [];

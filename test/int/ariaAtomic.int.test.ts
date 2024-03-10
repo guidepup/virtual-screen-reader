@@ -3,7 +3,7 @@ import { setupAriaAtomic } from "./ariaAtomic.js";
 import { virtual } from "../../src/index.js";
 
 describe("Aria Atomic", () => {
-  let teardown;
+  let teardown: () => void;
 
   describe("new nodes are divs", () => {
     beforeEach(() => {

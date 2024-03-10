@@ -162,7 +162,7 @@ export const getLabelFromHtmlEquivalentAttribute = ({
     });
 
     if (label) {
-      return { label, value: attributeValue };
+      return { label, value: attributeValue ?? "" };
     }
   }
 

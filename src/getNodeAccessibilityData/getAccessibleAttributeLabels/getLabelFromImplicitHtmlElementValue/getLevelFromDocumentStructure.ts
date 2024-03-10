@@ -13,14 +13,18 @@ import type { AccessibilityNodeTree } from "../../../createAccessibilityTree.js"
  * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-level
  */
 export const getLevelFromDocumentStructure = ({
+  level = 1,
   role,
   tree,
-  level = 1,
 }: {
-  tree: AccessibilityNodeTree;
-  role: string;
   level?: number;
+  role: string;
+  tree: AccessibilityNodeTree | null;
 }): string => {
+  if (!tree) {
+    return `${level}`;
+  }
+
   if (tree.role === role) {
     level++;
   }

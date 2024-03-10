@@ -2,7 +2,7 @@ import { isElement } from "./isElement.js";
 import type { Root } from "./Virtual.js";
 
 export function observeDOM(
-  root: Root,
+  root: Root | undefined,
   node: Node,
   onChange: MutationCallback
 ): () => void {

@@ -40,7 +40,7 @@ function allowsNameFromContent(node: Element): boolean {
   ].includes(node.getAttribute("role") ?? "");
 }
 
-function defaultAriaAttributes(role) {
+function defaultAriaAttributes(role: string) {
   switch (role) {
     case "combobox": {
       return ", not expanded, has popup listbox";

@@ -1,6 +1,12 @@
 import type { AccessibilityNodeTree } from "../../../createAccessibilityTree.js";
 
-export const hasTreegridAncestor = (tree: AccessibilityNodeTree) => {
+export const hasTreegridAncestor = (
+  tree: AccessibilityNodeTree | null
+): boolean => {
+  if (!tree) {
+    return false;
+  }
+
   if (tree.role === "treegrid") {
     return true;
   }

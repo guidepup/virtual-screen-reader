@@ -24,7 +24,7 @@ export const getAccessibleAttributeLabels = ({
   alternateReadingOrderParents: Node[];
   container: Node;
   node: Node;
-  parentAccessibilityNodeTree: AccessibilityNodeTree;
+  parentAccessibilityNodeTree: AccessibilityNodeTree | null;
   role: string;
 }): {
   accessibleAttributeLabels: string[];
@@ -107,7 +107,7 @@ export const getAccessibleAttributeLabels = ({
     if (labelFromImplicitAriaAttributeValue) {
       labels[attributeName] = {
         label: labelFromImplicitAriaAttributeValue,
-        value: implicitAttributeValue,
+        value: implicitAttributeValue ?? "",
       };
 
       return;

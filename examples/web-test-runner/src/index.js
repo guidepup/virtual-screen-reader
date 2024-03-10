@@ -5,7 +5,7 @@
  *
  * in your own code.
  */
-import { virtual } from "../../../lib/esm/index.js";
+import { virtual } from "../../../lib/esm/index.browser.js";
 
 document.body.innerHTML = `<nav>Nav Text</nav>
 <section>

@@ -2,6 +2,8 @@ import { virtual } from "../../src/index.js";
 
 const headingLevels = ["1", "2", "3", "4", "5", "6"];
 
+type VirtualCommand = keyof typeof virtual.commands;
+
 describe("Move To Heading", () => {
   afterEach(async () => {
     await virtual.stop();
@@ -225,7 +227,9 @@ describe("Move To Heading", () => {
         "should let you navigate to the next level %s heading",
         async (headingLevel) => {
           const command =
-            virtual.commands[`moveToNextHeadingLevel${headingLevel}`];
+            virtual.commands[
+              `moveToNextHeadingLevel${headingLevel}` as VirtualCommand
+            ];
           await virtual.perform(command);
           await virtual.perform(command);
 
@@ -249,7 +253,9 @@ describe("Move To Heading", () => {
         "should gracefully handle being asked to navigate to the next level %s heading",
         async (headingLevel) => {
           await virtual.perform(
-            virtual.commands[`moveToNextHeadingLevel${headingLevel}`]
+            virtual.commands[
+              `moveToNextHeadingLevel${headingLevel}` as VirtualCommand
+            ]
           );
 
           expect(await virtual.spokenPhraseLog()).toEqual(["document"]);
@@ -281,7 +287,9 @@ describe("Move To Heading", () => {
         "should let you navigate to the previous level %s heading",
         async (headingLevel) => {
           const command =
-            virtual.commands[`moveToPreviousHeadingLevel${headingLevel}`];
+            virtual.commands[
+              `moveToPreviousHeadingLevel${headingLevel}` as VirtualCommand
+            ];
           await virtual.perform(command);
           await virtual.perform(command);
 
@@ -305,7 +313,9 @@ describe("Move To Heading", () => {
         "should gracefully handle being asked to navigate to the previous level %s heading",
         async (headingLevel) => {
           await virtual.perform(
-            virtual.commands[`moveToPreviousHeadingLevel${headingLevel}`]
+            virtual.commands[
+              `moveToPreviousHeadingLevel${headingLevel}` as VirtualCommand
+            ]
           );
 
           expect(await virtual.spokenPhraseLog()).toEqual(["document"]);

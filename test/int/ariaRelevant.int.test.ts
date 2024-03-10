@@ -3,7 +3,7 @@ import { setupAriaRelevant } from "./ariaRelevant.js";
 import { virtual } from "../../src/index.js";
 
 describe("Aria Relevant", () => {
-  let teardown;
+  let teardown: () => void;
 
   beforeEach(() => {
     teardown = setupAriaRelevant();

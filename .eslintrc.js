@@ -8,7 +8,7 @@ module.exports = {
     "prettier",
   ],
   plugins: ["require-extensions", "@typescript-eslint"],
-  ignorePatterns: ["examples"],
+  ignorePatterns: ["coverage", "examples", "lib"],
   rules: {
     "sort-imports": ["error", { ignoreCase: true }],
     quotes: ["error", "double", { avoidEscape: true }],

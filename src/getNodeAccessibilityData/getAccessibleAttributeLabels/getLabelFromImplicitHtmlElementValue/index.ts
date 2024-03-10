@@ -20,7 +20,7 @@ type Mapper = ({
   role,
 }: {
   node: HTMLElement;
-  tree: AccessibilityNodeTree;
+  tree: AccessibilityNodeTree | null;
   role: string;
 }) => string;
 
@@ -205,7 +205,7 @@ export const getLabelFromImplicitHtmlElementValue = ({
   attributeName: string;
   container: Node;
   node: HTMLElement;
-  parentAccessibilityNodeTree: AccessibilityNodeTree;
+  parentAccessibilityNodeTree: AccessibilityNodeTree | null;
   role: string;
 }): { label: string; value: string } => {
   const implicitValue = mapHtmlElementAriaToImplicitValue[attributeName]?.({
