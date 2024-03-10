@@ -316,13 +316,15 @@ export class Virtual implements ScreenReader {
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
 
-    // This is called when an element in the tree receives focus so it stands
-    // that we should be able to find said element in the tree (unless it can
-    // be removed somehow between the focus event firing and this code
-    // executing... we are waiting for event loop tick so perhaps there is a
-    // race condition here?).
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const newActiveNode = tree.find(({ node }) => node === target)!;
+    if (!tree.length) {
+      return;
+    }
+
+    // We've covered the tree having no length so there must be at least one
+    // index or we default back to the beginning of the tree.
+    const newActiveNode =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      tree.find(({ node }) => node === target) ?? tree.at(0)!;
 
     this.#updateState(newActiveNode, true);
   }

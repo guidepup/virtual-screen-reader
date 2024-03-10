@@ -1,5 +1,5 @@
 {
-  "name": "@guidepup/virtual-screen-reader-playwright-example",
+  "name": "@guidepup/virtual-screen-reader-puppeteer-example",
   "version": "1.0.0",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
