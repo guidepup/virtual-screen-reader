@@ -1,0 +1,16 @@
+{
+  "name": "@guidepup/virtual-screen-reader-playwright-example",
+  "version": "1.0.0",
+  "author": "Craig Morten <craig.morten@hotmail.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.25"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "yarn test --headed --workers 1",
+    "test:update": "yarn test -u"
+  }
+}
