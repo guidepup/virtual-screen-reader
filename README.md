@@ -4,7 +4,7 @@
 <a href="https://github.com/guidepup/virtual-screen-reader/actions/workflows/test.yml"><img alt="Virtual Screen Reader test workflows" src="https://github.com/guidepup/virtual-screen-reader/workflows/Test/badge.svg" /></a>
 <a href="https://github.com/guidepup/virtual-screen-reader/blob/main/LICENSE"><img alt="Virtual Screen Reader uses the MIT license" src="https://img.shields.io/github/license/guidepup/virtual-screen-reader" /></a>
 
-## [Documentation](https://guidepup.dev) | [API Reference](https://www.guidepup.dev/docs/api/class-guidepup-virtual-screen-reader)
+## [Documentation](https://www.guidepup.dev/docs/virtual) | [API Reference](https://www.guidepup.dev/docs/api/class-guidepup-virtual-screen-reader)
 
 Virtual Screen Reader is a screen reader simulator for unit tests.
 
