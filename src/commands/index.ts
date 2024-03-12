@@ -83,7 +83,6 @@ const quickLandmarkNavigationRoles = [
 
 const quickAriaRoleNavigationRoles = [
   ...quickLandmarkNavigationRoles,
-
   /**
    * WAI-ARIA doesn't specify that assistive technologies should enable users
    * to quickly navigate to elements with role heading. However, it is very
@@ -91,7 +90,8 @@ const quickAriaRoleNavigationRoles = [
    *
    * REF:
    * - https://www.w3.org/TR/wai-aria-1.2/#heading
-   * - https://webaim.org/projects/screenreadersurvey9/#heading
+   * - https://webaim.org/projects/screenreadersurvey10/#heading
+   * - https://webaim.org/projects/screenreadersurvey10/#finding
    *
    * MUST requirements:
    *
@@ -101,6 +101,16 @@ const quickAriaRoleNavigationRoles = [
    * REF: https://a11ysupport.io/tech/aria/heading_role
    */
   "heading",
+  /**
+   * WAI-ARIA doesn't specify that assistive technologies should enable users
+   * to quickly navigate to elements with role link. However, it is very
+   * common for assistive technology users to navigate between links.
+   *
+   * REF:
+   * - https://www.w3.org/TR/wai-aria-1.2/#link
+   * - https://webaim.org/projects/screenreadersurvey10/#finding
+   */
+  "link",
 ] as const;
 
 interface QuickAriaRoleNavigationCommands {
@@ -504,6 +514,46 @@ interface QuickAriaRoleNavigationCommands {
    * ```
    */
   moveToPreviousHeading: (args: VirtualCommandArgs) => number | null;
+  /**
+   * Move to the next element with a [`link`](https://www.w3.org/TR/wai-aria-1.2/#link)
+   * role.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Perform action to move to the next link element.
+   *   await virtual.perform(virtual.commands.moveToNextLink);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
+   */
+  moveToNextLink: (args: VirtualCommandArgs) => number | null;
+  /**
+   * Move to the previous element with a [`link`](https://www.w3.org/TR/wai-aria-1.2/#link)
+   * role.
+   *
+   * ```ts
+   * import { virtual } from "@guidepup/virtual-screen-reader";
+   *
+   * test("example test", async () => {
+   *   // Start the Virtual Screen Reader.
+   *   await virtual.start({ container: document.body });
+   *
+   *   // Perform action to move to the previous link element.
+   *   await virtual.perform(virtual.commands.moveToPreviousLink);
+   *
+   *   // Stop the Virtual Screen Reader.
+   *   await virtual.stop();
+   * });
+   * ```
+   */
+  moveToPreviousLink: (args: VirtualCommandArgs) => number | null;
 }
 
 const quickAriaRoleNavigationCommands: QuickAriaRoleNavigationCommands =

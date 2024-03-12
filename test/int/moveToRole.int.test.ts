@@ -12,7 +12,11 @@ const quickNavigationRoles = [
   "search",
 ];
 
-const quickNavigationRolesWithHeading = [...quickNavigationRoles, "heading"];
+const quickNavigationRolesWithHeadingAndLink = [
+  ...quickNavigationRoles,
+  "heading",
+  "link",
+];
 
 const roleAttributesMap: Record<string, string> = {
   heading: ", level 2",
@@ -29,7 +33,7 @@ describe("Move To Role", () => {
   describe("moveToNextRole", () => {
     describe("when there are matching roles in the container", () => {
       beforeEach(async () => {
-        document.body.innerHTML = quickNavigationRolesWithHeading
+        document.body.innerHTML = quickNavigationRolesWithHeadingAndLink
           .map(
             (role) =>
               `<div role="${role}" aria-label="Accessible name">Node with role: ${role}</div>`
@@ -39,7 +43,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRolesWithHeading)(
+      it.each(quickNavigationRolesWithHeadingAndLink)(
         "should let you navigate to the next %s",
         async (role) => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -69,7 +73,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRolesWithHeading)(
+      it.each(quickNavigationRolesWithHeadingAndLink)(
         "should gracefully handle being asked to move to the next %s",
         async (role) => {
           await virtual.perform(
@@ -90,7 +94,7 @@ describe("Move To Role", () => {
   describe("moveToPreviousRole", () => {
     describe("when there are matching roles in the container", () => {
       beforeEach(async () => {
-        document.body.innerHTML = quickNavigationRolesWithHeading
+        document.body.innerHTML = quickNavigationRolesWithHeadingAndLink
           .map(
             (role) =>
               `<div role="${role}" aria-label="Accessible name">Node with role: ${role}</div>`
@@ -100,7 +104,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRolesWithHeading)(
+      it.each(quickNavigationRolesWithHeadingAndLink)(
         "should let you navigate to the previous %s",
         async (role) => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -130,7 +134,7 @@ describe("Move To Role", () => {
         await virtual.start({ container: document.body });
       });
 
-      it.each(quickNavigationRolesWithHeading)(
+      it.each(quickNavigationRolesWithHeadingAndLink)(
         "should gracefully handle being asked to move to the previous %s",
         async (role) => {
           await virtual.perform(
