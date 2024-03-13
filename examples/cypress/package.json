@@ -1,0 +1,14 @@
+{
+  "name": "@guidepup/virtual-screen-reader-cypress-example",
+  "version": "1.0.0",
+  "author": "Craig Morten <craig.morten@hotmail.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "cypress open",
+    "test": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^13.7.0"
+  }
+}
