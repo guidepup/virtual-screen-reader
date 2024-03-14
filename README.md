@@ -158,6 +158,12 @@ console.log(await virtual.spokenPhraseLog());
 await virtual.stop();
 ```
 
+### AOM Support
+
+Virtual Screen Reader will feature detect [Accessibility Object Model (AOM)](https://github.com/WICG/aom) support and adopt the browser's computed accessible names and roles when available.
+
+See the [Storybook example](./examples/storybook/) to learn how to opt into this behaviour.
+
 ## Powerful Tooling
 
 Check out some of the other Guidepup modules:
