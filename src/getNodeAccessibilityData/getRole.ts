@@ -162,7 +162,7 @@ export function getRole({
   allowedAccessibilityRoles: string[][];
   inheritedImplicitPresentational: boolean;
   node: Node;
-}) {
+}): { explicitRole: string; implicitRole: string; role: string } {
   if (!isElement(node)) {
     return { explicitRole: "", implicitRole: "", role: "" };
   }
@@ -174,6 +174,13 @@ export function getRole({
     inheritedImplicitPresentational,
     node: target,
   });
+
+  // Feature detect AOM support
+  if ("computedRole" in node) {
+    const role = node.computedRole as string;
+
+    return { explicitRole, implicitRole: role, role };
+  }
 
   target.removeAttribute("role");
 
