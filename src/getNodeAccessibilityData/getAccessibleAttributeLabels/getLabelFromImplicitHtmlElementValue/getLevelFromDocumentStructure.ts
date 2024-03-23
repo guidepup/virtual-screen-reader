@@ -1,4 +1,4 @@
-import type { AccessibilityNodeTree } from "../../../createAccessibilityTree.js";
+import type { AccessibilityNodeTree } from "../../../createAccessibilityTree";
 
 /**
  * If the DOM ancestry accurately represents the level, the user agent can

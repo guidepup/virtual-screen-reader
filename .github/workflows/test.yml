@@ -52,3 +52,22 @@ jobs:
         working-directory: ./examples/web-test-runner
       - run: yarn test
         working-directory: ./examples/web-test-runner
+
+  test-wpt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          # REF: https://github.com/web-platform-tests/wpt/issues/44427
+          python-version: '3.11' 
+      - name: Setup HOSTS file for Web Platform Test server
+        run: yarn wpt:hosts
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - run: yarn test:wpt

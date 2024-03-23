@@ -1,5 +1,5 @@
-import { getLocalName } from "../getLocalName.js";
-import { isElement } from "../isElement.js";
+import { getLocalName } from "../getLocalName";
+import { isElement } from "../isElement";
 
 export type HTMLElementWithValue =
   | HTMLButtonElement

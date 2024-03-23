@@ -1,7 +1,7 @@
-import { getAccessibleName } from "../getAccessibleName.js";
-import { getAccessibleValue } from "../getAccessibleValue.js";
-import { getItemText } from "../../getItemText.js";
-import { getNodeByIdRef } from "../../getNodeByIdRef.js";
+import { getAccessibleName } from "../getAccessibleName";
+import { getAccessibleValue } from "../getAccessibleValue";
+import { getItemText } from "../../getItemText";
+import { getNodeByIdRef } from "../../getNodeByIdRef";
 
 enum State {
   BUSY = "busy",

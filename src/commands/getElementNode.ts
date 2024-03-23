@@ -1,5 +1,5 @@
-import { AccessibilityNode } from "../createAccessibilityTree.js";
-import { getElementFromNode } from "../getElementFromNode.js";
+import { AccessibilityNode } from "../createAccessibilityTree";
+import { getElementFromNode } from "../getElementFromNode";
 
 export function getElementNode(
   accessibilityNode: AccessibilityNode

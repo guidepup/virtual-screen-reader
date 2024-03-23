@@ -1,13 +1,13 @@
 import {
   AccessibleAttributeToLabelMap,
   getAccessibleAttributeLabels,
-} from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index.js";
-import { getIdRefsByAttribute } from "./getIdRefsByAttribute.js";
-import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index.js";
-import { getNodeByIdRef } from "./getNodeByIdRef.js";
-import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue.js";
-import { isDialogRole } from "./isDialogRole.js";
-import { isElement } from "./isElement.js";
+} from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index";
+import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
+import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index";
+import { getNodeByIdRef } from "./getNodeByIdRef";
+import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
+import { isDialogRole } from "./isDialogRole";
+import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
 
 export const END_OF_ROLE_PREFIX = "end of";
@@ -140,11 +140,22 @@ function isHiddenFromAccessibilityTree(node: Node | null): node is null {
 
   // `node.textContent` is only `null` for `document` and `doctype`.
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (node.nodeType === TEXT_NODE && !!node.textContent!.trim()) {
+  if (node.nodeType === TEXT_NODE && node.textContent!.trim()) {
     return false;
   }
 
-  return !isElement(node) || isInaccessible(node);
+  if (!isElement(node)) {
+    return true;
+  }
+
+  try {
+    return isInaccessible(node);
+  } catch {
+    // Some elements aren't supported by DOM implementations such as JSDOM.
+    // E.g. `<math>`, see https://github.com/jsdom/jsdom/issues/3515
+    // We ignore these nodes at the moment as we can't support them.
+    return true;
+  }
 }
 
 function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
