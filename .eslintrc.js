@@ -4,10 +4,9 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:require-extensions/recommended",
     "prettier",
   ],
-  plugins: ["require-extensions", "@typescript-eslint"],
+  plugins: ["@typescript-eslint"],
   ignorePatterns: ["coverage", "examples", "lib"],
   rules: {
     "sort-imports": ["error", { ignoreCase: true }],

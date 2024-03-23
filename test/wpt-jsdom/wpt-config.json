@@ -1,0 +1,33 @@
+{
+  "browser_host": "web-platform.test",
+  "doc_root": ".",
+  "ws_doc_root": null,
+  "server_host": null,
+  "ports": {
+    "h2": [9002],
+    "http": [9000, "auto"],
+    "https": [9443, "auto"],
+    "ws": [9001],
+    "wss": [9444]
+  },
+  "check_subdomains": true,
+  "logging": {
+    "level": "info"
+  },
+  "bind_address": true,
+  "ssl": {
+    "type": "pregenerated",
+    "encrypt_after_connect": false,
+    "openssl": {
+      "openssl_binary": "openssl",
+      "base_path": "_certs",
+      "force_regenerate": false,
+      "base_conf_path": null
+    },
+    "pregenerated": {
+      "host_key_path": "tools/certs/web-platform.test.key",
+      "host_cert_path": "tools/certs/web-platform.test.pem"
+    },
+    "none": {}
+  }
+}

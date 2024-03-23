@@ -1,5 +1,5 @@
-import { isElement } from "./isElement.js";
-import type { Root } from "./Virtual.js";
+import { isElement } from "./isElement";
+import type { Root } from "./Virtual";
 
 export function observeDOM(
   root: Root | undefined,

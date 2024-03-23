@@ -1,0 +1,7 @@
+All tests in the submodule `test/wpt` are from https://github.com/web-platform-tests/wpt. See that repository for it's licensing details.
+
+All tests in the `test/wpt-deprecated` directory are derived from https://github.com/web-platform-tests/wpt. See that repository for it's licensing details.
+
+All test setup in the the `test/wpt-jsdom` directory is derived from https://github.com/jsdom/jsdom. See that repository for it's licensing details.
+
+All other directories follow the same license as [LICENSE](../LICENSE).

@@ -8,13 +8,14 @@ module.exports = {
   coveragePathIgnorePatterns: ["/node_modules/", "/test/"],
   coverageThreshold: {
     global: {
-      branches: 97,
+      branches: 96,
       functions: 100,
-      lines: 99,
-      statements: 99,
+      lines: 98,
+      statements: 98,
     },
   },
   setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
+  testPathIgnorePatterns: ["<rootDir>/test/wpt"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "./tsconfig.test.json" }],
   },

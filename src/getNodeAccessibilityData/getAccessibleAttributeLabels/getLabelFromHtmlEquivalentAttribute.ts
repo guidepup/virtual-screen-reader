@@ -1,5 +1,5 @@
-import { getLocalName } from "../../getLocalName.js";
-import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel.js";
+import { getLocalName } from "../../getLocalName";
+import { mapAttributeNameAndValueToLabel } from "./mapAttributeNameAndValueToLabel";
 
 const isNotMatchingElement = ({
   elements,

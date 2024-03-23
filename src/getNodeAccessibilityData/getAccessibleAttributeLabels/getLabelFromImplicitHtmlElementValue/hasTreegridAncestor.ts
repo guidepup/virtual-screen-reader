@@ -1,4 +1,4 @@
-import type { AccessibilityNodeTree } from "../../../createAccessibilityTree.js";
+import type { AccessibilityNodeTree } from "../../../createAccessibilityTree";
 
 export const hasTreegridAncestor = (
   tree: AccessibilityNodeTree | null

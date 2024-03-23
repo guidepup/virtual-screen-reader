@@ -1,9 +1,9 @@
-import type { AccessibilityNodeTree } from "../../../createAccessibilityTree.js";
-import { getLevelFromDocumentStructure } from "./getLevelFromDocumentStructure.js";
-import { getLocalName } from "../../../getLocalName.js";
-import { getSet } from "./getSet.js";
-import { hasTreegridAncestor } from "./hasTreegridAncestor.js";
-import { mapAttributeNameAndValueToLabel } from "../mapAttributeNameAndValueToLabel.js";
+import type { AccessibilityNodeTree } from "../../../createAccessibilityTree";
+import { getLevelFromDocumentStructure } from "./getLevelFromDocumentStructure";
+import { getLocalName } from "../../../getLocalName";
+import { getSet } from "./getSet";
+import { hasTreegridAncestor } from "./hasTreegridAncestor";
+import { mapAttributeNameAndValueToLabel } from "../mapAttributeNameAndValueToLabel";
 
 const headingLocalNameToLevelMap: Record<string, string> = {
   h1: "1",

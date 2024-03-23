@@ -1,4 +1,5 @@
 import { defineConfig } from "tsup";
+import { dependencies } from "./package.json";
 
 const commonConfig = {
   define: {
@@ -43,12 +44,7 @@ export default defineConfig([
     outDir: "./lib/esm/",
     outExtension: () => ({ js: ".js" }),
     minify: true,
-    noExternal: [
-      "@testing-library/dom",
-      "@testing-library/user-event",
-      "aria-query",
-      "dom-accessibility-api",
-    ],
+    noExternal: Object.keys(dependencies),
     skipNodeModulesBundle: false,
     splitting: false,
   },

@@ -1,5 +1,5 @@
-import { getNextIndexByIdRefsAttribute } from "./getNextIndexByIdRefsAttribute.js";
-import { VirtualCommandArgs } from "./types.js";
+import { getNextIndexByIdRefsAttribute } from "./getNextIndexByIdRefsAttribute";
+import { VirtualCommandArgs } from "./types";
 
 /**
  * aria-details:

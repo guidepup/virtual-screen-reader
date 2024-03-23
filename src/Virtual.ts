@@ -1,21 +1,21 @@
 import {
   AccessibilityNode,
   createAccessibilityTree,
-} from "./createAccessibilityTree.js";
+} from "./createAccessibilityTree";
 import type { CommandOptions, ScreenReader } from "@guidepup/guidepup";
-import { commands, type VirtualCommands } from "./commands/index.js";
+import { commands, type VirtualCommands } from "./commands/index";
 import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
-} from "./errors.js";
-import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase.js";
-import { getElementNode } from "./commands/getElementNode.js";
-import { getItemText } from "./getItemText.js";
-import { getSpokenPhrase } from "./getSpokenPhrase.js";
-import { observeDOM } from "./observeDOM.js";
-import { tick } from "./tick.js";
+} from "./errors";
+import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase";
+import { getElementNode } from "./commands/getElementNode";
+import { getItemText } from "./getItemText";
+import { getSpokenPhrase } from "./getSpokenPhrase";
+import { observeDOM } from "./observeDOM";
+import { tick } from "./tick";
 import { userEvent } from "@testing-library/user-event";
-import type { VirtualCommandArgs } from "./commands/types.js";
+import type { VirtualCommandArgs } from "./commands/types";
 
 /**
  * Modifiers ported from https://github.com/guidepup/guidepup to prevent ESM

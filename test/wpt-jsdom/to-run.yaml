@@ -1,0 +1,307 @@
+DIR: accname
+
+manual/description_1.0_combobox-focusable-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/description_from_content_of_describedby_element-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_file-label-inline-block-elements-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_file-label-inline-block-styles-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_552-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_553-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_659-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_660-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_661-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_662-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_663a-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_753-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_754-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_755-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_756-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_757-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_758-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_759-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_760-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_761-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+manual/name_test_case_762-manual.html:
+  [timeout, upstream issue with dom-accessibility-api package]
+
+name/comp_embedded_control.html:
+  "checkbox label with embedded combobox (span)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "checkbox label with embedded combobox (div)":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_hidden_not_referenced.html:
+  "heading with name from content, containing element that is visibility:hidden with nested content that is visibility:visible":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_label.html:
+  "label valid on math element":
+    [fail, upstream issue with dom-accessibility-api package]
+  "aria-label undefined on img w/ alt":
+    [fail, upstream issue with dom-accessibility-api package]
+  "aria-label undefined on img w/o alt":
+    [fail, upstream issue with dom-accessibility-api package]
+  "aria-label undefined on img w/ empty alt":
+    [fail, upstream issue with dom-accessibility-api package]
+  "aria-label undefined on img w/o alt but w/ title":
+    [fail, upstream issue with dom-accessibility-api package]
+  "aria-label undefined on img w/ empty alt but w/ title":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button's hidden referenced name (display:none) supercedes aria-label":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button's hidden referenced name (visibility:hidden) supercedes aria-label":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button's hidden referenced name (visibility:hidden) with hidden aria-labelledby traversal falls back to aria-label":
+    [fail, upstream issue with dom-accessibility-api package]
+  "nav with trailing nbsp char aria-label is valid (nbsp is preserved in name)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with leading nbsp char in aria-label is valid (and uses aria-label)":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_labelledby_hidden_nodes.html:
+  "button with aria-labelledby using visibility:hidden span (with nested span)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with aria-labelledby using visibility:hidden span (with nested spans, depth 2)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with aria-labelledby using visibility:hidden hidden span (with nested sibling spans)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with aria-labelledby using span without visibility:collapse (with nested visibility:collapse sibling spans)":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_name_from_content.html:
+  "button name from content with ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content with ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from content with ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content with ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from content no space joiners ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content no space joiners ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content no space joiners ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from content with ::before and ::after in rtl":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with ::before and ::after in rtl":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content with ::before and ::after in rtl":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from fallback content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from fallback content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from fallback content with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from fallback content mixing attr() and strings with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from fallback content mixing attr() and strings with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from fallback content mixing attr() and strings with ::before and ::after":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with link referencing image using aria-labelledby, that in turn references text element via aria-labelledby":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with link referencing image using aria-labelledby, that in turn references itself and another element via aria-labelledby":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button name from content for each child (no space, inline)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content for each child (no space, inline)":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link name from content for each child (no space, inline)":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_text_node.html:
+  "span[role=button] with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "div[role=heading] with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "span[role=button] with text node, with extra non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "div[role=heading] with text node, with extra non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with text node, with extra non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with text node, with extra non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with text node, with extra non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "span[role=button] with text node, with mixed space and non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "div[role=heading] with text node, with mixed space and non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with text node, with mixed space and non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with text node, with mixed space and non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with text node, with mixed space and non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
+name/comp_tooltip.html:
+  "img with tooltip label with empty alt":
+    [fail, upstream issue with dom-accessibility-api package]
+name/shadowdom/basic.html:
+  [fail, upstream issue with dom-accessibility-api package]
+name/shadowdom/slot.html:
+  [fail, upstream issue with dom-accessibility-api package]
+
+---
+DIR: dpub-aam
+
+manual/*:
+  [
+    timeout,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+role/roles.html:
+  "role: doc-pagefooter":
+    [fail, upstream issue with dom-accessibility-api package]
+  "role: doc-pageheader":
+    [fail, upstream issue with dom-accessibility-api package]
+
+# ---
+# these are currently DOM query tests
+# DIR: dpub-aria
+
+# ---
+# targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+# DIR: graphics-aam
+
+---
+DIR: graphics-aria
+---
+DIR: html-aam
+
+roles-contextual.html:
+  "el-aside-in-article-in-main":
+    [fail, upstream issue with dom-accessibility-api package]
+  "el-aside-in-article":
+    [fail, upstream issue with dom-accessibility-api package]
+  "el-aside-in-aside": [fail, upstream issue with dom-accessibility-api package]
+  "el-aside-in-nav": [fail, upstream issue with dom-accessibility-api package]
+  "el-aside-in-section":
+    [fail, upstream issue with dom-accessibility-api package]
+  "el-footer": [fail, upstream issue with dom-accessibility-api package]
+  "el-header": [fail, upstream issue with dom-accessibility-api package]
+  "el-header-ancestormain":
+    [fail, upstream issue with dom-accessibility-api package]
+  "el-section-no-name":
+    [fail, upstream issue with dom-accessibility-api package]
+roles-dynamic-switch.tentative.window.html:
+  "Connected <input type=checkbox switch>":
+    [fail, upstream issue with dom-accessibility-api package]
+  "Connected <input type=checkbox switch>: adding switch attribute":
+    [fail, upstream issue with dom-accessibility-api package]
+  "Connected <input type=checkbox switch>: removing switch attribute":
+    [fail, upstream issue with dom-accessibility-api package]
+  "Connected <input type=checkbox switch>: removing type attribute":
+    [fail, upstream issue with dom-accessibility-api package]
+  "Connected <input type=checkbox switch>: adding type attribute":
+    [fail, upstream issue with dom-accessibility-api package]
+roles-generic.html:
+  "el-li-orphaned": [fail, upstream issue with dom-accessibility-api package]
+roles.html:
+  "el-hgroup": [fail, upstream issue with dom-accessibility-api package]
+  "el-img": [fail, upstream issue with dom-accessibility-api package]
+  "el-s": [fail, upstream issue with dom-accessibility-api package]
+  "el-search": [fail, upstream issue with dom-accessibility-api package]
+roles.tentative.html:
+  "el-input-checkbox-switch":
+    [fail, upstream issue with dom-accessibility-api package]
+table-roles.html:
+  "el-th-in-row": [fail, upstream issue with dom-accessibility-api package]
+
+---
+DIR: wai-aria
+
+idlharness.window.html: [timeout, not a test file]
+manual/*:
+  [
+    timeout,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+role/contextual-roles.html:
+  "footer element scoped to main element is generic":
+    [fail, upstream issue with dom-accessibility-api package]
+role/grid-roles.html:
+  "orphaned button with gridcell role outside the context of row":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned row outside the context of table":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned rowgroup outside the context of row":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned div with gridcell role outside the context of row":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned rowheader outside the context of row":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned columnheader outside the context of row":
+    [fail, upstream issue with dom-accessibility-api package]
+role/list-roles.html:
+  "orphan p with listitem role":
+    [fail, upstream issue with dom-accessibility-api package]
+role/listbox-roles.html:
+  "orphaned option outside the context of listbox":
+    [fail, upstream issue with dom-accessibility-api package]
+role/menu-roles.html:
+  "orphaned menuitem outside the context of menu/menubar":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned menuitemradio outside the context of menu/menubar":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned menuitemcheckbox outside the context of menu/menubar":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphan button with menuitem role":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphan button with menuitemcheckbox role":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphan button with menuitemradio role":
+    [fail, upstream issue with dom-accessibility-api package]
+role/roles.html:
+  "role: generic": [fail, upstream issue with dom-accessibility-api package]
+  "role: suggestion": [fail, upstream issue with dom-accessibility-api package]
+role/synonym-roles.html:
+  "image role == computedrole image":
+    [fail, upstream issue with dom-accessibility-api package]
+  "synonym img role == computedrole image":
+    [fail, upstream issue with dom-accessibility-api package]
+  "directory role == computedrole list":
+    [fail, upstream issue with dom-accessibility-api package]
+  "div w/directory role == computedrole list":
+    [fail, upstream issue with dom-accessibility-api package]
+role/tab-roles.html:
+  "orphan button with tab role":
+    [fail, upstream issue with dom-accessibility-api package]
+role/tree-roles.html:
+  "orphaned treeitem outside the context of tree":
+    [fail, upstream issue with dom-accessibility-api package]
+  "orphaned button with treeitem role outside tree context":
+    [fail, upstream issue with dom-accessibility-api package]
