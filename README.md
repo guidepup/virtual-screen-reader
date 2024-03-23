@@ -30,11 +30,11 @@ There is currently no explicit specification for screen readers to adhere to, bu
 
 Current W3C specifications used:
 
-- [Accessible Rich Internet Applications (WAI-ARIA) 1.2](https://www.w3.org/TR/wai-aria-1.2/)
 - [Accessible Name and Description Computation (ACCNAME) 1.2](https://www.w3.org/TR/accname-1.2/)
-- [ARIA in HTML (HTML-ARIA)](https://www.w3.org/TR/html-aria/)
 - [Core Accessibility API Mappings (CORE-AAM) 1.2](https://www.w3.org/TR/core-aam-1.2/)
 - [HTML Accessibility API Mappings (HTML-AAM) 1.0](https://www.w3.org/TR/html-aam-1.0/)
+- [ARIA in HTML (HTML-ARIA)](https://www.w3.org/TR/html-aria/)
+- [Accessible Rich Internet Applications (WAI-ARIA) 1.2](https://www.w3.org/TR/wai-aria-1.2/)
 
 Extracted requirements from these specifications can be found in [docs/requirements.md](docs/requirements.md). If a requirement is not met, [please raise an issue](https://github.com/guidepup/virtual-screen-reader/issues).
 
