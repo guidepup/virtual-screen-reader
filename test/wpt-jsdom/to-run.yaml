@@ -286,11 +286,10 @@ role/menu-roles.html:
   "orphan button with menuitemradio role":
     [fail, upstream issue with dom-accessibility-api package]
 role/roles.html:
-  "role: generic": [fail, upstream issue with dom-accessibility-api package]
-  "role: suggestion": [fail, upstream issue with dom-accessibility-api package]
+  "role: generic": [fail, unknown]
+  "role: suggestion": [fail, unknown]
 role/synonym-roles.html:
-  "image role == computedrole image":
-    [fail, upstream issue with dom-accessibility-api package]
+  "image role == computedrole image": [fail, unknown]
   "synonym img role == computedrole image":
     [fail, upstream issue with dom-accessibility-api package]
   "directory role == computedrole list":
