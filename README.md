@@ -38,7 +38,23 @@ Current W3C specifications used:
 
 Extracted requirements from these specifications can be found in [docs/requirements.md](docs/requirements.md). If a requirement is not met, [please raise an issue](https://github.com/guidepup/virtual-screen-reader/issues).
 
-In addition to the W3C specifications, [web-platform-tests](https://wpt.fyi/results/?label=master&label=experimental&aligned&view=interop&q=label%3Aaccessibility) and [a11ysupport.io](https://a11ysupport.io/) as been used as a guide for test cases in the absence of anything formal. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
+Internal modules responsible for constructing the Virtual Screen Reader accessibility tree are being tested against [Web Platform Tests](https://github.com/web-platform-tests/wpt) for the following specs:
+
+- [accname](https://github.com/web-platform-tests/wpt/tree/master/accname)
+- [dpub-aam](https://github.com/web-platform-tests/wpt/tree/master/dpub-aam)
+- [graphics-aria](https://github.com/web-platform-tests/wpt/tree/master/graphics-aria)
+- [html-aam](https://github.com/web-platform-tests/wpt/tree/master/html-aam)
+- [wai-aria](https://github.com/web-platform-tests/wpt/tree/master/wai-aria)
+
+The current status of the WPT coverage is:
+
+| Passing | Failing | Skipped |
+| :-----: | :-----: | :-----: |
+|   180   |   109   |   294   |
+
+The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml)
+
+In addition to the W3C specifications [a11ysupport.io](https://a11ysupport.io/) has been used as a guide for test cases in the absence of anything formal for screen reader output. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
 
 > [!NOTE]
 > This library should not used as a substitute for testing with real screen readers and with real screen reader users, but a means to gain quick coverage and confidence by automating away common scenarios the same as any other unit test.
