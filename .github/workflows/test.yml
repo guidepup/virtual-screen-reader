@@ -70,4 +70,4 @@ jobs:
         run: yarn wpt:hosts
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: yarn test:wpt
+      - run: yarn wpt:test
