@@ -1,16 +1,10 @@
-import {
-  AccessibleAttributeToLabelMap,
-  getAccessibleAttributeLabels,
-} from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index";
+import { AccessibleAttributeToLabelMap } from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index";
 import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index";
 import { getNodeByIdRef } from "./getNodeByIdRef";
-import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
 import { isDialogRole } from "./isDialogRole";
 import { isElement } from "./isElement";
 import { isInaccessible } from "dom-accessibility-api";
-
-export const END_OF_ROLE_PREFIX = "end of";
 
 export interface AccessibilityNode {
   accessibleAttributeLabels: string[];
@@ -156,80 +150,6 @@ function isHiddenFromAccessibilityTree(node: Node | null): node is null {
     // We ignore these nodes at the moment as we can't support them.
     return true;
   }
-}
-
-function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
-  const { accessibleName, node } = tree;
-
-  if (!accessibleName) {
-    return false;
-  }
-
-  return (
-    accessibleName ===
-    (
-      node.textContent ||
-      `${(node as HTMLElementWithValue).value}` ||
-      ""
-    )?.trim()
-  );
-}
-
-function flattenTree(
-  container: Node,
-  tree: AccessibilityNodeTree,
-  parentAccessibilityNodeTree: AccessibilityNodeTree | null
-): AccessibilityNode[] {
-  const { children, ...treeNode } = tree;
-
-  treeNode.parentAccessibilityNodeTree = parentAccessibilityNodeTree;
-
-  const { accessibleAttributeLabels, accessibleAttributeToLabelMap } =
-    getAccessibleAttributeLabels({
-      ...treeNode,
-      container,
-    });
-
-  const treeNodeWithAttributeLabels = {
-    ...treeNode,
-    accessibleAttributeLabels,
-    accessibleAttributeToLabelMap,
-  };
-
-  const isAnnounced =
-    !!treeNodeWithAttributeLabels.accessibleName ||
-    !!treeNodeWithAttributeLabels.accessibleDescription ||
-    treeNodeWithAttributeLabels.accessibleAttributeLabels.length > 0 ||
-    !!treeNodeWithAttributeLabels.spokenRole;
-
-  const ignoreChildren = shouldIgnoreChildren(tree);
-
-  const flattenedTree = ignoreChildren
-    ? []
-    : [
-        ...children.flatMap((child) =>
-          flattenTree(container, child, {
-            ...treeNodeWithAttributeLabels,
-            children,
-          })
-        ),
-      ];
-
-  const isRoleContainer =
-    !!flattenedTree.length && !ignoreChildren && !!treeNode.spokenRole;
-
-  if (isAnnounced) {
-    flattenedTree.unshift(treeNodeWithAttributeLabels);
-  }
-
-  if (isRoleContainer) {
-    flattenedTree.push({
-      ...treeNodeWithAttributeLabels,
-      spokenRole: `${END_OF_ROLE_PREFIX} ${treeNodeWithAttributeLabels.spokenRole}`,
-    });
-  }
-
-  return flattenedTree;
 }
 
 function growTree(
@@ -397,9 +317,11 @@ function growTree(
   return tree;
 }
 
-export function createAccessibilityTree(node: Node | null) {
+export function createAccessibilityTree(
+  node: Node | null
+): AccessibilityNodeTree | null {
   if (isHiddenFromAccessibilityTree(node)) {
-    return [];
+    return null;
   }
 
   const alternateReadingOrderMap = mapAlternateReadingOrder(node);
@@ -447,5 +369,5 @@ export function createAccessibilityTree(node: Node | null) {
     }
   );
 
-  return flattenTree(node, tree, null);
+  return tree;
 }

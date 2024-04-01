@@ -4,7 +4,13 @@ const ATK_NAME = "name";
 const ATK_DESCRIPTION = "description";
 const ATK_ROLE = "role";
 
-const accessibilityTree = window.createAccessibilityTree(window.document.body);
+const accessibilityTree = window.flattenTreeSimple(
+  window.createAccessibilityTree(window.document.body)
+);
+
+function getNodeUnderTest(element) {
+  return accessibilityTree.find(({ node }) => node === element);
+}
 
 /**
  * Shim of https://github.com/web-platform-tests/wpt/blob/master/wai-aria/scripts/ATTAcomm.js
@@ -22,9 +28,7 @@ class ATTAcommShim {
           const [matcher, name, equality, expected] = assertion;
 
           if (matcher === ATK_PROPERTY) {
-            const nodeUnderTest = accessibilityTree.find(
-              ({ node }) => node === element
-            );
+            const nodeUnderTest = getNodeUnderTest(element);
 
             switch (name) {
               case ATK_NAME: {

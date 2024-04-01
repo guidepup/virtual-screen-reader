@@ -35,7 +35,7 @@ describe("Aria Details", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "img, Pythagorean Theorem, linked details",
+      "image, Pythagorean Theorem, linked details",
     ]);
 
     await virtual.stop();
@@ -51,7 +51,7 @@ describe("Aria Details", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "img, Pythagorean Theorem",
+      "image, Pythagorean Theorem",
     ]);
 
     await virtual.stop();

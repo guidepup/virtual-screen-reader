@@ -32,8 +32,13 @@ Current W3C specifications used:
 
 - [Accessible Name and Description Computation (ACCNAME) 1.2](https://www.w3.org/TR/accname-1.2/)
 - [Core Accessibility API Mappings (CORE-AAM) 1.2](https://www.w3.org/TR/core-aam-1.2/)
+- [Digital Publishing Accessibility API Mappings](https://www.w3.org/TR/dpub-aam-1.0/)
+- [Digital Publishing WAI-ARIA Module 1.1](https://www.w3.org/TR/dpub-aria-1.1/)
+- [Graphics Accessibility API Mappings](https://www.w3.org/TR/graphics-aam-1.0/)
+- [WAI-ARIA Graphics Module](https://www.w3.org/TR/graphics-aria-1.0/)
 - [HTML Accessibility API Mappings (HTML-AAM) 1.0](https://www.w3.org/TR/html-aam-1.0/)
 - [ARIA in HTML (HTML-ARIA)](https://www.w3.org/TR/html-aria/)
+- [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/)
 - [Accessible Rich Internet Applications (WAI-ARIA) 1.2](https://www.w3.org/TR/wai-aria-1.2/)
 
 Extracted requirements from these specifications can be found in [docs/requirements.md](docs/requirements.md). If a requirement is not met, [please raise an issue](https://github.com/guidepup/virtual-screen-reader/issues).
@@ -44,13 +49,14 @@ Internal modules responsible for constructing the Virtual Screen Reader accessib
 - [dpub-aam](https://github.com/web-platform-tests/wpt/tree/master/dpub-aam)
 - [graphics-aria](https://github.com/web-platform-tests/wpt/tree/master/graphics-aria)
 - [html-aam](https://github.com/web-platform-tests/wpt/tree/master/html-aam)
+- [svg-aam](https://github.com/web-platform-tests/wpt/tree/master/svg-aam)
 - [wai-aria](https://github.com/web-platform-tests/wpt/tree/master/wai-aria)
 
 The current status of the WPT coverage is:
 
 | Passing | Failing | Skipped |
 | :-----: | :-----: | :-----: |
-|   180   |   109   |   294   |
+|   184   |   118   |   294   |
 
 The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml).
 

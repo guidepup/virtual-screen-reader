@@ -1,5 +1,105 @@
 # Specification Requirements
 
+## ACCNAME 1.2
+
+https://www.w3.org/TR/accname-1.2/
+
+## CORE-AAM 1.2
+
+https://www.w3.org/TR/core-aam-1.2/
+
+### Requirements
+
+#### Reverse Relations
+
+https://www.w3.org/TR/core-aam-1.2/#mapping_additional_relations_reverse_relations
+
+> User agents MAY provide a way for the user to navigate to structured information referenced by aria-describedby and assistive technology SHOULD provide such a method.
+
+## DPUB-AAM 1.0
+
+https://www.w3.org/TR/dpub-aam-1.0/
+
+## DPUB-ARIA 1.1
+
+https://www.w3.org/TR/dpub-aria-1.1/
+
+### Requirements
+
+#### Conformance
+
+https://www.w3.org/TR/dpub-aria-1.1/#conformance
+
+> Normative sections provide requirements that authors, user agents and assistive technologies MUST follow for an implementation to conform to this specification.
+
+#### doc-pagefooter (role)
+
+https://www.w3.org/TR/dpub-aria-1.1/#doc-pagefooter
+
+> Assistive technologies MAY allow the user to read the document content continuously without interruption from the page footer.
+
+#### doc-pageheader (role)
+
+https://www.w3.org/TR/dpub-aria-1.1/#doc-pageheader
+
+> Assistive technologies MAY allow the user to read the document content continuously without interruption from the page header.
+
+## GRAPHICS-AAM 1.0
+
+https://www.w3.org/TR/graphics-aam-1.0/
+
+### Requirements
+
+#### Conformance
+
+https://www.w3.org/TR/graphics-aam-1.0/#conformance
+
+> Normative sections provide requirements that authors, user agents and assistive technologies MUST follow for an implementation to conform to this specification.
+
+## GRAPHICS-ARIA 1.0
+
+https://www.w3.org/TR/graphics-aria-1.0/
+
+### Requirements
+
+#### Conformance
+
+https://www.w3.org/TR/graphics-aria-1.0/#conformance
+
+> Normative sections provide requirements that authors, user agents and assistive technologies MUST follow for an implementation to conform to this specification.
+
+#### graphics-document (role)
+
+https://www.w3.org/TR/graphics-aria-1.0/#graphics-document
+
+> The graphics-document may be distinguished from similar roles as follows:
+>
+> - Relative to other documents, a graphics-document is distinguished by the semantic importance of its visual (usually two-dimensional) representation. User agents and assistive technologies SHOULD take this into consideration when supporting navigation of the graphic. Accessibility technologies that re-format or re-style a document SHOULD NOT alter the layout of a graphics-document except in ways that are consistent with the semantic roles and relationships of its content.
+
+#### graphics-object (role)
+
+https://www.w3.org/TR/graphics-aria-1.0/#graphics-object
+
+> Unlike a graphics-document, a graphics-object need not be self-contained, and it does not establish a new context for navigation. However, user agents and assistive technologies SHOULD provide a way for users, particularly non-visual users, to navigate the nested structure of objects in a hierarchical manner, similar to nested lists.
+
+## HTML-AAM 1.0
+
+https://www.w3.org/TR/html-aam-1.0/
+
+### Requirements
+
+#### Conformance
+
+https://www.w3.org/TR/html-aam-1.0/#conformance
+
+> Normative sections provide requirements that authors, user agents, and assistive technologies MUST follow for an implementation to conform to this specification.
+
+## SVG-AAM 1.0
+
+https://www.w3.org/TR/svg-aam-1.0/
+
+### Requirements
+
 ## WAI-ARIA 1.2
 
 https://www.w3.org/TR/wai-aria-1.2/
@@ -132,27 +232,3 @@ https://www.w3.org/TR/wai-aria-1.2/#aria-valuenow
 https://www.w3.org/TR/wai-aria-1.2/#aria-valuetext
 
 > If aria-valuetext is specified, assistive technologies SHOULD render that value instead of the value of aria-valuenow.
-
-## CORE-AAM 1.2
-
-https://www.w3.org/TR/core-aam-1.2/
-
-### Requirements
-
-#### Reverse Relations
-
-https://www.w3.org/TR/core-aam-1.2/#mapping_additional_relations_reverse_relations
-
-> User agents MAY provide a way for the user to navigate to structured information referenced by aria-describedby and assistive technology SHOULD provide such a method.
-
-## HTML-AAM 1.0
-
-https://www.w3.org/TR/html-aam-1.0/
-
-### Requirements
-
-#### Conformance
-
-https://www.w3.org/TR/html-aam-1.0/#conformance
-
-> Normative sections provide requirements that authors, user agents, and assistive technologies MUST follow for an implementation to conform to this specification.

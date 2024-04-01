@@ -1,9 +1,7 @@
-import {
-  AccessibilityNode,
-  END_OF_ROLE_PREFIX,
-} from "../createAccessibilityTree";
 import { matchesAccessibleAttributes, matchesRoles } from "./nodeMatchers";
+import { AccessibilityNode } from "../createAccessibilityTree";
 import type { AriaAttributes } from "./types";
+import { END_OF_ROLE_PREFIX } from "../flattenTree";
 
 export interface GetIndexFilters {
   /** Matches a node only if the node has any of these roles */

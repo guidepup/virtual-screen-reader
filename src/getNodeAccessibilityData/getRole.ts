@@ -54,6 +54,17 @@ function hasGlobalStateOrProperty(node: HTMLElement) {
   return globalStatesAndProperties.some((global) => node.hasAttribute(global));
 }
 
+const aliasedRolesMap: Record<string, string> = {
+  img: "image",
+  presentation: "none",
+};
+
+function mapAliasedRoles(role: string) {
+  const canonical = aliasedRolesMap[role];
+
+  return canonical ?? role;
+}
+
 function getExplicitRole({
   accessibleName,
   allowedAccessibilityRoles,
@@ -176,6 +187,9 @@ export function getRole({
   });
 
   // Feature detect AOM support
+  // TODO: this isn't quite right, computed role might not be the implicit
+  // role, it might be the explicit one as `computedRole` does not
+  // distinguish between them.
   if ("computedRole" in node) {
     const role = node.computedRole as string;
 
@@ -195,6 +209,8 @@ export function getRole({
       implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
     }
   }
+
+  implicitRole = mapAliasedRoles(implicitRole);
 
   if (explicitRole) {
     return { explicitRole, implicitRole, role: explicitRole };
