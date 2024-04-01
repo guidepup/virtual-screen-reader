@@ -9,6 +9,7 @@ import {
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
 import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase";
+import { flattenTree } from "./flattenTree";
 import { getElementNode } from "./commands/getElementNode";
 import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
@@ -255,7 +256,11 @@ export class Virtual implements ScreenReader {
 
   #getAccessibilityTree() {
     if (!this.#treeCache) {
-      this.#treeCache = createAccessibilityTree(this.#container);
+      const tree = createAccessibilityTree(this.#container);
+
+      this.#treeCache =
+        this.#container && tree ? flattenTree(this.#container, tree, null) : [];
+
       this.#attachFocusListeners();
     }
 

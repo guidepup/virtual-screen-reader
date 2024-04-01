@@ -142,6 +142,19 @@ function createJSDOM(urlPrefix, testPath, expectFail) {
       window.createAccessibilityTree = createAccessibilityTree;
       window.observeDOM = observeDOM;
 
+      window.flattenTreeSimple = function flattenTreeSimple(tree) {
+        const { children, ...treeNode } = tree;
+
+        return [
+          treeNode,
+          ...children.flatMap(flattenTreeSimple),
+          {
+            ...treeNode,
+            spokenRole: `end of ${treeNode.spokenRole}`,
+          },
+        ];
+      };
+
       window.shimTest = () => {
         const oldSetup = window.setup;
         window.setup = (options) => {
