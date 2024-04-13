@@ -16,6 +16,22 @@ const getFirstNestedChildrenByRole = ({
     return getFirstNestedChildrenByRole({ role, tree: child });
   });
 
+const getParentByRole = ({
+  role,
+  tree,
+}: {
+  role: string;
+  tree: AccessibilityNodeTree;
+}): AccessibilityNodeTree => {
+  let parentTree = tree;
+
+  while (parentTree.role !== role && parentTree.parentAccessibilityNodeTree) {
+    parentTree = parentTree.parentAccessibilityNodeTree;
+  }
+
+  return parentTree;
+};
+
 const getSiblingsByRoleAndLevel = ({
   role,
   parentRole = role,
@@ -25,30 +41,13 @@ const getSiblingsByRoleAndLevel = ({
   parentRole?: string;
   tree: AccessibilityNodeTree;
 }): AccessibilityNodeTree[] => {
-  let parentTree = tree;
-
-  while (
-    parentTree.role !== parentRole &&
-    parentTree.parentAccessibilityNodeTree
-  ) {
-    parentTree = parentTree.parentAccessibilityNodeTree;
-  }
+  const parentTree = getParentByRole({ role: parentRole, tree });
 
   return getFirstNestedChildrenByRole({ role, tree: parentTree });
 };
 
-const getFormOwnerTree = ({ tree }: { tree: AccessibilityNodeTree }) => {
-  let formOwnerTree: AccessibilityNodeTree = tree;
-
-  while (
-    formOwnerTree.role !== "form" &&
-    formOwnerTree.parentAccessibilityNodeTree
-  ) {
-    formOwnerTree = formOwnerTree.parentAccessibilityNodeTree;
-  }
-
-  return formOwnerTree;
-};
+const getFormOwnerTree = ({ tree }: { tree: AccessibilityNodeTree }) =>
+  getParentByRole({ role: "form", tree });
 
 const getRadioInputsByName = ({
   name,
