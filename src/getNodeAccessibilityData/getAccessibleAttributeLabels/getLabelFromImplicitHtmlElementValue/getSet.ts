@@ -1,4 +1,5 @@
 import type { AccessibilityNodeTree } from "../../../createAccessibilityTree";
+import { isElement } from "../../../isElement";
 
 const getFirstNestedChildrenByRole = ({
   role,
@@ -15,20 +16,102 @@ const getFirstNestedChildrenByRole = ({
     return getFirstNestedChildrenByRole({ role, tree: child });
   });
 
-const getSiblingsByRoleAndLevel = ({
+const getParentByRole = ({
   role,
   tree,
 }: {
   role: string;
   tree: AccessibilityNodeTree;
-}): AccessibilityNodeTree[] => {
+}): AccessibilityNodeTree => {
   let parentTree = tree;
 
   while (parentTree.role !== role && parentTree.parentAccessibilityNodeTree) {
     parentTree = parentTree.parentAccessibilityNodeTree;
   }
 
+  return parentTree;
+};
+
+const getSiblingsByRoleAndLevel = ({
+  role,
+  parentRole = role,
+  tree,
+}: {
+  role: string;
+  parentRole?: string;
+  tree: AccessibilityNodeTree;
+}): AccessibilityNodeTree[] => {
+  const parentTree = getParentByRole({ role: parentRole, tree });
+
   return getFirstNestedChildrenByRole({ role, tree: parentTree });
+};
+
+const getFormOwnerTree = ({ tree }: { tree: AccessibilityNodeTree }) =>
+  getParentByRole({ role: "form", tree });
+
+const getRadioInputsByName = ({
+  name,
+  tree,
+}: {
+  name: string;
+  tree: AccessibilityNodeTree;
+}): AccessibilityNodeTree[] =>
+  tree.children.flatMap((child) => {
+    if (isElement(child.node) && child.node.getAttribute("name") === name) {
+      return child;
+    }
+
+    return getRadioInputsByName({ name, tree: child });
+  });
+
+/**
+ * The radio button group that contains an input element a also contains all
+ * the other input elements b that fulfill all of the following conditions:
+ *
+ * - The input element b's type attribute is in the Radio Button state.
+ * - Either a and b have the same form owner, or they both have no form owner.
+ * - Both a and b are in the same tree.
+ * - They both have a name attribute, their name attributes are not empty, and
+ *   the value of a's name attribute equals the value of b's name attribute.
+ *
+ * REF: https://html.spec.whatwg.org/multipage/input.html#radio-button-group
+ */
+const getRadioGroup = ({
+  node,
+  tree,
+}: {
+  node: HTMLElement;
+  tree: AccessibilityNodeTree;
+}) => {
+  /**
+   * Authors SHOULD ensure that elements with role radio are explicitly grouped
+   * in order to indicate which ones affect the same value. This is achieved by
+   * enclosing the radio elements in an element with role radiogroup. If it is
+   * not possible to make the radio buttons DOM children of the radiogroup,
+   * authors SHOULD use the aria-owns attribute on the radiogroup element to
+   * indicate the relationship to its children.
+   */
+  if (node.localName !== "input") {
+    return getSiblingsByRoleAndLevel({
+      role: "radio",
+      parentRole: "radiogroup",
+      tree,
+    });
+  }
+
+  if (!node.hasAttribute("name")) {
+    return [];
+  }
+
+  const name = node.getAttribute("name")!;
+
+  if (!name) {
+    return [];
+  }
+
+  const formOwnerTree = getFormOwnerTree({ tree });
+
+  return getRadioInputsByName({ name, tree: formOwnerTree });
 };
 
 const getChildrenByRole = ({
@@ -75,14 +158,27 @@ const getChildrenByRole = ({
  * REF: https://www.w3.org/TR/core-aam-1.2/#mapping_additional_position
  */
 export const getSet = ({
+  node,
   role,
   tree,
 }: {
-  role: string;
+  node: HTMLElement;
   tree: AccessibilityNodeTree;
-}): AccessibilityNodeTree[] => {
+  role: string;
+}): Pick<AccessibilityNodeTree, "node">[] => {
   if (role === "treeitem") {
     return getSiblingsByRoleAndLevel({ role, tree });
+  }
+
+  /**
+   * With aria-setsize value reflecting number of type=radio input elements
+   * within the radio button group and aria-posinset value reflecting the
+   * elements position within the radio button group.
+   *
+   * REF: https://www.w3.org/TR/html-aam-1.0/#el-input-radio
+   */
+  if (role === "radio") {
+    return getRadioGroup({ node, tree });
   }
 
   return getChildrenByRole({
