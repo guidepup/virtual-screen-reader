@@ -14,6 +14,55 @@ const headingLocalNameToLevelMap: Record<string, string> = {
   h6: "6",
 };
 
+const getNodeSet = ({
+  node,
+  role,
+  tree,
+}: {
+  node: HTMLElement;
+  tree: AccessibilityNodeTree | null;
+  role: string;
+}): Pick<AccessibilityNodeTree, "node">[] | null => {
+  if (!tree) {
+    return null;
+  }
+
+  /**
+   * When an article is in the context of a feed, the author MAY specify
+   * values for aria-posinset and aria-setsize.
+   *
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#article
+   *
+   * This is interpreted as the author being allowed to specify a value when
+   * nested in a feed, but there are no requirements in the specifications
+   * for an article role to expose an implicit value, even within a feed.
+   */
+  if (role === "article") {
+    return null;
+  }
+
+  /**
+   * While the row role can be used in a table, grid, or treegrid, the semantics
+   * of aria-expanded, aria-posinset, aria-setsize, and aria-level are only
+   * applicable to the hierarchical structure of an interactive tree grid.
+   * Therefore, authors MUST NOT apply aria-expanded, aria-posinset,
+   * aria-setsize, and aria-level to a row that descends from a table or grid,
+   * and user agents SHOULD NOT expose any of these four properties to assistive
+   * technologies unless the row descends from a treegrid.
+   *
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#row
+   */
+  if (role === "row" && !hasTreegridAncestor(tree)) {
+    return null;
+  }
+
+  return getSet({
+    node,
+    role,
+    tree,
+  });
+};
+
 type Mapper = ({
   node,
   tree,
@@ -92,43 +141,12 @@ const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
    * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-posinset
    */
   "aria-posinset": ({ node, tree, role }) => {
-    if (!tree) {
+    const nodeSet = getNodeSet({ node, role, tree });
+
+    if (!nodeSet?.length) {
       return "";
     }
 
-    /**
-     * When an article is in the context of a feed, the author MAY specify
-     * values for aria-posinset and aria-setsize.
-     *
-     * REF: https://www.w3.org/TR/wai-aria-1.2/#article
-     *
-     * This is interpreted as the author being allowed to specify a value when
-     * nested in a feed, but there are no requirements in the specifications
-     * for an article role to expose an implicit value, even within a feed.
-     */
-    if (role === "article") {
-      return "";
-    }
-
-    /**
-     * While the row role can be used in a table, grid, or treegrid, the semantics
-     * of aria-expanded, aria-posinset, aria-setsize, and aria-level are only
-     * applicable to the hierarchical structure of an interactive tree grid.
-     * Therefore, authors MUST NOT apply aria-expanded, aria-posinset,
-     * aria-setsize, and aria-level to a row that descends from a table or grid,
-     * and user agents SHOULD NOT expose any of these four properties to assistive
-     * technologies unless the row descends from a treegrid.
-     *
-     * REF: https://www.w3.org/TR/wai-aria-1.2/#row
-     */
-    if (role === "row" && !hasTreegridAncestor(tree)) {
-      return "";
-    }
-
-    const nodeSet = getSet({
-      role,
-      tree,
-    });
     const index = nodeSet.findIndex((child) => child.node === node);
 
     return `${index + 1}`;
@@ -152,44 +170,12 @@ const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
    *
    * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-setsize
    */
-  "aria-setsize": ({ tree, role }) => {
-    if (!tree) {
+  "aria-setsize": ({ node, tree, role }) => {
+    const nodeSet = getNodeSet({ node, role, tree });
+
+    if (!nodeSet?.length) {
       return "";
     }
-
-    /**
-     * When an article is in the context of a feed, the author MAY specify
-     * values for aria-posinset and aria-setsize.
-     *
-     * REF: https://www.w3.org/TR/wai-aria-1.2/#article
-     *
-     * This is interpreted as the author being allowed to specify a value when
-     * nested in a feed, but there are no requirements in the specifications
-     * for an article role to expose an implicit value, even within a feed.
-     */
-    if (role === "article") {
-      return "";
-    }
-
-    /**
-     * While the row role can be used in a table, grid, or treegrid, the semantics
-     * of aria-expanded, aria-posinset, aria-setsize, and aria-level are only
-     * applicable to the hierarchical structure of an interactive tree grid.
-     * Therefore, authors MUST NOT apply aria-expanded, aria-posinset,
-     * aria-setsize, and aria-level to a row that descends from a table or grid,
-     * and user agents SHOULD NOT expose any of these four properties to assistive
-     * technologies unless the row descends from a treegrid.
-     *
-     * REF: https://www.w3.org/TR/wai-aria-1.2/#row
-     */
-    if (role === "row" && !hasTreegridAncestor(tree)) {
-      return "";
-    }
-
-    const nodeSet = getSet({
-      role,
-      tree,
-    });
 
     return `${nodeSet.length}`;
   },
