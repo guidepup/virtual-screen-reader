@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 function test(index) {
   const liveRegion = document.querySelector(`#target-${index}`);

@@ -133,7 +133,7 @@ function isHiddenFromAccessibilityTree(node: Node | null): node is null {
   }
 
   // `node.textContent` is only `null` for `document` and `doctype`.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+   
   if (node.nodeType === TEXT_NODE && node.textContent!.trim()) {
     return false;
   }
@@ -198,7 +198,7 @@ function growTree(
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
       ? // `alternateReadingOrderMap.has(childNode)` null guards here.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+         
         Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 
@@ -266,7 +266,7 @@ function growTree(
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
       ? // `alternateReadingOrderMap.has(childNode)` null guards here.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+         
         Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 

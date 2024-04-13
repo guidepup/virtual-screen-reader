@@ -10,7 +10,7 @@ function setupButtonPage() {
   const button = document.createElement("button");
 
   button.addEventListener("click", function (event) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     document.getElementById(
       "status"
     )!.innerHTML = `Clicked ${event.detail} Time(s)`;
@@ -21,7 +21,7 @@ function setupButtonPage() {
   document.body.appendChild(button);
 
   document.body.addEventListener("contextmenu", () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     document.getElementById("status")!.innerHTML = "Right Clicked";
   });
 }
@@ -128,8 +128,8 @@ describe("click", () => {
   });
 
   it("should handle requests to click on hidden container gracefully", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#hidden")! as HTMLElement;
+     
+    const container = document.querySelector("#hidden")!;
 
     await virtual.start({ container });
 

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 function setupLiveRegionRoles() {
   document.body.innerHTML = `

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 function setupAriaAtomic(element = "div") {
   document.body.innerHTML = `

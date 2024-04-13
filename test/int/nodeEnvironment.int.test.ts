@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-/* eslint-disable no-global-assign */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextDecoder, TextEncoder } from "util";
 Object.assign(global, { TextDecoder, TextEncoder });
@@ -91,7 +91,7 @@ describe("Node Environment", () => {
     });
 
     it("should handle live regions gracefully without observing nor announcing the live region changes", async () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       dom.window.document.querySelector("#target")!.textContent = "Updated";
 
       await waitFor(
@@ -153,7 +153,7 @@ describe("Node Environment", () => {
     });
 
     it("should handle live regions gracefully", async () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       dom.window.document.querySelector("#target")!.textContent = "Updated";
 
       await waitFor(

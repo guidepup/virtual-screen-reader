@@ -328,7 +328,7 @@ export class Virtual implements ScreenReader {
     // We've covered the tree having no length so there must be at least one
     // index or we default back to the beginning of the tree.
     const newActiveNode =
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       tree.find(({ node }) => node === target) ?? tree.at(0)!;
 
     this.#updateState(newActiveNode, true);
@@ -336,8 +336,8 @@ export class Virtual implements ScreenReader {
 
   #focusActiveElement() {
     // Is only called following a null guard for `this.#activeNode`.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const target = getElementNode(this.#activeNode!) as HTMLElement;
+     
+    const target = getElementNode(this.#activeNode!);
     target?.focus();
   }
 
@@ -426,7 +426,7 @@ export class Virtual implements ScreenReader {
     // This only fires after keyboard like interactions, both of which null
     // guard the `this.#activeNode` so it stands that we should still be able
     // to find it in the tree.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     const newActiveNode = tree.at(currentIndex)!;
 
     this.#updateState(newActiveNode, ignoreIfNoChange);
@@ -700,7 +700,7 @@ export class Virtual implements ScreenReader {
     const nextIndex = currentIndex === -1 ? 0 : currentIndex - 1;
     // We've covered the tree having no length so there must be at least one
     // index, and we ensure to zero-guard with the logic above.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     const newActiveNode = tree.at(nextIndex)!;
 
     this.#updateState(newActiveNode);
@@ -745,7 +745,7 @@ export class Virtual implements ScreenReader {
         : currentIndex + 1;
     // We've covered the tree having no length so there must be at least one
     // index, and we ensure to zero-guard with the logic above.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     const newActiveNode = tree.at(nextIndex)!;
 
     this.#updateState(newActiveNode);
@@ -980,7 +980,7 @@ export class Virtual implements ScreenReader {
     const nextIndex = commands[command]?.({
       ...options,
       // `this.#checkContainer();` above null guards us here.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       container: this.#container!,
       currentIndex,
       tree,
@@ -992,7 +992,7 @@ export class Virtual implements ScreenReader {
 
     // We know the tree has length, and we guard against the command not being
     // able to find an index in the tree so we are fine.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     const newActiveNode = tree.at(nextIndex)!;
     this.#updateState(newActiveNode);
 

@@ -24,7 +24,6 @@ describe("click", () => {
   });
 
   it("should update the screen reader position when a node not currently active for the screen reader is focussed", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const container = document.querySelector("#container")! as HTMLElement;
 
     await virtual.start({ container });
@@ -48,8 +47,7 @@ describe("click", () => {
   });
 
   it("should not shift the screen reader active node if focus shifted outside the container", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#container")! as HTMLElement;
+    const container = document.querySelector("#container")!;
 
     await virtual.start({ container });
 
@@ -62,8 +60,7 @@ describe("click", () => {
   });
 
   it("should not shift the screen reader active node if focus shifted to a node hidden from screen readers", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#container")! as HTMLElement;
+    const container = document.querySelector("#container")!;
 
     await virtual.start({ container });
 

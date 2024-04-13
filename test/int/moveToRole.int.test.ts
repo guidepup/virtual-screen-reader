@@ -46,7 +46,7 @@ describe("Move To Role", () => {
       it.each(quickNavigationRolesWithHeadingAndLink)(
         "should let you navigate to the next %s",
         async (role) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+           
           const command = `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
             1
           )}` as VirtualCommand;
@@ -78,7 +78,7 @@ describe("Move To Role", () => {
         async (role) => {
           await virtual.perform(
             virtual.commands[
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+               
               `moveToNext${role.at(0)!.toUpperCase()}${role.slice(
                 1
               )}` as VirtualCommand
@@ -107,7 +107,7 @@ describe("Move To Role", () => {
       it.each(quickNavigationRolesWithHeadingAndLink)(
         "should let you navigate to the previous %s",
         async (role) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+           
           const command = `moveToPrevious${role
             .at(0)!
             .toUpperCase()}${role.slice(1)}` as VirtualCommand;
@@ -139,7 +139,7 @@ describe("Move To Role", () => {
         async (role) => {
           await virtual.perform(
             virtual.commands[
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+               
               `moveToPrevious${role.at(0)!.toUpperCase()}${role.slice(
                 1
               )}` as VirtualCommand

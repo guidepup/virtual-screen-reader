@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import { setupAriaLive } from "./ariaLive.js";
 import { virtual } from "../../src/index.js";
 import { waitFor } from "@testing-library/dom";

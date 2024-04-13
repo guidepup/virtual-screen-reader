@@ -560,13 +560,13 @@ const quickAriaRoleNavigationCommands: QuickAriaRoleNavigationCommands =
   quickAriaRoleNavigationRoles.reduce<Record<string, unknown>>(
     (accumulatedCommands, role) => {
       // The roles are defined above and all non-empty.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       const moveToNextCommand = `moveToNext${role
         .at(0)!
         .toUpperCase()}${role.slice(1)}`;
 
       // The roles are defined above and all non-empty.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       const moveToPreviousCommand = `moveToPrevious${role
         .at(0)!
         .toUpperCase()}${role.slice(1)}`;

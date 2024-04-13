@@ -6,7 +6,7 @@ describe("Container Hidden", () => {
     <div id="container" style="display: none;">This content is not announced</div>
     `;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     await virtual.start({ container: document.querySelector("#container")! });
   });
 

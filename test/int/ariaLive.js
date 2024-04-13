@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
+ 
 
 const { default: userEvent } = require("@testing-library/user-event");
 

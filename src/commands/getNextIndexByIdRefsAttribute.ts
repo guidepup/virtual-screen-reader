@@ -22,7 +22,7 @@ export function getNextIndexByIdRefsAttribute({
 
   // Degree of trust that this isn't called with a current index that can't
   // actually index the tree.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+   
   const currentAccessibilityNode = tree.at(currentIndex)!;
   const currentNode = getElementNode(currentAccessibilityNode);
 

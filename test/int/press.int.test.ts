@@ -43,8 +43,8 @@ describe("press", () => {
   });
 
   it("should handle requests to press on hidden container gracefully", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#hidden")! as HTMLElement;
+     
+    const container = document.querySelector("#hidden")!;
 
     await virtual.start({ container });
 

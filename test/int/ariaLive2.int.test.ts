@@ -66,7 +66,7 @@ describe("Aria Live - All Attributes", () => {
   });
 
   it("should announce changes to a live region - all attributes short-circuit", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     document.querySelector("#target")!.textContent = "Updated";
 
     await waitFor(

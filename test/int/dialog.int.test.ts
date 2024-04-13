@@ -39,8 +39,8 @@ describe("dialog", () => {
   });
 
   it("should announce a parent dialog when focus is moved into it for the first time", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#container")! as HTMLElement;
+     
+    const container = document.querySelector("#container")!;
 
     await virtual.start({ container });
     await virtual.act();
@@ -61,8 +61,8 @@ describe("dialog", () => {
   });
 
   it("should announce a parent dialog when focus is moved into it for the first time from another dialog", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#container")! as HTMLElement;
+     
+    const container = document.querySelector("#container")!;
 
     await virtual.start({ container });
 
@@ -85,8 +85,8 @@ describe("dialog", () => {
   });
 
   it("should not announce a parent dialog when focus is already in the dialog", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#container")! as HTMLElement;
+     
+    const container = document.querySelector("#container")!;
 
     await virtual.start({ container });
 

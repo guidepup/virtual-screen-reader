@@ -60,7 +60,7 @@ function getSpokenPhraseForNode(node: Node) {
     getAccessibleValue(node) ||
     // `node.textContent` is only `null` if the `node` is a `document` or a
     // `doctype`. We don't consider either.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     sanitizeString(node.textContent!)
   );
 }
@@ -229,7 +229,7 @@ function getLiveRegionAttributes(
   if (typeof relevant === "undefined" && target.hasAttribute("aria-relevant")) {
     // The `target.hasAttribute("aria-relevant")` check is sufficient to guard
     // against the `target.getAttribute("aria-relevant")` being null.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     relevant = target
       .getAttribute("aria-relevant")!
       .split(" ")

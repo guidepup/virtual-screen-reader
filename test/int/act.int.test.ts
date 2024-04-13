@@ -10,7 +10,7 @@ function setupButtonPage() {
   const button = document.createElement("button");
 
   button.addEventListener("click", function (event) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     document.getElementById(
       "status"
     )!.innerHTML = `Clicked ${event.detail} Time(s)`;
@@ -51,8 +51,8 @@ describe("act", () => {
   });
 
   it("should handle requests to perform the default action on hidden container gracefully", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const container = document.querySelector("#hidden")! as HTMLElement;
+     
+    const container = document.querySelector("#hidden")!;
 
     await virtual.start({ container });
 
