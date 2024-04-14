@@ -10,6 +10,9 @@ const {
   createAccessibilityTree,
 } = require("../../src/createAccessibilityTree");
 const { observeDOM } = require("../../src/observeDOM");
+const {
+  getAccessibleAttributeLabels,
+} = require("../../src/getNodeAccessibilityData/getAccessibleAttributeLabels");
 
 // Polyfill the CSS instance as jsdom does not have support.
 // REF: https://github.com/jsdom/jsdom/issues/1550
@@ -31,7 +34,7 @@ module.exports = (urlPrefixFactory) => {
     specify({
       title,
       expectPromise: true,
-      timeout: 5000,
+      timeout: 1000,
       slow: 10000,
       fn() {
         return createJSDOM(urlPrefixFactory(), testPath, expectFail);
@@ -141,16 +144,40 @@ function createJSDOM(urlPrefix, testPath, expectFail) {
 
       window.createAccessibilityTree = createAccessibilityTree;
       window.observeDOM = observeDOM;
+      window.getAccessibleAttributeLabels = getAccessibleAttributeLabels;
 
-      window.flattenTreeSimple = function flattenTreeSimple(tree) {
+      window.flattenTreeWithoutIgnores = function flattenTreeWithoutIgnores(
+        container,
+        tree,
+        parentAccessibilityNodeTree
+      ) {
         const { children, ...treeNode } = tree;
 
-        return [
-          treeNode,
-          ...children.flatMap(flattenTreeSimple),
-          {
+        treeNode.parentAccessibilityNodeTree = parentAccessibilityNodeTree;
+
+        const { accessibleAttributeLabels, accessibleAttributeToLabelMap } =
+          window.getAccessibleAttributeLabels({
             ...treeNode,
-            spokenRole: `end of ${treeNode.spokenRole}`,
+            container,
+          });
+
+        const treeNodeWithAttributeLabels = {
+          ...treeNode,
+          accessibleAttributeLabels,
+          accessibleAttributeToLabelMap,
+        };
+
+        return [
+          treeNodeWithAttributeLabels,
+          ...children.flatMap((child) =>
+            window.flattenTreeWithoutIgnores(container, child, {
+              ...treeNodeWithAttributeLabels,
+              children,
+            })
+          ),
+          {
+            ...treeNodeWithAttributeLabels,
+            spokenRole: `end of ${treeNodeWithAttributeLabels.spokenRole}`,
           },
         ];
       };

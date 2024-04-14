@@ -14,8 +14,10 @@ window.observeDOM(window, container, (mutations) => {
 
 function getAccessibilityTree() {
   if (!treeCache) {
-    treeCache = window.flattenTreeSimple(
-      window.createAccessibilityTree(container)
+    treeCache = window.flattenTreeWithoutIgnores(
+      container,
+      window.createAccessibilityTree(container),
+      null
     );
   }
 

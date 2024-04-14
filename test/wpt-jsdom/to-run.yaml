@@ -1,7 +1,5 @@
 DIR: accname
 
-manual/description_1.0_combobox-focusable-manual.html:
-  [timeout, upstream issue with dom-accessibility-api package]
 manual/description_from_content_of_describedby_element-manual.html:
   [timeout, upstream issue with dom-accessibility-api package]
 manual/name_file-label-inline-block-elements-manual.html:
@@ -52,8 +50,7 @@ name/comp_hidden_not_referenced.html:
   "heading with name from content, containing element that is visibility:hidden with nested content that is visibility:visible":
     [fail, upstream issue with dom-accessibility-api package]
 name/comp_label.html:
-  "label valid on math element":
-    [fail, upstream issue with dom-accessibility-api package]
+  "label valid on math element": [fail, upstream issue with jsdom package]
   "aria-label undefined on img w/ alt":
     [fail, upstream issue with dom-accessibility-api package]
   "aria-label undefined on img w/o alt":
@@ -175,9 +172,163 @@ name/shadowdom/basic.html:
 name/shadowdom/slot.html:
   [fail, upstream issue with dom-accessibility-api package]
 
-# ---
-# targets accessibility APIs whose mappings have not been implemented in this test suite yet,
-# DIR: core-aam
+---
+DIR: core-aam
+
+aria-braillelabel-manual.html: [skip, not supported]
+aria-brailleroledescription-manual.html: [skip, not supported]
+aria-busy_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-checked_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-current_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-current_with_unrecognized_value-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-disabled_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-dropeffect_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-expanded_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-grabbed_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-hidden_true_when_element_is_focused_or_fires_event-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-invalid_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-placeholder-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings do not reflect WAI-ARIA and screen readers,
+  ]
+aria-pressed_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-readonly_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-required_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-setsize_-1-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings do not reflect WAI-ARIA and screen readers,
+  ]
+aria-valuenow_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+aria-valuetext_value_changes-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+combobox-value-calculation-manual.html:
+  [timeout, value taken from text content not implemented]
+comment-manual.html:
+  [
+    timeout,
+    upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
+  ]
+deletion-manual.html: [fail, syntax error in test - fix needed in WPT]
+exclude_element_hidden_with_*:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+form-manual.html: [timeout, attribute typo error in test - fix needed in WPT]
+generic_roledescription_prohibited-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+grid-level-not-supported-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+heading-no-level-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+image-manual.html:
+  [
+    timeout,
+    upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
+  ]
+include_element_*:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+insertion-manual.html: [fail, syntax error in test - fix needed in WPT]
+mark-manual.html: [fail, syntax error in test - fix needed in WPT]
+math_role_children_are_not_presentational-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+none_used_on_*:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+presentation_used_on_*:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+progressbar-no-min-or-max-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
+suggestion-manual.html: [fail, syntax error in test - fix needed in WPT]
+tablist-level-not-supported-manual.html:
+  [
+    skip,
+    targets accessibility APIs whose mappings have not been implemented in this test suite yet,
+  ]
 ---
 DIR: dpub-aam
 

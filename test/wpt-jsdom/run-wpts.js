@@ -20,6 +20,7 @@ const validReasons = new Set([
   "fail-slow",
   "fail-with-canvas",
   "timeout",
+  "skip",
   "flaky",
   "needs-canvas",
   "fail-node18",

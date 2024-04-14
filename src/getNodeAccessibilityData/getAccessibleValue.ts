@@ -52,6 +52,9 @@ function getInputValue(node: HTMLInputElement) {
 function getValue(node: HTMLElementWithValue) {
   const localName = getLocalName(node);
 
+  // TODO: handle use of explicit roles where a value taken from content is
+  // expected, e.g. combobox.
+  // See core-aam/combobox-value-calculation-manual.html
   if (!allowedLocalNames.includes(localName)) {
     return "";
   }

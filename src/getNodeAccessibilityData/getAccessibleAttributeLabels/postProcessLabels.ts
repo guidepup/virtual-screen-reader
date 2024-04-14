@@ -35,5 +35,15 @@ export const postProcessLabels = ({
     });
   }
 
+  if (labels["aria-setsize"]?.value === "-1") {
+    /**
+     * If the total number of items is unknown, authors SHOULD set the value of
+     * aria-setsize to -1.
+     *
+     * REF: https://www.w3.org/TR/wai-aria-1.2/#aria-setsize
+     */
+    labels["aria-setsize"].label = "set size unknown";
+  }
+
   return labels;
 };

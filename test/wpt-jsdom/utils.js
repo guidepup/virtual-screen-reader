@@ -11,7 +11,7 @@ const hasCanvas = Boolean(Canvas);
 const nodeMajorVersion = process.versions.node.split(".")[0];
 
 exports.resolveReason = (reason) => {
-  if (["fail-slow", "timeout", "flaky"].includes(reason)) {
+  if (["fail-slow", "timeout", "flaky", "skip"].includes(reason)) {
     return "skip";
   }
 
