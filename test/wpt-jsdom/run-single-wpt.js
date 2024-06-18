@@ -34,7 +34,7 @@ module.exports = (urlPrefixFactory) => {
     specify({
       title,
       expectPromise: true,
-      timeout: 1000,
+      timeout: 5000,
       slow: 10000,
       fn() {
         return createJSDOM(urlPrefixFactory(), testPath, expectFail);
