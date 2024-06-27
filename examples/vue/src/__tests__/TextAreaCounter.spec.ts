@@ -9,7 +9,7 @@ import TextareaCounter from '../TextAreaCounter.vue'
  *
  * in your own code.
  */
-import { virtual } from '../../../../lib/cjs/index.min.js'
+import { virtual } from '../../../../lib/cjs/index.js'
 
 describe('Text Area Counter', () => {
   afterEach(async () => {

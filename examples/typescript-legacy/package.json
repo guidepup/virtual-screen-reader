@@ -1,0 +1,20 @@
+{
+  "name": "@guidepup/virtual-screen-reader-typescript-legacy-example",
+  "version": "1.0.0",
+  "author": "Craig Morten <craig.morten@hotmail.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "preinstall": "yarn --cwd=../.. build",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.8",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.5",
+    "ts-jest-resolver": "^2.0.1",
+    "typescript": "^5.5.2"
+  }
+}

@@ -19,16 +19,16 @@
     "a11y",
     "guidepup"
   ],
-  "main": "./lib/cjs/index.min.js",
+  "main": "./lib/cjs/index.cjs",
+  "types": "./lib/cjs/index.d.ts",
   "module": "./lib/esm/index.legacy-esm.js",
-  "types": "./lib/esm/index.d.mts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./lib/esm/index.d.mts",
       "import": "./lib/esm/index.mjs",
-      "require": "./lib/cjs/index.min.js",
-      "default": "./lib/cjs/index.min.js"
+      "require": "./lib/cjs/index.cjs",
+      "default": "./lib/cjs/index.cjs"
     },
     "./browser.js": {
       "browser": "./lib/esm/index.browser.js",

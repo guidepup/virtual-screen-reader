@@ -57,5 +57,13 @@ export default defineConfig((options) => {
       clean: true,
       outDir: "./lib/cjs/",
     },
+    // CJS old extension
+    {
+      ...commonOptions,
+      format: ["cjs"],
+      outExtension: () => ({ js: ".js" }),
+      clean: true,
+      outDir: "./lib/cjs/",
+    },
   ] as Options[];
 });

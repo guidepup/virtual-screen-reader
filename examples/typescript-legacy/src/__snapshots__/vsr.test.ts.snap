@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matchers virtual screen reader tests navigating headings 1`] = `
+[
+  "document",
+  "heading, First Section Heading, level 1",
+  "heading, Article Header Heading, level 1",
+  "heading, Second Section Heading, level 1",
+  "heading, First Section Heading, level 1",
+]
+`;
