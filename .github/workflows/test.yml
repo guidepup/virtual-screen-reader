@@ -27,6 +27,58 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn ci
 
+  test-commonjs-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
+        working-directory: ./examples/commonjs
+      - run: yarn test
+        working-directory: ./examples/commonjs
+
+  test-typescript-bundler-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
+        working-directory: ./examples/typescript-bundler
+      - run: yarn test
+        working-directory: ./examples/typescript-bundler
+
+  test-typescript-legacy-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
+        working-directory: ./examples/typescript-legacy
+      - run: yarn test
+        working-directory: ./examples/typescript-legacy
+
+  test-typescript-nodenext-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
+        working-directory: ./examples/typescript-nodenext
+      - run: yarn test
+        working-directory: ./examples/typescript-nodenext
+        
   test-vue-example:
     runs-on: ubuntu-latest
     steps:

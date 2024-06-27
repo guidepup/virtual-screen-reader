@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
@@ -19,18 +19,27 @@
     "a11y",
     "guidepup"
   ],
-  "main": "./lib/cjs/index.cjs",
+  "main": "./lib/cjs/index.js",
   "types": "./lib/cjs/index.d.ts",
   "module": "./lib/esm/index.legacy-esm.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./lib/esm/index.d.mts",
-      "import": "./lib/esm/index.mjs",
-      "require": "./lib/cjs/index.cjs",
-      "default": "./lib/cjs/index.cjs"
+      "import": {
+        "types": "./lib/esm/index.d.mts",
+        "default": "./lib/esm/index.mjs"
+      },
+      "require": {
+        "types": "./lib/cjs/index.d.ts",
+        "default": "./lib/cjs/index.cjs"
+      },
+      "default": {
+        "types": "./lib/cjs/index.d.ts",
+        "default": "./lib/cjs/index.cjs"
+      }
     },
     "./browser.js": {
+      "unpkg": "./lib/esm/index.browser.js",
       "browser": "./lib/esm/index.browser.js",
       "import": "./lib/esm/index.browser.js",
       "default": "./lib/esm/index.browser.js"
@@ -39,7 +48,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "yarn clean && yarn compile",
-    "ci": "yarn clean && yarn lint && yarn test:coverage && yarn build",
+    "ci": "yarn clean && yarn lint && yarn test:coverage && yarn build && yarn types:test",
     "clean": "rimraf lib",
     "compile": "tsup",
     "lint": "eslint src test --cache",
@@ -47,6 +56,7 @@
     "prepublish": "yarn build",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
+    "types:test": "attw --pack . --exclude-entrypoints browser.js",
     "wpt:hosts": "./test/wpt/wpt make-hosts-file | sudo tee -a /etc/hosts",
     "wpt:init": "git submodule update --init --recursive",
     "wpt:reset": "rimraf ./test/wpt && yarn wpt:init",
@@ -61,6 +71,7 @@
     "dom-accessibility-api": "^0.6.3"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.15.3",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@types/expect": "^24.3.0",
