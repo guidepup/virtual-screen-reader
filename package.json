@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
@@ -19,15 +19,16 @@
     "a11y",
     "guidepup"
   ],
-  "types": "./lib/esm/index.d.mts",
+  "main": "./lib/cjs/index.cjs",
+  "types": "./lib/cjs/index.d.ts",
   "module": "./lib/esm/index.legacy-esm.js",
-  "main": "./lib/cjs/index.min.js",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./lib/esm/index.d.mts",
       "import": "./lib/esm/index.mjs",
-      "require": "./lib/cjs/index.min.js",
-      "default": "./lib/cjs/index.min.js"
+      "require": "./lib/cjs/index.cjs",
+      "default": "./lib/cjs/index.cjs"
     },
     "./browser.js": {
       "browser": "./lib/esm/index.browser.js",
@@ -35,6 +36,7 @@
       "default": "./lib/esm/index.browser.js"
     }
   },
+  "sideEffects": false,
   "scripts": {
     "build": "yarn clean && yarn compile",
     "ci": "yarn clean && yarn lint && yarn test:coverage && yarn build",
@@ -65,7 +67,7 @@
     "@types/jest": "^29.5.12",
     "@types/json-schema": "^7.0.15",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "@types/prop-types": "^15.7.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -80,8 +82,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "js-yaml": "^4.1.0",
     "jsdom": "^24.1.0",
-    "minimatch": "^9.0.4",
-    "mocha": "^10.4.0",
+    "minimatch": "^9.0.5",
+    "mocha": "^10.5.2",
     "mocha-sugar-free": "^1.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -92,6 +94,6 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.1.0",
     "typescript": "^5.5.2",
-    "typescript-eslint": "^7.13.1"
+    "typescript-eslint": "^7.14.1"
   }
 }

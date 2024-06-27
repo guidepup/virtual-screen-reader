@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "allowJs": true,
     "jsx": "react",
+    "noErrorTruncation": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "baseUrl": ".",
     "rootDir": "./src"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "lib"]
 }

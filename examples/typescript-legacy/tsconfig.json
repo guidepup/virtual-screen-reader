@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["src/**/*", "jest.setup.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@guidepup/virtual-screen-reader-commonjs-example",
+  "version": "1.0.0",
+  "author": "Craig Morten <craig.morten@hotmail.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "preinstall": "yarn --cwd=../.. build",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
