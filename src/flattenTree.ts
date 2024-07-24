@@ -7,10 +7,20 @@ import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleVa
 
 export const END_OF_ROLE_PREFIX = "end of";
 
+const TEXT_NODE = 3;
+
 function shouldIgnoreChildren(tree: AccessibilityNodeTree) {
-  const { accessibleName, node } = tree;
+  const { accessibleName, children, node } = tree;
 
   if (!accessibleName) {
+    return false;
+  }
+
+  if (children.length > 1) {
+    return false;
+  }
+
+  if (children.every((child) => child.node.nodeType !== TEXT_NODE)) {
     return false;
   }
 
