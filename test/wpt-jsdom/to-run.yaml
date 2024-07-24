@@ -133,16 +133,31 @@ name/comp_name_from_content.html:
     [fail, upstream issue with dom-accessibility-api package]
   "link name from content for each child (no space, inline)":
     [fail, upstream issue with dom-accessibility-api package]
+name/comp_name_from_content.tentative.html:
+  "heading with link referencing image using aria-labelledby, that in turn references text element via aria-labelledby":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with link referencing image using aria-labelledby, that in turn references itself and another element via aria-labelledby":
+    [fail, upstream issue with dom-accessibility-api package]
 name/comp_text_node.html:
   "span[role=button] with text/element/text nodes, no space":
     [fail, upstream issue with dom-accessibility-api package]
+  "span[role=button] with text node, with leading/trailing non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
   "div[role=heading] with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "div[role=heading] with text node, with leading/trailing non-breaking space":
     [fail, upstream issue with dom-accessibility-api package]
   "button with text/element/text nodes, no space":
     [fail, upstream issue with dom-accessibility-api package]
+  "button with text node, with leading/trailing non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
   "heading with text/element/text nodes, no space":
     [fail, upstream issue with dom-accessibility-api package]
+  "heading with text node, with leading/trailing non-breaking space":
+    [fail, upstream issue with dom-accessibility-api package]
   "link with text/element/text nodes, no space":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with text node, with leading/trailing non-breaking space":
     [fail, upstream issue with dom-accessibility-api package]
   "span[role=button] with text node, with extra non-breaking space":
     [fail, upstream issue with dom-accessibility-api package]
@@ -380,7 +395,7 @@ roles-dynamic-switch.tentative.window.html:
     [fail, upstream issue with dom-accessibility-api package]
   "Connected <input type=checkbox switch>: adding type attribute":
     [fail, upstream issue with dom-accessibility-api package]
-roles-generic.html:
+roles-generic.tentative.html:
   "el-li-orphaned": [fail, upstream issue with dom-accessibility-api package]
 roles.html:
   "el-hgroup":
@@ -422,7 +437,7 @@ manual/*:
 role/contextual-roles.html:
   "footer element scoped to main element is generic":
     [fail, upstream issue with dom-accessibility-api package]
-role/grid-roles.html:
+role/grid-roles.tentative.html:
   "orphaned button with gridcell role outside the context of row":
     [fail, upstream issue with dom-accessibility-api package]
   "orphaned row outside the context of table":
@@ -435,15 +450,15 @@ role/grid-roles.html:
     [fail, upstream issue with dom-accessibility-api package]
   "orphaned columnheader outside the context of row":
     [fail, upstream issue with dom-accessibility-api package]
-role/list-roles.html:
+role/list-roles.tentative.html:
   "orphan div with listitem role":
     [fail, upstream issue with dom-accessibility-api package]
   "orphan p with listitem role":
     [fail, upstream issue with dom-accessibility-api package]
-role/listbox-roles.html:
+role/listbox-roles.tentative.html:
   "orphaned option outside the context of listbox":
     [fail, upstream issue with dom-accessibility-api package]
-role/menu-roles.html:
+role/menu-roles.tentative.html:
   "orphan div with menuitem role":
     [fail, upstream issue with dom-accessibility-api package]
   "orphan div with menuitemcheckbox role":
@@ -468,6 +483,17 @@ role/roles.html:
       fail,
       upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
     ]
+role/roles.tentative.html:
+  "role: sectionheader":
+    [
+      fail,
+      upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
+    ]
+  "role: sectionfooter":
+    [
+      fail,
+      upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
+    ]
 role/synonym-roles.html:
   "image role == computedrole image":
     [fail, upstream issue with aria-query and dom-accessibility-api packages]
@@ -477,12 +503,12 @@ role/synonym-roles.html:
     [fail, upstream issue with aria-query and dom-accessibility-api packages]
   "div w/directory role == computedrole list":
     [fail, upstream issue with aria-query and dom-accessibility-api packages]
-role/tab-roles.html:
+role/tab-roles.tentative.html:
   "orphan button with tab role":
     [fail, upstream issue with dom-accessibility-api package]
   "orphan span with tab role":
     [fail, upstream issue with dom-accessibility-api package]
-role/tree-roles.html:
+role/tree-roles.tentative.html:
   "orphaned treeitem outside the context of tree":
     [fail, upstream issue with dom-accessibility-api package]
   "orphaned button with treeitem role outside tree context":

@@ -56,9 +56,9 @@ The current status of the WPT coverage is:
 
 | Passing | Failing | Skipped |
 | :-----: | :-----: | :-----: |
-|   184   |   118   |   294   |
+|   402   |   131   |   340   |
 
-The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml).
+The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml) with reasons as to skips and expected failures.
 
 In addition to the W3C specifications [a11ysupport.io](https://a11ysupport.io/) has been used as a guide for test cases in the absence of anything formal for screen reader output. In future we hope to adopt test cases laid out by the [ARIA and Assistive Technologies (ARIA-AT) community group](https://github.com/w3c/aria-at).
 
