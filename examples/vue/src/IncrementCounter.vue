@@ -1,14 +1,14 @@
 <script lang="ts">
 export default {
   data: () => ({
-    count: 0,
+    count: 0
   }),
 
   methods: {
     increment() {
       this.count++
-    },
-  },
+    }
+  }
 }
 </script>
 

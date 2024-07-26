@@ -18,7 +18,7 @@
     "@esm-bundle/chai": "4.3.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-replace": "^5.0.5",
-    "@web/dev-server-rollup": "^0.6.1",
-    "@web/test-runner": "^0.18.0"
+    "@web/dev-server-rollup": "^0.6.4",
+    "@web/test-runner": "^0.18.2"
   }
 }

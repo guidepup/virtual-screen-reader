@@ -24,9 +24,9 @@ export default defineComponent({
 
         if (isOpen) {
           setTimeout(() => {
-            const closeButton = document.querySelector('#modal-close-button') as HTMLButtonElement;
+            const closeButton = document.querySelector('#modal-close-button') as HTMLButtonElement
 
-            closeButton.focus();
+            closeButton.focus()
           }, 0)
         }
       }

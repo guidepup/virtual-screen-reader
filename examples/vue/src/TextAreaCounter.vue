@@ -2,7 +2,9 @@
   <h1>Text Area Counter</h1>
   <textarea @input="handleInput" :maxCount="maxCount"></textarea>
   <span data-testid="remaining-count">{{ remainingCharacters }} characters left</span>
-  <span class="visually-hidden" aria-live="polite">{{ remainingCharactersForAnnouncement }} characters left</span>
+  <span class="visually-hidden" aria-live="polite"
+    >{{ remainingCharactersForAnnouncement }} characters left</span
+  >
 </template>
 
 <script lang="ts">
