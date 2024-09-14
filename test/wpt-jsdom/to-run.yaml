@@ -9,7 +9,7 @@ manual/name_file-label-inline-block-styles-manual.html:
 manual/name_test_case_552-manual.html:
   [timeout, upstream issue with dom-accessibility-api package]
 manual/name_test_case_553-manual.html:
-  [timeout, upstream issue with dom-accessibility-api package]
+  [timeout, upstream issue w  ith dom-accessibility-api package]
 manual/name_test_case_659-manual.html:
   [timeout, upstream issue with dom-accessibility-api package]
 manual/name_test_case_660-manual.html:
@@ -352,9 +352,6 @@ manual/*:
     timeout,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-role/roles.html:
-  "role: doc-pagefooter": [fail, upstream issue with aria-query package]
-  "role: doc-pageheader": [fail, upstream issue with aria-query package]
 
 # ---
 # these are currently DOM query tests
