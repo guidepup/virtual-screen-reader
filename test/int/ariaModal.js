@@ -1,5 +1,3 @@
- 
-
 /**
  * @namespace aria
  */
@@ -203,7 +201,7 @@ aria.Utils = aria.Utils || {};
     aria.Utils.IgnoreUtilFocusChanges = true;
     try {
       element.focus();
-    } catch (e) {
+    } catch {
       // continue regardless of error
     }
     aria.Utils.IgnoreUtilFocusChanges = false;

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 (window.MutationObserver as unknown) = undefined;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { virtual } = require("../../src");
 
 describe("No Mutation Observer", () => {
