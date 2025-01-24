@@ -1,6 +1,9 @@
-import { getRole as getImplicitRole } from "dom-accessibility-api";
+import {
+  getRole as getImplicitRole,
+  type TagName,
+  type VirtualElement,
+} from "html-aria";
 import { getLocalName } from "../getLocalName";
-import { getRoles } from "@testing-library/dom";
 import { isElement } from "../isElement";
 import { roles } from "aria-query";
 
@@ -163,6 +166,22 @@ function getExplicitRole({
   return filteredRoles?.[0] ?? "";
 }
 
+// TODO: upstream update to `html-aria` to support supplying a jsdom element in
+// a Node environment. Appears their check for `element instanceof HTMLElement`
+// fails the `test/int/nodeEnvironment.int.test.ts` suite.
+function virtualizeElement(element: HTMLElement): VirtualElement {
+  const tagName = getLocalName(element) as TagName;
+  const attributes: Record<string, string | null> = {};
+
+  for (let i = 0; i < element.attributes.length; i++) {
+    const { name } = element.attributes[i]!;
+
+    attributes[name] = element.getAttribute(name);
+  }
+
+  return { tagName, attributes };
+}
+
 export function getRole({
   accessibleName,
   allowedAccessibilityRoles,
@@ -198,19 +217,28 @@ export function getRole({
 
   target.removeAttribute("role");
 
-  let implicitRole = getImplicitRole(target) ?? "";
+  // Backwards compatibility
+  const isBodyElement = getLocalName(target) === "body";
 
-  if (!implicitRole) {
-    // Backwards compatibility for when was using aria-query@5.1.3
-    if (getLocalName(target) === "body") {
-      implicitRole = "document";
-    } else {
-      // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
-      implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
-    }
-  }
+  const baseImplicitRole = isBodyElement
+    ? "document"
+    : // TODO: explore whether can supply ancestors without encountering
+      // performance issues.
+      //
+      // `getImplicitRole(virtualizeElement(target, { ancestors: getAncestors(node) }));`
+      //
+      // Thought needed if the `getAncestors()` can limit the number of parents
+      // it enumerates. Presumably as ancestors only matter for a limited
+      // number of roles, there might be a ceiling to the amount of nesting
+      // that is even valid, and therefore put an upper bound on how far to
+      // backtrack without having to stop at the document level for every
+      // single element.
+      //
+      // Alternatively see if providing an element that is part of a DOM can be
+      // traversed by the `html-aria` library itself.
+      getImplicitRole(virtualizeElement(target)) ?? "";
 
-  implicitRole = mapAliasedRoles(implicitRole);
+  const implicitRole = mapAliasedRoles(baseImplicitRole);
 
   if (explicitRole) {
     return { explicitRole, implicitRole, role: explicitRole };
