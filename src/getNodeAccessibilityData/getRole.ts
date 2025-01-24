@@ -1,4 +1,5 @@
 import {
+  type AncestorList,
   getRole as getImplicitRole,
   type TagName,
   type VirtualElement,
@@ -7,14 +8,16 @@ import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
 import { roles } from "aria-query";
 
-export const presentationRoles = ["presentation", "none"];
+export const presentationRoles = new Set(["presentation", "none"]);
 
-const allowedNonAbstractRoles = roles
-  .entries()
-  .filter(([, { abstract }]) => !abstract)
-  .map(([key]) => key) as string[];
+const allowedNonAbstractRoles = new Set(
+  roles
+    .entries()
+    .filter(([, { abstract }]) => !abstract)
+    .map(([key]) => key) as string[]
+);
 
-const rolesRequiringName = ["form", "region"];
+const rolesRequiringName = new Set(["form", "region"]);
 
 export const globalStatesAndProperties = [
   "aria-atomic",
@@ -90,7 +93,7 @@ function getExplicitRole({
      *
      * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
-    .filter((role) => allowedNonAbstractRoles.includes(role))
+    .filter((role) => allowedNonAbstractRoles.has(role))
     /**
      * Certain landmark roles require names from authors. In situations where
      * an author has not specified names for these landmarks, it is
@@ -105,7 +108,7 @@ function getExplicitRole({
      *
      * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
-    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
+    .filter((role) => !!accessibleName || !rolesRequiringName.has(role));
 
   /**
    * If an allowed child element has an explicit non-presentational role, user
@@ -152,7 +155,7 @@ function getExplicitRole({
      * REF: https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
      */
     .filter((role) => {
-      if (!presentationRoles.includes(role)) {
+      if (!presentationRoles.has(role)) {
         return true;
       }
 
@@ -180,6 +183,57 @@ function virtualizeElement(element: HTMLElement): VirtualElement {
   }
 
   return { tagName, attributes };
+}
+
+const rolesDependentOnHierarchy = new Set([
+  "footer",
+  "header",
+  "li",
+  "td",
+  "th",
+  "tr",
+]);
+const ignoredAncestors = new Set(["body", "document"]);
+
+// TODO: Thought needed if the `getAncestors()` can limit the number of parents
+// it enumerates? Presumably as ancestors only matter for a limited number of
+// roles, there might be a ceiling to the amount of nesting that is even valid,
+// and therefore put an upper bound on how far to backtrack without having to
+// stop at the document level for every single element.
+//
+// Another thought is that we special case each element so the backtracking can
+// exit early if an ancestor with a relevant role has already been found.
+//
+// Alternatively see if providing an element that is part of a DOM can be
+// traversed by the `html-aria` library itself so these concerns are
+// centralised.
+function getAncestors(node: HTMLElement): AncestorList | undefined {
+  if (!rolesDependentOnHierarchy.has(getLocalName(node))) {
+    return undefined;
+  }
+
+  const ancestors: AncestorList = [];
+
+  let target: HTMLElement | null = node;
+  let targetLocalName: string;
+
+  while (true) {
+    target = target.parentElement;
+
+    if (!target) {
+      break;
+    }
+
+    targetLocalName = getLocalName(target);
+
+    if (ignoredAncestors.has(targetLocalName)) {
+      break;
+    }
+
+    ancestors.push({ tagName: targetLocalName as TagName });
+  }
+
+  return ancestors;
 }
 
 export function getRole({
@@ -222,21 +276,9 @@ export function getRole({
 
   const baseImplicitRole = isBodyElement
     ? "document"
-    : // TODO: explore whether can supply ancestors without encountering
-      // performance issues.
-      //
-      // `getImplicitRole(virtualizeElement(target, { ancestors: getAncestors(node) }));`
-      //
-      // Thought needed if the `getAncestors()` can limit the number of parents
-      // it enumerates. Presumably as ancestors only matter for a limited
-      // number of roles, there might be a ceiling to the amount of nesting
-      // that is even valid, and therefore put an upper bound on how far to
-      // backtrack without having to stop at the document level for every
-      // single element.
-      //
-      // Alternatively see if providing an element that is part of a DOM can be
-      // traversed by the `html-aria` library itself.
-      getImplicitRole(virtualizeElement(target)) ?? "";
+    : getImplicitRole(virtualizeElement(target), {
+        ancestors: getAncestors(node),
+      }) ?? "";
 
   const implicitRole = mapAliasedRoles(baseImplicitRole);
 

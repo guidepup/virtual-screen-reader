@@ -49,7 +49,7 @@ enum Relevant {
   TEXT = "text",
 }
 
-const RELEVANT_VALUES = Object.values(Relevant);
+const RELEVANT_VALUES = new Set(Object.values(Relevant));
 const DEFAULT_ATOMIC = false;
 const DEFAULT_LIVE = Live.OFF;
 const DEFAULT_RELEVANT = [Relevant.ADDITIONS, Relevant.TEXT];
@@ -60,7 +60,7 @@ function getSpokenPhraseForNode(node: Node) {
     getAccessibleValue(node) ||
     // `node.textContent` is only `null` if the `node` is a `document` or a
     // `doctype`. We don't consider either.
-     
+
     sanitizeString(node.textContent!)
   );
 }
@@ -229,12 +229,12 @@ function getLiveRegionAttributes(
   if (typeof relevant === "undefined" && target.hasAttribute("aria-relevant")) {
     // The `target.hasAttribute("aria-relevant")` check is sufficient to guard
     // against the `target.getAttribute("aria-relevant")` being null.
-     
+
     relevant = target
       .getAttribute("aria-relevant")!
       .split(" ")
       .filter(
-        (token) => !!RELEVANT_VALUES.includes(token as Relevant)
+        (token) => !!RELEVANT_VALUES.has(token as Relevant)
       ) as Relevant[];
 
     if (relevant.includes(Relevant.ALL)) {

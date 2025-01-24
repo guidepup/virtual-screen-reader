@@ -1,7 +1,7 @@
 import { ARIARoleDefinitionKey, roles } from "aria-query";
 import { globalStatesAndProperties } from "../getRole";
 
-const ignoreAttributesWithAccessibleValue = ["aria-placeholder"];
+const ignoreAttributesWithAccessibleValue = new Set(["aria-placeholder"]);
 
 export const getAttributesByRole = ({
   accessibleValue,
@@ -27,8 +27,7 @@ export const getAttributesByRole = ({
     .filter((attribute) => !prohibitedAttributes.includes(attribute))
     .filter(
       (attribute) =>
-        !accessibleValue ||
-        !ignoreAttributesWithAccessibleValue.includes(attribute)
+        !accessibleValue || !ignoreAttributesWithAccessibleValue.has(attribute)
     );
 
   return uniqueAttributes.map((attribute) => [
