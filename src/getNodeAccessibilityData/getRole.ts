@@ -1,21 +1,27 @@
 import {
   type AncestorList,
   getRole as getImplicitRole,
+  roles,
   type TagName,
   type VirtualElement,
 } from "html-aria";
+import { roles as backupRoles } from "aria-query";
 import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
-import { roles } from "aria-query";
 
 export const presentationRoles = new Set(["presentation", "none"]);
 
-const allowedNonAbstractRoles = new Set(
-  roles
+const allowedNonAbstractRoles = new Set([
+  ...(Object.entries(roles)
+    .filter(([, { type }]) => !type.includes("abstract"))
+    .map(([key]) => key) as string[]),
+  // TODO: remove once the `html-aria` package supports `dpub-aam` /
+  // `dpub-aria` specifications.
+  ...(backupRoles
     .entries()
     .filter(([, { abstract }]) => !abstract)
-    .map(([key]) => key) as string[]
-);
+    .map(([key]) => key) as string[]),
+]);
 
 const rolesRequiringName = new Set(["form", "region"]);
 

@@ -279,7 +279,6 @@ aria-valuetext_value_changes-manual.html:
   ]
 combobox-value-calculation-manual.html:
   [timeout, value taken from text content not implemented]
-comment-manual.html: [timeout, upstream issue with html-aria package]
 deletion-manual.html: [fail, syntax error in test - fix needed in WPT]
 exclude_element_hidden_with_*:
   [
@@ -302,7 +301,6 @@ heading-no-level-manual.html:
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-image-manual.html: [timeout, upstream issue with html-aria package]
 include_element_*:
   [
     skip,
@@ -336,6 +334,7 @@ tablist-level-not-supported-manual.html:
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
+
 ---
 DIR: dpub-aam
 
@@ -455,14 +454,10 @@ role/menu-roles.tentative.html:
     [fail, upstream issue with html-aria package]
   "orphan button with menuitemradio role":
     [fail, upstream issue with html-aria package]
-role/roles.html:
-  "role: suggestion": [fail, upstream issue with html-aria package]
 role/roles.tentative.html:
   "role: sectionheader": [fail, upstream issue with html-aria package]
   "role: sectionfooter": [fail, upstream issue with html-aria package]
 role/synonym-roles.html:
-  "image role == computedrole image":
-    [fail, upstream issue with html-aria packages]
   "synonym img role == computedrole image":
     [fail, upstream issue with html-aria packages]
   "directory role == computedrole list":

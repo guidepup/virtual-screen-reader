@@ -5,6 +5,7 @@ import { getAccessibleName } from "./getAccessibleName";
 import { getAccessibleValue } from "./getAccessibleValue";
 import { isElement } from "../isElement";
 
+// TODO: swap out with the html-aria package if this property becomes supported.
 const childrenPresentationalRoles = new Set(
   roles
     .entries()

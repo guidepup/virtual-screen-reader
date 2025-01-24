@@ -10,6 +10,8 @@ export const getAttributesByRole = ({
   accessibleValue: string;
   role: string;
 }): [string, string | null][] => {
+  // TODO: swap out with the html-aria package if implicit role attributes
+  // become supported.
   const {
     props: implicitRoleAttributes = {},
     prohibitedProps: prohibitedAttributes = [],
