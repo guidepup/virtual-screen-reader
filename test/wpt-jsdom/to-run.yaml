@@ -376,8 +376,6 @@ roles-dynamic-switch.tentative.window.html:
     [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding type attribute":
     [fail, upstream issue with html-aria package]
-# roles-generic.tentative.html:
-#   "el-li-orphaned": [fail, upstream issue with html-aria package]
 roles.html:
   "el-dd":
     [
@@ -389,10 +387,10 @@ roles.html:
       fail,
       "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dt), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dt), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L62). See also https://github.com/w3c/aria/issues/1662.",
     ]
-roles.tentative.html:
-  "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
-table-roles.html:
-  "el-th-in-row": [fail, upstream issue with html-aria package]
+# roles.tentative.html:
+#   "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
+# table-roles.html:
+#   "el-th-in-row": [fail, upstream issue with html-aria package]
 
 ---
 DIR: svg-aam
