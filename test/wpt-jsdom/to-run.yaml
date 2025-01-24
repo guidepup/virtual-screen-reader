@@ -368,44 +368,86 @@ DIR: html-aam
 
 roles-contextual.html:
   "el-aside-in-article-in-main":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "el-aside-in-article":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-aside": [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-nav": [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
+  "el-aside-in-aside":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
+  "el-aside-in-nav":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "el-aside-in-section":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-footer": [fail, upstream issue with dom-accessibility-api package]
-  "el-header": [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
+  "el-footer":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
+  "el-header":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "el-header-ancestormain":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "el-section-no-name":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 roles-dynamic-switch.tentative.window.html:
   "Connected <input type=checkbox switch>":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding switch attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: removing switch attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: removing type attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding type attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
 roles-generic.tentative.html:
-  "el-li-orphaned": [fail, upstream issue with dom-accessibility-api package]
+  "el-li-orphaned":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 roles.html:
-  "el-hgroup":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "el-s":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "el-search":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
+  "el-dd":
+    [
+      fail,
+      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dd), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dd), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L49). See also https://github.com/w3c/aria/issues/1662.",
+    ]
+  "el-dt":
+    [
+      fail,
+      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dt), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dt), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L62). See also https://github.com/w3c/aria/issues/1662.",
+    ]
 roles.tentative.html:
-  "el-input-checkbox-switch":
-    [fail, upstream issue with dom-accessibility-api package]
+  "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
 table-roles.html:
-  "el-th-in-row": [fail, upstream issue with dom-accessibility-api package]
+  "el-th-in-row":
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 
 ---
 DIR: svg-aam
@@ -414,13 +456,15 @@ name/comp_host_language_label.html:
   [fail, upstream issue with aria-query and dom-accessibility-api packages]
 role/role-img.tentative.html:
   "Label: el-image (label from image>title element)":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-image (generic, explicitly empty image>title element)":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
+  "Role: el-image (empty label due to missing image>title element)":
+    [fail, upstream issue with html-aria package]
+  "Role: el-image (label from image>title element)":
+    [fail, upstream issue with html-aria package]
 role/roles.html:
-  "el-a[xlink:href]": [fail, upstream issue with dom-accessibility-api package]
-  "el-g": [fail, upstream issue with dom-accessibility-api package]
-  "el-image": [fail, upstream issue with dom-accessibility-api package]
+  "el-a[xlink:href]": [fail, upstream issue with html-aria package]
+  "el-g": [fail, upstream issue with html-aria package]
+  "el-image": [fail, upstream issue with html-aria package]
 
 ---
 DIR: wai-aria
@@ -433,47 +477,104 @@ manual/*:
   ]
 role/contextual-roles.html:
   "footer element scoped to main element is generic":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/grid-roles.tentative.html:
   "orphaned button with gridcell role outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned row outside the context of table":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned rowgroup outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned div with gridcell role outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned rowheader outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned columnheader outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/list-roles.tentative.html:
   "orphan div with listitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan p with listitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/listbox-roles.tentative.html:
   "orphaned option outside the context of listbox":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/menu-roles.tentative.html:
   "orphan div with menuitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan div with menuitemcheckbox role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan div with menuitemradio role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned menuitem outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned menuitemradio outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned menuitemcheckbox outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan button with menuitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan button with menuitemcheckbox role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan button with menuitemradio role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/roles.html:
   "role: suggestion":
     [
@@ -502,11 +603,23 @@ role/synonym-roles.html:
     [fail, upstream issue with aria-query and dom-accessibility-api packages]
 role/tab-roles.tentative.html:
   "orphan button with tab role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphan span with tab role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
 role/tree-roles.tentative.html:
   "orphaned treeitem outside the context of tree":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
   "orphaned button with treeitem role outside tree context":
-    [fail, upstream issue with dom-accessibility-api package]
+    [
+      fail,
+      update needed to utilise html-aria ancestors argument for context based roles,
+    ]
