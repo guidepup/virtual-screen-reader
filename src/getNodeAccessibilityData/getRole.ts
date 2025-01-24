@@ -11,6 +11,17 @@ import { isElement } from "../isElement";
 
 export const presentationRoles = new Set(["presentation", "none"]);
 
+export const synonymRolesMap: Record<string, string> = {
+  img: "image",
+  presentation: "none",
+  directory: "list",
+};
+
+export const reverseSynonymRolesMap: Record<string, string> =
+  Object.fromEntries(
+    Object.entries(synonymRolesMap).map(([key, value]) => [value, key])
+  );
+
 const allowedNonAbstractRoles = new Set([
   ...(Object.entries(roles)
     .filter(([, { type }]) => !type.includes("abstract"))
@@ -66,13 +77,8 @@ function hasGlobalStateOrProperty(node: HTMLElement) {
   return globalStatesAndProperties.some((global) => node.hasAttribute(global));
 }
 
-const aliasedRolesMap: Record<string, string> = {
-  img: "image",
-  presentation: "none",
-};
-
 function mapAliasedRoles(role: string) {
-  const canonical = aliasedRolesMap[role];
+  const canonical = synonymRolesMap[role];
 
   return canonical ?? role;
 }
@@ -258,12 +264,13 @@ export function getRole({
   }
 
   const target = node.cloneNode() as HTMLElement;
-  const explicitRole = getExplicitRole({
+  const baseExplicitRole = getExplicitRole({
     accessibleName,
     allowedAccessibilityRoles,
     inheritedImplicitPresentational,
     node: target,
   });
+  const explicitRole = mapAliasedRoles(baseExplicitRole);
 
   // Feature detect AOM support
   // TODO: this isn't quite right, computed role might not be the implicit

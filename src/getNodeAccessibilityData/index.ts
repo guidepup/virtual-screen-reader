@@ -1,17 +1,28 @@
-import { ARIARoleDefinitionKey, roles } from "aria-query";
-import { getRole, presentationRoles } from "./getRole";
+import { ARIARoleDefinition, ARIARoleDefinitionKey, roles } from "aria-query";
+import { getRole, presentationRoles, synonymRolesMap } from "./getRole";
 import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
 import { getAccessibleValue } from "./getAccessibleValue";
 import { isElement } from "../isElement";
 
 // TODO: swap out with the html-aria package if this property becomes supported.
-const childrenPresentationalRoles = new Set(
-  roles
+const childrenPresentationalRoles = new Set([
+  ...(roles
     .entries()
     .filter(([, { childrenPresentational }]) => childrenPresentational)
-    .map(([key]) => key) as string[]
-);
+    .map(([key]) => key) as string[]),
+  // TODO: temporary catering to WAI-ARIA 1.3 synonym roles that aria-query
+  // doesn't handle.
+  ...(Object.entries(synonymRolesMap)
+    .map(
+      ([from, to]) =>
+        [to, roles.get(from as ARIARoleDefinitionKey)] as
+          | [ARIARoleDefinitionKey, ARIARoleDefinition]
+          | [ARIARoleDefinitionKey, undefined]
+    )
+    .filter(([, role]) => role?.childrenPresentational)
+    .map(([key]) => key) as string[]),
+]);
 
 const getSpokenRole = ({
   isGeneric,

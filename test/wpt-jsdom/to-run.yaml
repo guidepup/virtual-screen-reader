@@ -398,7 +398,7 @@ name/comp_host_language_label.html:
   [fail, upstream issue with dom-accessibility-api package]
 role/role-img.tentative.html:
   "Label: el-image (label from image>title element)":
-    [fail, upstream issue with html-aria package]
+    [fail, upstream issue with dom-accessibility-api or html-aria package]
   "Role: el-image (empty label due to missing image>title element)":
     [fail, upstream issue with html-aria package]
   "Role: el-image (label from image>title element)":
@@ -457,13 +457,6 @@ role/menu-roles.tentative.html:
 role/roles.tentative.html:
   "role: sectionheader": [fail, upstream issue with html-aria package]
   "role: sectionfooter": [fail, upstream issue with html-aria package]
-role/synonym-roles.html:
-  "synonym img role == computedrole image":
-    [fail, upstream issue with html-aria packages]
-  "directory role == computedrole list":
-    [fail, upstream issue with html-aria packages]
-  "div w/directory role == computedrole list":
-    [fail, upstream issue with html-aria packages]
 role/tab-roles.tentative.html:
   "orphan button with tab role": [fail, upstream issue with html-aria package]
   "orphan span with tab role": [fail, upstream issue with html-aria package]
