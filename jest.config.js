@@ -15,7 +15,7 @@ module.exports = {
     },
   },
   setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
-  testPathIgnorePatterns: ["<rootDir>/test/wpt"],
+  testPathIgnorePatterns: ["<rootDir>/test/wpt/", "<rootDir>/test/wpt-jsdom/"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "./tsconfig.test.json" }],
   },
