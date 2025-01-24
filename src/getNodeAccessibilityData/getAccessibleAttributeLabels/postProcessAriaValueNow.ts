@@ -1,4 +1,4 @@
-const percentageBasedValueRoles = ["progressbar", "scrollbar"];
+const percentageBasedValueRoles = new Set(["progressbar", "scrollbar"]);
 
 const isNumberLike = (value: string) => {
   return !isNaN(parseFloat(value));
@@ -24,7 +24,7 @@ export const postProcessAriaValueNow = ({
   role: string;
   value: string;
 }) => {
-  if (!percentageBasedValueRoles.includes(role)) {
+  if (!percentageBasedValueRoles.has(role)) {
     return value;
   }
 

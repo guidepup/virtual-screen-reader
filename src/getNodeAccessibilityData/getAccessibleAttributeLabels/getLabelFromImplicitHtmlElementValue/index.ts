@@ -63,6 +63,8 @@ const getNodeSet = ({
   });
 };
 
+const levelItemRoles = new Set(["listitem", "treeitem"]);
+
 type Mapper = ({
   node,
   tree,
@@ -112,7 +114,7 @@ const mapHtmlElementAriaToImplicitValue: Record<string, Mapper> = {
       });
     }
 
-    if (["listitem", "treeitem"].includes(role)) {
+    if (levelItemRoles.has(role)) {
       return getLevelFromDocumentStructure({
         role,
         tree,

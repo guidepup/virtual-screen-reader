@@ -279,11 +279,6 @@ aria-valuetext_value_changes-manual.html:
   ]
 combobox-value-calculation-manual.html:
   [timeout, value taken from text content not implemented]
-comment-manual.html:
-  [
-    timeout,
-    upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
-  ]
 deletion-manual.html: [fail, syntax error in test - fix needed in WPT]
 exclude_element_hidden_with_*:
   [
@@ -305,11 +300,6 @@ heading-no-level-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
-  ]
-image-manual.html:
-  [
-    timeout,
-    upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
   ]
 include_element_*:
   [
@@ -344,6 +334,7 @@ tablist-level-not-supported-manual.html:
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
+
 ---
 DIR: dpub-aam
 
@@ -367,60 +358,55 @@ DIR: graphics-aria
 DIR: html-aam
 
 roles-contextual.html:
-  "el-aside-in-article-in-main":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-article":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-aside": [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-nav": [fail, upstream issue with dom-accessibility-api package]
-  "el-aside-in-section":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-footer": [fail, upstream issue with dom-accessibility-api package]
-  "el-header": [fail, upstream issue with dom-accessibility-api package]
-  "el-header-ancestormain":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-section-no-name":
-    [fail, upstream issue with dom-accessibility-api package]
+  "el-aside-in-article-in-main": [fail, upstream issue with html-aria package]
+  "el-aside-in-article": [fail, upstream issue with html-aria package]
+  "el-aside-in-aside": [fail, upstream issue with html-aria package]
+  "el-aside-in-nav": [fail, upstream issue with html-aria package]
+  "el-aside-in-section": [fail, upstream issue with html-aria package]
+  "el-section-no-name": [fail, upstream issue with html-aria package]
 roles-dynamic-switch.tentative.window.html:
   "Connected <input type=checkbox switch>":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding switch attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: removing switch attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: removing type attribute":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding type attribute":
-    [fail, upstream issue with dom-accessibility-api package]
-roles-generic.tentative.html:
-  "el-li-orphaned": [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
 roles.html:
-  "el-hgroup":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "el-s":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "el-search":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
+  "el-dd":
+    [
+      fail,
+      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dd), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dd), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L49). See also https://github.com/w3c/aria/issues/1662.",
+    ]
+  "el-dt":
+    [
+      fail,
+      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dt), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dt), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L62). See also https://github.com/w3c/aria/issues/1662.",
+    ]
 roles.tentative.html:
-  "el-input-checkbox-switch":
-    [fail, upstream issue with dom-accessibility-api package]
+  "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
 table-roles.html:
-  "el-th-in-row": [fail, upstream issue with dom-accessibility-api package]
+  "el-th-in-row": [fail, upstream issue with html-aria package]
 
 ---
 DIR: svg-aam
 
 name/comp_host_language_label.html:
-  [fail, upstream issue with aria-query and dom-accessibility-api packages]
+  [fail, upstream issue with dom-accessibility-api package]
 role/role-img.tentative.html:
   "Label: el-image (label from image>title element)":
-    [fail, upstream issue with dom-accessibility-api package]
-  "el-image (generic, explicitly empty image>title element)":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with dom-accessibility-api or html-aria package]
+  "Role: el-image (empty label due to missing image>title element)":
+    [fail, upstream issue with html-aria package]
+  "Role: el-image (label from image>title element)":
+    [fail, upstream issue with html-aria package]
 role/roles.html:
-  "el-a[xlink:href]": [fail, upstream issue with dom-accessibility-api package]
-  "el-g": [fail, upstream issue with dom-accessibility-api package]
-  "el-image": [fail, upstream issue with dom-accessibility-api package]
+  "el-a[xlink:href]": [fail, upstream issue with html-aria package]
+  "el-g": [fail, upstream issue with html-aria package]
+  "el-image": [fail, upstream issue with html-aria package]
 
 ---
 DIR: wai-aria
@@ -431,82 +417,51 @@ manual/*:
     timeout,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-role/contextual-roles.html:
-  "footer element scoped to main element is generic":
-    [fail, upstream issue with dom-accessibility-api package]
 role/grid-roles.tentative.html:
   "orphaned button with gridcell role outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned row outside the context of table":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned rowgroup outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned div with gridcell role outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned rowheader outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned columnheader outside the context of row":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
 role/list-roles.tentative.html:
-  "orphan div with listitem role":
-    [fail, upstream issue with dom-accessibility-api package]
-  "orphan p with listitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+  "orphan div with listitem role": [fail, upstream issue with html-aria package]
+  "orphan p with listitem role": [fail, upstream issue with html-aria package]
 role/listbox-roles.tentative.html:
   "orphaned option outside the context of listbox":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
 role/menu-roles.tentative.html:
-  "orphan div with menuitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+  "orphan div with menuitem role": [fail, upstream issue with html-aria package]
   "orphan div with menuitemcheckbox role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphan div with menuitemradio role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned menuitem outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned menuitemradio outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned menuitemcheckbox outside the context of menu/menubar":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphan button with menuitem role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphan button with menuitemcheckbox role":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphan button with menuitemradio role":
-    [fail, upstream issue with dom-accessibility-api package]
-role/roles.html:
-  "role: suggestion":
-    [
-      fail,
-      upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
-    ]
+    [fail, upstream issue with html-aria package]
 role/roles.tentative.html:
-  "role: sectionheader":
-    [
-      fail,
-      upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
-    ]
-  "role: sectionfooter":
-    [
-      fail,
-      upstream issue with aria-query package - WAI-ARIA 1.3 not implemented,
-    ]
-role/synonym-roles.html:
-  "image role == computedrole image":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "synonym img role == computedrole image":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "directory role == computedrole list":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
-  "div w/directory role == computedrole list":
-    [fail, upstream issue with aria-query and dom-accessibility-api packages]
+  "role: sectionheader": [fail, upstream issue with html-aria package]
+  "role: sectionfooter": [fail, upstream issue with html-aria package]
 role/tab-roles.tentative.html:
-  "orphan button with tab role":
-    [fail, upstream issue with dom-accessibility-api package]
-  "orphan span with tab role":
-    [fail, upstream issue with dom-accessibility-api package]
+  "orphan button with tab role": [fail, upstream issue with html-aria package]
+  "orphan span with tab role": [fail, upstream issue with html-aria package]
 role/tree-roles.tentative.html:
   "orphaned treeitem outside the context of tree":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]
   "orphaned button with treeitem role outside tree context":
-    [fail, upstream issue with dom-accessibility-api package]
+    [fail, upstream issue with html-aria package]

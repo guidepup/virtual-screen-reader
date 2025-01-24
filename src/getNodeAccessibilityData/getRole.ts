@@ -1,17 +1,40 @@
-import { getRole as getImplicitRole } from "dom-accessibility-api";
+import {
+  type AncestorList,
+  getRole as getImplicitRole,
+  roles,
+  type TagName,
+  type VirtualElement,
+} from "html-aria";
+import { roles as backupRoles } from "aria-query";
 import { getLocalName } from "../getLocalName";
-import { getRoles } from "@testing-library/dom";
 import { isElement } from "../isElement";
-import { roles } from "aria-query";
 
-export const presentationRoles = ["presentation", "none"];
+export const presentationRoles = new Set(["presentation", "none"]);
 
-const allowedNonAbstractRoles = roles
-  .entries()
-  .filter(([, { abstract }]) => !abstract)
-  .map(([key]) => key) as string[];
+export const synonymRolesMap: Record<string, string> = {
+  img: "image",
+  presentation: "none",
+  directory: "list",
+};
 
-const rolesRequiringName = ["form", "region"];
+export const reverseSynonymRolesMap: Record<string, string> =
+  Object.fromEntries(
+    Object.entries(synonymRolesMap).map(([key, value]) => [value, key])
+  );
+
+const allowedNonAbstractRoles = new Set([
+  ...(Object.entries(roles)
+    .filter(([, { type }]) => !type.includes("abstract"))
+    .map(([key]) => key) as string[]),
+  // TODO: remove once the `html-aria` package supports `dpub-aam` /
+  // `dpub-aria` specifications.
+  ...(backupRoles
+    .entries()
+    .filter(([, { abstract }]) => !abstract)
+    .map(([key]) => key) as string[]),
+]);
+
+const rolesRequiringName = new Set(["form", "region"]);
 
 export const globalStatesAndProperties = [
   "aria-atomic",
@@ -54,13 +77,8 @@ function hasGlobalStateOrProperty(node: HTMLElement) {
   return globalStatesAndProperties.some((global) => node.hasAttribute(global));
 }
 
-const aliasedRolesMap: Record<string, string> = {
-  img: "image",
-  presentation: "none",
-};
-
 function mapAliasedRoles(role: string) {
-  const canonical = aliasedRolesMap[role];
+  const canonical = synonymRolesMap[role];
 
   return canonical ?? role;
 }
@@ -87,7 +105,7 @@ function getExplicitRole({
      *
      * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
-    .filter((role) => allowedNonAbstractRoles.includes(role))
+    .filter((role) => allowedNonAbstractRoles.has(role))
     /**
      * Certain landmark roles require names from authors. In situations where
      * an author has not specified names for these landmarks, it is
@@ -102,7 +120,7 @@ function getExplicitRole({
      *
      * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
-    .filter((role) => !!accessibleName || !rolesRequiringName.includes(role));
+    .filter((role) => !!accessibleName || !rolesRequiringName.has(role));
 
   /**
    * If an allowed child element has an explicit non-presentational role, user
@@ -149,7 +167,7 @@ function getExplicitRole({
      * REF: https://www.w3.org/TR/wai-aria-1.2/#conflict_resolution_presentation_none
      */
     .filter((role) => {
-      if (!presentationRoles.includes(role)) {
+      if (!presentationRoles.has(role)) {
         return true;
       }
 
@@ -161,6 +179,73 @@ function getExplicitRole({
     });
 
   return filteredRoles?.[0] ?? "";
+}
+
+// TODO: upstream update to `html-aria` to support supplying a jsdom element in
+// a Node environment. Appears their check for `element instanceof HTMLElement`
+// fails the `test/int/nodeEnvironment.int.test.ts` suite.
+function virtualizeElement(element: HTMLElement): VirtualElement {
+  const tagName = getLocalName(element) as TagName;
+  const attributes: Record<string, string | null> = {};
+
+  for (let i = 0; i < element.attributes.length; i++) {
+    const { name } = element.attributes[i]!;
+
+    attributes[name] = element.getAttribute(name);
+  }
+
+  return { tagName, attributes };
+}
+
+const rolesDependentOnHierarchy = new Set([
+  "footer",
+  "header",
+  "li",
+  "td",
+  "th",
+  "tr",
+]);
+const ignoredAncestors = new Set(["body", "document"]);
+
+// TODO: Thought needed if the `getAncestors()` can limit the number of parents
+// it enumerates? Presumably as ancestors only matter for a limited number of
+// roles, there might be a ceiling to the amount of nesting that is even valid,
+// and therefore put an upper bound on how far to backtrack without having to
+// stop at the document level for every single element.
+//
+// Another thought is that we special case each element so the backtracking can
+// exit early if an ancestor with a relevant role has already been found.
+//
+// Alternatively see if providing an element that is part of a DOM can be
+// traversed by the `html-aria` library itself so these concerns are
+// centralised.
+function getAncestors(node: HTMLElement): AncestorList | undefined {
+  if (!rolesDependentOnHierarchy.has(getLocalName(node))) {
+    return undefined;
+  }
+
+  const ancestors: AncestorList = [];
+
+  let target: HTMLElement | null = node;
+  let targetLocalName: string;
+
+  while (true) {
+    target = target.parentElement;
+
+    if (!target) {
+      break;
+    }
+
+    targetLocalName = getLocalName(target);
+
+    if (ignoredAncestors.has(targetLocalName)) {
+      break;
+    }
+
+    ancestors.push({ tagName: targetLocalName as TagName });
+  }
+
+  return ancestors;
 }
 
 export function getRole({
@@ -179,12 +264,13 @@ export function getRole({
   }
 
   const target = node.cloneNode() as HTMLElement;
-  const explicitRole = getExplicitRole({
+  const baseExplicitRole = getExplicitRole({
     accessibleName,
     allowedAccessibilityRoles,
     inheritedImplicitPresentational,
     node: target,
   });
+  const explicitRole = mapAliasedRoles(baseExplicitRole);
 
   // Feature detect AOM support
   // TODO: this isn't quite right, computed role might not be the implicit
@@ -198,19 +284,16 @@ export function getRole({
 
   target.removeAttribute("role");
 
-  let implicitRole = getImplicitRole(target) ?? "";
+  // Backwards compatibility
+  const isBodyElement = getLocalName(target) === "body";
 
-  if (!implicitRole) {
-    // Backwards compatibility for when was using aria-query@5.1.3
-    if (getLocalName(target) === "body") {
-      implicitRole = "document";
-    } else {
-      // TODO: remove this fallback post https://github.com/eps1lon/dom-accessibility-api/pull/937
-      implicitRole = Object.keys(getRoles(target))?.[0] ?? "";
-    }
-  }
+  const baseImplicitRole = isBodyElement
+    ? "document"
+    : getImplicitRole(virtualizeElement(target), {
+        ancestors: getAncestors(node),
+      }) ?? "";
 
-  implicitRole = mapAliasedRoles(implicitRole);
+  const implicitRole = mapAliasedRoles(baseImplicitRole);
 
   if (explicitRole) {
     return { explicitRole, implicitRole, role: explicitRole };

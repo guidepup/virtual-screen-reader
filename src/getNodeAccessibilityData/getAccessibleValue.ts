@@ -11,8 +11,8 @@ export type HTMLElementWithValue =
   | HTMLProgressElement
   | HTMLParamElement;
 
-const ignoredInputTypes = ["checkbox", "radio"];
-const allowedLocalNames = [
+const ignoredInputTypes = new Set(["checkbox", "radio"]);
+const allowedLocalNames = new Set([
   "button",
   "data",
   "input",
@@ -21,7 +21,7 @@ const allowedLocalNames = [
   "option",
   "progress",
   "param",
-];
+]);
 
 function getSelectValue(node: HTMLSelectElement) {
   const selectedOptions = [...node.options].filter(
@@ -42,7 +42,7 @@ function getSelectValue(node: HTMLSelectElement) {
 }
 
 function getInputValue(node: HTMLInputElement) {
-  if (ignoredInputTypes.includes(node.type)) {
+  if (ignoredInputTypes.has(node.type)) {
     return "";
   }
 
@@ -55,7 +55,7 @@ function getValue(node: HTMLElementWithValue) {
   // TODO: handle use of explicit roles where a value taken from content is
   // expected, e.g. combobox.
   // See core-aam/combobox-value-calculation-manual.html
-  if (!allowedLocalNames.includes(localName)) {
+  if (!allowedLocalNames.has(localName)) {
     return "";
   }
 
