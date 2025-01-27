@@ -2,7 +2,7 @@
 
 function injectVirtualScreenReader(window) {
   window.document.write(
-    `<script type="module">import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader"; window.virtual = virtual;</script>`
+    `<script type="module">import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader@0.28.0/lib/esm/index.browser.js"; window.virtual = virtual;</script>`
   );
 }
 
@@ -50,8 +50,12 @@ describe("Virtual Screen Reader", () => {
     getSpokenPhraseLog(cy).should("deep.equal", [
       "document",
       "region, Skip to main content",
+      "link, Skip to main content",
+      "end of region, Skip to main content",
       "navigation, Main",
       "link, Guidepup",
+      "Guidepup",
+      "end of link, Guidepup",
       "link, Docs",
       "link, API",
       "link, GitHub",
@@ -66,6 +70,11 @@ describe("Virtual Screen Reader", () => {
       "end of region",
       "region",
       "heading, Reliable automation for your screen reader a11y workflows through JavaScript, level 2",
+      "Reliable",
+      "automation for your",
+      "screen reader a11y workflows",
+      "through JavaScript",
+      "end of heading, Reliable automation for your screen reader a11y workflows through JavaScript, level 2",
       "paragraph",
       "With Guidepup you can automate your screen reader test workflows the same you as would for mouse or keyboard based scenarios, no sweat!",
       "end of paragraph",

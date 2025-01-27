@@ -595,26 +595,26 @@ describe("Group & Position", () => {
 </caption>
 <thead>
   <tr>
-    <th>
+    <th scope="colgroup">
       <button>
         First Name
         <span aria-hidden="true"></span>
       </button>
     </th>
-    <th aria-sort="ascending">
+    <th scope="colgroup" aria-sort="ascending">
       <button>
         Last Name
         <span aria-hidden="true"></span>
       </button>
     </th>
-    <th>
+    <th scope="colgroup">
       <button>
         Company
         <span aria-hidden="true"></span>
       </button>
     </th>
-    <th class="no-sort">Address</th>
-    <th class="num">
+    <th scope="colgroup" class="no-sort">Address</th>
+    <th scope="colgroup" class="num">
       <button>
         Favorite Number
         <span aria-hidden="true"></span>

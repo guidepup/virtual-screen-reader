@@ -198,6 +198,7 @@ function virtualizeElement(element: HTMLElement): VirtualElement {
 }
 
 const rolesDependentOnHierarchy = new Set([
+  "aside",
   "footer",
   "header",
   "li",

@@ -31,16 +31,17 @@ export const LoggedOut = {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "article",
-      "banner",
       "heading, Acme, level 1",
       "button, Log in",
       "button, Sign up",
-      "end of banner",
-      "region",
       "heading, Pages in Storybook, level 2",
       "paragraph",
       "We recommend building UIs with a",
       "link, component-driven",
+      "strong",
+      "component-driven",
+      "end of strong",
+      "end of link, component-driven",
       "process starting with atomic components and ending with pages.",
       "end of paragraph",
       "paragraph",
@@ -64,7 +65,6 @@ export const LoggedOut = {
       "Tip",
       "Adjust the width of the canvas with the",
       "Viewports addon in the toolbar",
-      "end of region",
       "end of article",
     ]);
 
@@ -97,22 +97,22 @@ export const LoggedIn = {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "article",
-      "banner",
       "heading, Acme, level 1",
       "button, Log in",
       "article",
-      "banner",
       "heading, Acme, level 1",
       "Welcome,",
       "Jane Doe",
       "!",
       "button, Log out",
-      "end of banner",
-      "region",
       "heading, Pages in Storybook, level 2",
       "paragraph",
       "We recommend building UIs with a",
       "link, component-driven",
+      "strong",
+      "component-driven",
+      "end of strong",
+      "end of link, component-driven",
       "process starting with atomic components and ending with pages.",
       "end of paragraph",
       "paragraph",
@@ -136,7 +136,6 @@ export const LoggedIn = {
       "Tip",
       "Adjust the width of the canvas with the",
       "Viewports addon in the toolbar",
-      "end of region",
       "end of article",
     ]);
 

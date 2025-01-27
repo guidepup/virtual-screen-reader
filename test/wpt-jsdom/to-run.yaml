@@ -357,13 +357,6 @@ DIR: graphics-aria
 ---
 DIR: html-aam
 
-roles-contextual.html:
-  "el-aside-in-article-in-main": [fail, upstream issue with html-aria package]
-  "el-aside-in-article": [fail, upstream issue with html-aria package]
-  "el-aside-in-aside": [fail, upstream issue with html-aria package]
-  "el-aside-in-nav": [fail, upstream issue with html-aria package]
-  "el-aside-in-section": [fail, upstream issue with html-aria package]
-  "el-section-no-name": [fail, upstream issue with html-aria package]
 roles-dynamic-switch.tentative.window.html:
   "Connected <input type=checkbox switch>":
     [fail, upstream issue with html-aria package]
@@ -389,6 +382,7 @@ roles.html:
 roles.tentative.html:
   "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
 table-roles.html:
+  "el-th": [fail, upstream issue with html-aria package]
   "el-th-in-row": [fail, upstream issue with html-aria package]
 
 ---

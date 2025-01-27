@@ -1,11 +1,11 @@
 async function injectVirtualScreenReader() {
   await page.addScriptTag({
-    url: "https://unpkg.com/@guidepup/virtual-screen-reader",
+    url: "https://unpkg.com/@guidepup/virtual-screen-reader@0.28.0/lib/esm/index.browser.js",
     type: "module",
   });
 
   await page.addScriptTag({
-    content: `import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader"; window.virtual = virtual;`,
+    content: `import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader@0.28.0/lib/esm/index.browser.js"; window.virtual = virtual;`,
     type: "module",
   });
 }

@@ -46,6 +46,7 @@ Extracted requirements from these specifications can be found in [docs/requireme
 Internal modules responsible for constructing the Virtual Screen Reader accessibility tree are being tested against [Web Platform Tests](https://github.com/web-platform-tests/wpt) for the following specs:
 
 - [accname](https://github.com/web-platform-tests/wpt/tree/master/accname)
+- [core-aam](https://github.com/web-platform-tests/wpt/tree/master/core-aam)
 - [dpub-aam](https://github.com/web-platform-tests/wpt/tree/master/dpub-aam)
 - [graphics-aria](https://github.com/web-platform-tests/wpt/tree/master/graphics-aria)
 - [html-aam](https://github.com/web-platform-tests/wpt/tree/master/html-aam)
@@ -56,7 +57,7 @@ The current status of the WPT coverage is:
 
 | Passing | Failing | Skipped |
 | :-----: | :-----: | :-----: |
-|   404   |   119   |   338   |
+|   404   |   114   |   338   |
 
 The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml) with reasons as to skips and expected failures.
 
@@ -131,23 +132,19 @@ describe("Screen Reader Tests", () => {
       "navigation",
       "Nav Text",
       "end of navigation",
-      "region",
       "heading, Section Heading, level 1",
       "paragraph",
       "Section Text",
       "end of paragraph",
       "article",
-      "banner",
       "heading, Article Header Heading, level 1",
       "paragraph",
       "Article Header Text",
       "end of paragraph",
-      "end of banner",
       "paragraph",
       "Article Text",
       "end of paragraph",
       "end of article",
-      "end of region",
       "contentinfo",
       "Footer",
       "end of contentinfo",
