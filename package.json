@@ -19,6 +19,9 @@
     "a11y",
     "guidepup"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "main": "./lib/cjs/index.js",
   "types": "./lib/cjs/index.d.ts",
   "module": "./lib/esm/index.legacy-esm.js",
