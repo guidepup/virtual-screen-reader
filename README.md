@@ -165,7 +165,7 @@ Try it out on any website in a browser of your choice by executing the following
 
 ```ts
 const { virtual } = await import(
-  "https://unpkg.com/@guidepup/virtual-screen-reader"
+  "https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js"
 );
 
 await virtual.start({ container: document.body, displayCursor: true });
