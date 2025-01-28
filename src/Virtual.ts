@@ -7,7 +7,7 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
-import { getLiveSpokenPhrase, Live } from "./getLiveSpokenPhrase";
+import { getLiveSpokenPhrase, LIVE } from "./getLiveSpokenPhrase";
 import { flattenTree } from "./flattenTree";
 import { getElementNode } from "./commands/getElementNode";
 import { getItemText } from "./getItemText";
@@ -180,10 +180,8 @@ const defaultUserEventOptions = {
  *       "heading, Section Heading, level 1",
  *       "Section Text",
  *       "article",
- *       "banner",
  *       "heading, Article Header Heading, level 1",
  *       "Article Header Text",
- *       "end of banner",
  *       "Article Text",
  *       "end of article",
  *       "end of region",
@@ -360,8 +358,8 @@ export class Virtual {
   #spokenPhraseLogWithoutLiveRegions() {
     return this.#spokenPhraseLog.filter(
       (spokenPhrase) =>
-        !spokenPhrase.startsWith(Live.ASSERTIVE) &&
-        !spokenPhrase.startsWith(Live.POLITE)
+        !spokenPhrase.startsWith(LIVE.ASSERTIVE) &&
+        !spokenPhrase.startsWith(LIVE.POLITE)
     );
   }
 
