@@ -21,18 +21,24 @@ describe("Aria Flow To", () => {
       await virtual.next();
       await virtual.next();
       await virtual.next();
+      await virtual.next();
+      await virtual.next();
       await virtual.perform(
         virtual.commands.moveToNextAlternateReadingOrderElement
       );
+      await virtual.next();
 
       expect(await virtual.spokenPhraseLog()).toEqual([
         "document",
         "3 alternate reading orders, 1 previous alternate reading order",
         "apple",
+        "end, 3 alternate reading orders, 1 previous alternate reading order",
         "1 previous alternate reading order",
         "banana",
+        "end, 1 previous alternate reading order",
         "1 alternate reading order, 1 previous alternate reading order",
         "3 alternate reading orders, 1 previous alternate reading order",
+        "apple",
       ]);
 
       await virtual.stop();
@@ -53,10 +59,13 @@ describe("Aria Flow To", () => {
       );
       await virtual.previous();
       await virtual.previous();
+      await virtual.previous();
       await virtual.perform(
         virtual.commands.moveToNextAlternateReadingOrderElement,
         { index: 1 }
       );
+      await virtual.previous();
+      await virtual.previous();
       await virtual.previous();
       await virtual.previous();
       await virtual.previous();
@@ -71,11 +80,14 @@ describe("Aria Flow To", () => {
         "document",
         "3 alternate reading orders, 1 previous alternate reading order",
         "1 previous alternate reading order",
+        "end, 3 alternate reading orders, 1 previous alternate reading order",
         "apple",
         "3 alternate reading orders, 1 previous alternate reading order",
         "1 alternate reading order, 1 previous alternate reading order",
+        "end, 1 previous alternate reading order",
         "banana",
         "1 previous alternate reading order",
+        "end, 3 alternate reading orders, 1 previous alternate reading order",
         "apple",
         "3 alternate reading orders, 1 previous alternate reading order",
         "1 previous alternate reading order",

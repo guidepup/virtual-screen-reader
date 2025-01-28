@@ -3,9 +3,10 @@ import type {
   AccessibilityNodeTree,
 } from "./createAccessibilityTree";
 import { getAccessibleAttributeLabels } from "./getNodeAccessibilityData/getAccessibleAttributeLabels";
-import { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
+import type { HTMLElementWithValue } from "./getNodeAccessibilityData/getAccessibleValue";
 
 export const END_OF_ROLE_PREFIX = "end of";
+export const END_OF_NO_ROLE_PREFIX = "end";
 
 const TEXT_NODE = 3;
 
@@ -65,17 +66,15 @@ export function flattenTree(
 
   const flattenedTree = ignoreChildren
     ? []
-    : [
-        ...children.flatMap((child) =>
-          flattenTree(container, child, {
-            ...treeNodeWithAttributeLabels,
-            children,
-          })
-        ),
-      ];
+    : children.flatMap((child) =>
+        flattenTree(container, child, {
+          ...treeNodeWithAttributeLabels,
+          children,
+        })
+      );
 
   const isRoleContainer =
-    !!flattenedTree.length && !ignoreChildren && !!treeNode.spokenRole;
+    !!flattenedTree.length && !ignoreChildren && isAnnounced;
 
   if (isAnnounced) {
     flattenedTree.unshift(treeNodeWithAttributeLabels);
@@ -84,7 +83,9 @@ export function flattenTree(
   if (isRoleContainer) {
     flattenedTree.push({
       ...treeNodeWithAttributeLabels,
-      spokenRole: `${END_OF_ROLE_PREFIX} ${treeNodeWithAttributeLabels.spokenRole}`,
+      spokenRole: treeNodeWithAttributeLabels.spokenRole
+        ? `${END_OF_ROLE_PREFIX} ${treeNodeWithAttributeLabels.spokenRole}`
+        : END_OF_NO_ROLE_PREFIX,
     });
   }
 
