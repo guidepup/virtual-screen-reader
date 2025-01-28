@@ -2,12 +2,12 @@ import { expect, Page, test } from "@playwright/test";
 
 async function injectVirtualScreenReader({ page }: { page: Page }) {
   await page.addScriptTag({
-    url: "https://unpkg.com/@guidepup/virtual-screen-reader",
+    url: "https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js",
     type: "module",
   });
 
   await page.addScriptTag({
-    content: `import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader"; window.virtual = virtual;`,
+    content: `import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js"; window.virtual = virtual;`,
     type: "module",
   });
 }

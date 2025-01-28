@@ -32,9 +32,7 @@ describe("Active Node", () => {
 
     await virtual.next();
 
-    expect(virtual.activeNode).toBe(
-      document.getElementsByTagName("section")[0]
-    );
+    expect(virtual.activeNode).toBe(document.getElementsByTagName("h1")[0]);
   });
 
   it("should gracefully handle when there is no active node", async () => {
