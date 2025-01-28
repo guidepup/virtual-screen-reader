@@ -91,6 +91,12 @@ name/comp_name_from_content.html:
     [fail, upstream issue with dom-accessibility-api package]
   "heading name from content with ::after":
     [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with text-transform:uppercase":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with text-transform:capitalize":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading name from content with text-transform:lowercase":
+    [fail, upstream issue with dom-accessibility-api package]
   "link name from content with ::after":
     [fail, upstream issue with dom-accessibility-api package]
   "button name from content with ::before and ::after":
@@ -133,11 +139,6 @@ name/comp_name_from_content.html:
     [fail, upstream issue with dom-accessibility-api package]
   "link name from content for each child (no space, inline)":
     [fail, upstream issue with dom-accessibility-api package]
-name/comp_name_from_content.tentative.html:
-  "heading with link referencing image using aria-labelledby, that in turn references text element via aria-labelledby":
-    [fail, upstream issue with dom-accessibility-api package]
-  "heading with link referencing image using aria-labelledby, that in turn references itself and another element via aria-labelledby":
-    [fail, upstream issue with dom-accessibility-api package]
 name/comp_text_node.html:
   "span[role=button] with text/element/text nodes, no space":
     [fail, upstream issue with dom-accessibility-api package]
@@ -178,9 +179,6 @@ name/comp_text_node.html:
   "heading with text node, with mixed space and non-breaking space":
     [fail, upstream issue with dom-accessibility-api package]
   "link with text node, with mixed space and non-breaking space":
-    [fail, upstream issue with dom-accessibility-api package]
-name/comp_tooltip.html:
-  "img with tooltip label with empty alt":
     [fail, upstream issue with dom-accessibility-api package]
 name/shadowdom/basic.html:
   [fail, upstream issue with dom-accessibility-api package]
@@ -279,7 +277,6 @@ aria-valuetext_value_changes-manual.html:
   ]
 combobox-value-calculation-manual.html:
   [timeout, value taken from text content not implemented]
-deletion-manual.html: [fail, syntax error in test - fix needed in WPT]
 exclude_element_hidden_with_*:
   [
     skip,
@@ -306,8 +303,6 @@ include_element_*:
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-insertion-manual.html: [fail, syntax error in test - fix needed in WPT]
-mark-manual.html: [fail, syntax error in test - fix needed in WPT]
 math_role_children_are_not_presentational-manual.html:
   [
     skip,
@@ -328,7 +323,6 @@ progressbar-no-min-or-max-manual.html:
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-suggestion-manual.html: [fail, syntax error in test - fix needed in WPT]
 tablist-level-not-supported-manual.html:
   [
     skip,
@@ -357,6 +351,13 @@ DIR: graphics-aria
 ---
 DIR: html-aam
 
+dir-role.tentative.html:
+  "el-dir": [fail, upstream issue with html-aria package]
+roles-contextual.tentative.html:
+  "el-footer": [fail, upstream issue with html-aria package]
+  "el-footer-ancestormain": [fail, upstream issue with html-aria package]
+  "el-header": [fail, upstream issue with html-aria package]
+  "el-header-ancestormain": [fail, upstream issue with html-aria package]
 roles-dynamic-switch.tentative.window.html:
   "Connected <input type=checkbox switch>":
     [fail, upstream issue with html-aria package]
@@ -411,6 +412,11 @@ manual/*:
     timeout,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
+role/contextual-roles.tentative.html:
+  "role is sectionfooter (in main)":
+    [fail, upstream issue with html-aria package]
+  "role is sectionheader (in main)":
+    [fail, upstream issue with html-aria package]
 role/grid-roles.tentative.html:
   "orphaned button with gridcell role outside the context of row":
     [fail, upstream issue with html-aria package]

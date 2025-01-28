@@ -2,7 +2,7 @@
 "use strict";
 const fs = require("fs");
 
-const EXPECTED_MANIFEST_VERSION = 8;
+const EXPECTED_MANIFEST_VERSION = 9;
 
 exports.getPossibleTestFilePaths = (manifest) => {
   const manualTests = manifest.items.manual;
