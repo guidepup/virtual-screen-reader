@@ -5,6 +5,8 @@ import { getRole } from "./getNodeAccessibilityData/getRole";
 import { isElement } from "./isElement";
 import { sanitizeString } from "./sanitizeString";
 
+type ValueOf<T> = T[keyof T];
+
 /**
  * Live region roles:
  *
@@ -36,23 +38,23 @@ import { sanitizeString } from "./sanitizeString";
  * - https://www.w3.org/TR/wai-aria-1.2/#aria-live
  */
 
-export enum Live {
-  ASSERTIVE = "assertive",
-  OFF = "off",
-  POLITE = "polite",
-}
+export const LIVE = {
+  ASSERTIVE: "assertive",
+  OFF: "off",
+  POLITE: "polite",
+};
 
-enum Relevant {
-  ADDITIONS = "additions",
-  ALL = "all",
-  REMOVALS = "removals",
-  TEXT = "text",
-}
+const RELEVANT = {
+  ADDITIONS: "additions",
+  ALL: "all",
+  REMOVALS: "removals",
+  TEXT: "text",
+};
 
-const RELEVANT_VALUES = new Set(Object.values(Relevant));
+const RELEVANT_VALUES = new Set(Object.values(RELEVANT));
 const DEFAULT_ATOMIC = false;
-const DEFAULT_LIVE = Live.OFF;
-const DEFAULT_RELEVANT = [Relevant.ADDITIONS, Relevant.TEXT];
+const DEFAULT_LIVE = LIVE.OFF;
+const DEFAULT_RELEVANT = [RELEVANT.ADDITIONS, RELEVANT.TEXT];
 
 function getSpokenPhraseForNode(node: Node) {
   return (
@@ -60,7 +62,6 @@ function getSpokenPhraseForNode(node: Node) {
     getAccessibleValue(node) ||
     // `node.textContent` is only `null` if the `node` is a `document` or a
     // `doctype`. We don't consider either.
-
     sanitizeString(node.textContent!)
   );
 }
@@ -141,36 +142,36 @@ function getTextSpokenPhrase({
 }
 
 const relevantToSpokenPhraseMap = {
-  [Relevant.ADDITIONS]: getAdditionsSpokenPhrase,
-  [Relevant.ALL]: getAllSpokenPhrase,
-  [Relevant.REMOVALS]: getRemovalsSpokenPhrase,
-  [Relevant.TEXT]: getTextSpokenPhrase,
+  [RELEVANT.ADDITIONS]: getAdditionsSpokenPhrase,
+  [RELEVANT.ALL]: getAllSpokenPhrase,
+  [RELEVANT.REMOVALS]: getRemovalsSpokenPhrase,
+  [RELEVANT.TEXT]: getTextSpokenPhrase,
 };
 
 const roleToImplicitLiveRegionStatesAndPropertiesMap: Record<
   string,
-  { atomic?: boolean; live: Live }
+  { atomic?: boolean; live: ValueOf<typeof LIVE> }
 > = {
   alert: {
     atomic: true,
-    live: Live.ASSERTIVE,
+    live: LIVE.ASSERTIVE,
   },
   log: {
-    live: Live.POLITE,
+    live: LIVE.POLITE,
   },
   marquee: {
-    live: Live.OFF,
+    live: LIVE.OFF,
   },
   status: {
     atomic: true,
-    live: Live.POLITE,
+    live: LIVE.POLITE,
   },
   timer: {
-    live: Live.OFF,
+    live: LIVE.OFF,
   },
   alertdialog: {
     atomic: true,
-    live: Live.ASSERTIVE,
+    live: LIVE.ASSERTIVE,
   },
 };
 
@@ -189,11 +190,16 @@ function getLiveRegionAttributes(
     relevant,
   }: {
     atomic?: boolean;
-    live?: Live;
+    live?: ValueOf<typeof LIVE>;
     liveTarget?: Element;
-    relevant?: Relevant[];
+    relevant?: ValueOf<typeof RELEVANT>[];
   } = {}
-): { atomic: boolean; live: Live; liveTarget?: Element; relevant: Relevant[] } {
+): {
+  atomic: boolean;
+  live: ValueOf<typeof LIVE>;
+  liveTarget?: Element;
+  relevant: ValueOf<typeof RELEVANT>[];
+} {
   // TODO: it would be far better if worked with the accessibility tree rather
   // than reconstructing here and making assumptions (though probable) about
   // the allowed roles or inherited presentational roles.
@@ -213,7 +219,7 @@ function getLiveRegionAttributes(
   }
 
   if (typeof live === "undefined" && target.hasAttribute("aria-live")) {
-    live = target.getAttribute("aria-live") as Live;
+    live = target.getAttribute("aria-live") as ValueOf<typeof LIVE>;
     liveTarget = target;
   }
 
@@ -234,11 +240,11 @@ function getLiveRegionAttributes(
       .getAttribute("aria-relevant")!
       .split(" ")
       .filter(
-        (token) => !!RELEVANT_VALUES.has(token as Relevant)
-      ) as Relevant[];
+        (token) => !!RELEVANT_VALUES.has(token as ValueOf<typeof RELEVANT>)
+      ) as ValueOf<typeof RELEVANT>[];
 
-    if (relevant.includes(Relevant.ALL)) {
-      relevant = [Relevant.ALL];
+    if (relevant.includes(RELEVANT.ALL)) {
+      relevant = [RELEVANT.ALL];
     }
   }
 
@@ -289,7 +295,7 @@ export function getLiveSpokenPhrase({
     target: getElementFromNode(target),
   });
 
-  if (live === Live.OFF || !liveTarget) {
+  if (live === LIVE.OFF || !liveTarget) {
     return "";
   }
 

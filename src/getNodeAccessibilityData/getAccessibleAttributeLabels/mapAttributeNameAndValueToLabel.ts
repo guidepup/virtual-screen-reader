@@ -3,22 +3,24 @@ import { getAccessibleValue } from "../getAccessibleValue";
 import { getItemText } from "../../getItemText";
 import { getNodeByIdRef } from "../../getNodeByIdRef";
 
-enum State {
-  BUSY = "busy",
-  CHECKED = "checked",
-  CURRENT = "current item",
-  DISABLED = "disabled",
-  EXPANDED = "expanded",
-  INVALID = "invalid",
-  MODAL = "modal",
-  MULTI_SELECTABLE = "multi-selectable",
-  PARTIALLY_CHECKED = "partially checked",
-  PARTIALLY_PRESSED = "partially pressed",
-  PRESSED = "pressed",
-  READ_ONLY = "read only",
-  REQUIRED = "required",
-  SELECTED = "selected",
-}
+type ValueOf<T> = T[keyof T];
+
+const STATE = {
+  BUSY: "busy",
+  CHECKED: "checked",
+  CURRENT: "current item",
+  DISABLED: "disabled",
+  EXPANDED: "expanded",
+  INVALID: "invalid",
+  MODAL: "modal",
+  MULTI_SELECTABLE: "multi-selectable",
+  PARTIALLY_CHECKED: "partially checked",
+  PARTIALLY_PRESSED: "partially pressed",
+  PRESSED: "pressed",
+  READ_ONLY: "read only",
+  REQUIRED: "required",
+  SELECTED: "selected",
+};
 
 // https://www.w3.org/TR/wai-aria-1.2/#state_prop_def
 const ariaPropertyToVirtualLabelMap: Record<
@@ -35,8 +37,8 @@ const ariaPropertyToVirtualLabelMap: Record<
   }),
   "aria-braillelabel": null, // Currently won't do - not implementing a braille screen reader
   "aria-brailleroledescription": null, // Currently won't do - not implementing a braille screen reader
-  "aria-busy": state(State.BUSY),
-  "aria-checked": tristate(State.CHECKED, State.PARTIALLY_CHECKED),
+  "aria-busy": state(STATE.BUSY),
+  "aria-checked": tristate(STATE.CHECKED, STATE.PARTIALLY_CHECKED),
   "aria-colcount": integer("column count"),
   "aria-colindex": integer("column index"),
   "aria-colindextext": string("column index"),
@@ -48,16 +50,16 @@ const ariaPropertyToVirtualLabelMap: Record<
     location: "current location",
     date: "current date",
     time: "current time",
-    true: State.CURRENT,
-    false: `not ${State.CURRENT}`,
+    true: STATE.CURRENT,
+    false: `not ${STATE.CURRENT}`,
   }),
   "aria-describedby": null, // Handled by accessible description
   "aria-description": null, // Handled by accessible description
   "aria-details": idRefs("linked details", "linked details", false),
-  "aria-disabled": state(State.DISABLED),
+  "aria-disabled": state(STATE.DISABLED),
   "aria-dropeffect": null, // Deprecated in WAI-ARIA 1.1
   "aria-errormessage": errorMessageIdRefs("error message", "error messages"),
-  "aria-expanded": state(State.EXPANDED),
+  "aria-expanded": state(STATE.EXPANDED),
   "aria-flowto": idRefs("alternate reading order", "alternate reading orders"), // Handled by virtual.perform()
   "aria-grabbed": null, // Deprecated in WAI-ARIA 1.1
   "aria-haspopup": token({
@@ -78,17 +80,17 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-hidden": null, // Excluded from accessibility tree
   "aria-invalid": token({
     grammar: "grammatical error detected",
-    false: `not ${State.INVALID}`,
+    false: `not ${STATE.INVALID}`,
     spelling: "spelling error detected",
-    true: State.INVALID,
+    true: STATE.INVALID,
   }),
   "aria-keyshortcuts": string("key shortcuts"),
   "aria-label": null, // Handled by accessible name
   "aria-labelledby": null, // Handled by accessible name
   "aria-level": integer("level"),
   "aria-live": null, // Handled by live region logic
-  "aria-modal": state(State.MODAL),
-  "aria-multiselectable": state(State.MULTI_SELECTABLE),
+  "aria-modal": state(STATE.MODAL),
+  "aria-multiselectable": state(STATE.MULTI_SELECTABLE),
   "aria-orientation": token({
     horizontal: "orientated horizontally",
     vertical: "orientated vertically",
@@ -96,16 +98,16 @@ const ariaPropertyToVirtualLabelMap: Record<
   "aria-owns": null, // Handled by accessibility tree construction
   "aria-placeholder": string("placeholder"),
   "aria-posinset": integer("position"),
-  "aria-pressed": tristate(State.PRESSED, State.PARTIALLY_PRESSED),
-  "aria-readonly": state(State.READ_ONLY),
+  "aria-pressed": tristate(STATE.PRESSED, STATE.PARTIALLY_PRESSED),
+  "aria-readonly": state(STATE.READ_ONLY),
   "aria-relevant": null, // Handled by live region logic
-  "aria-required": state(State.REQUIRED),
+  "aria-required": state(STATE.REQUIRED),
   "aria-roledescription": null, // Handled by accessible description
   "aria-rowcount": integer("row count"),
   "aria-rowindex": integer("row index"),
   "aria-rowindextext": string("row index"),
   "aria-rowspan": integer("row span"),
-  "aria-selected": state(State.SELECTED),
+  "aria-selected": state(STATE.SELECTED),
   "aria-setsize": integer("set size"),
   "aria-sort": token({
     ascending: "sorted in ascending order",
@@ -126,7 +128,7 @@ interface MapperArgs {
   node?: HTMLElement;
 }
 
-function state(stateValue: State) {
+function state(stateValue: ValueOf<typeof STATE>) {
   return function stateMapper({ attributeValue, negative }: MapperArgs) {
     if (negative) {
       return attributeValue !== "false" ? `not ${stateValue}` : stateValue;
@@ -198,7 +200,10 @@ function idRef(propertyName: string) {
   };
 }
 
-function tristate(stateValue: State, mixedValue: State) {
+function tristate(
+  stateValue: ValueOf<typeof STATE>,
+  mixedValue: ValueOf<typeof STATE>
+) {
   return function stateMapper({ attributeValue }: MapperArgs) {
     if (attributeValue === "mixed") {
       return mixedValue;
