@@ -2,7 +2,7 @@
 
 function injectVirtualScreenReader(window) {
   window.document.write(
-    `<script type="module">import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader@0.28.0/lib/esm/index.browser.js"; window.virtual = virtual;</script>`
+    `<script type="module">import { virtual } from "https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js"; window.virtual = virtual;</script>`
   );
 }
 
