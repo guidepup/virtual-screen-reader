@@ -197,6 +197,7 @@ Check out some of the other Guidepup modules:
 Here are some similar unaffiliated projects:
 
 - [`@testing-library/dom`](https://github.com/testing-library/dom-testing-library/)
+- [`html-aria`](https://github.com/drwpow/html-aria)
 - [`aria-query`](https://github.com/A11yance/aria-query)
 - [`dom-accessibility-api`](https://github.com/eps1lon/dom-accessibility-api)
 - [`aria-at`](https://github.com/w3c/aria-at)
