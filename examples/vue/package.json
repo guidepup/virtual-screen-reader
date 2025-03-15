@@ -32,7 +32,7 @@
     "prettier": "^3.3.3",
     "typescript": "~5.5.4",
     "vite": "^5.4.12",
-    "vitest": "^2.0.4",
+    "vitest": "^2.1.9",
     "vue-tsc": "^2.0.29"
   },
   "resolutions": {
