@@ -369,21 +369,9 @@ roles-dynamic-switch.tentative.window.html:
     [fail, upstream issue with html-aria package]
   "Connected <input type=checkbox switch>: adding type attribute":
     [fail, upstream issue with html-aria package]
-roles.html:
-  "el-dd":
-    [
-      fail,
-      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dd), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dd), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L49). See also https://github.com/w3c/aria/issues/1662.",
-    ]
-  "el-dt":
-    [
-      fail,
-      "specification issue with mismatches between html-aria (REF: https://www.w3.org/TR/html-aria/#el-dt), html-aam (REF: https://www.w3.org/TR/html-aam-1.0/#el-dt), and wpt (REF: https://github.com/web-platform-tests/wpt/blob/master/html-aam/roles.html#L62). See also https://github.com/w3c/aria/issues/1662.",
-    ]
 roles.tentative.html:
   "el-input-checkbox-switch": [fail, upstream issue with html-aria package]
 table-roles.html:
-  "el-th": [fail, upstream issue with html-aria package]
   "el-th-in-row": [fail, upstream issue with html-aria package]
 
 ---
@@ -398,10 +386,6 @@ role/role-img.tentative.html:
     [fail, upstream issue with html-aria package]
   "Role: el-image (label from image>title element)":
     [fail, upstream issue with html-aria package]
-role/roles.html:
-  "el-a[xlink:href]": [fail, upstream issue with html-aria package]
-  "el-g": [fail, upstream issue with html-aria package]
-  "el-image": [fail, upstream issue with html-aria package]
 
 ---
 DIR: wai-aria
@@ -412,11 +396,6 @@ manual/*:
     timeout,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-role/contextual-roles.tentative.html:
-  "role is sectionfooter (in main)":
-    [fail, upstream issue with html-aria package]
-  "role is sectionheader (in main)":
-    [fail, upstream issue with html-aria package]
 role/grid-roles.tentative.html:
   "orphaned button with gridcell role outside the context of row":
     [fail, upstream issue with html-aria package]
@@ -454,9 +433,6 @@ role/menu-roles.tentative.html:
     [fail, upstream issue with html-aria package]
   "orphan button with menuitemradio role":
     [fail, upstream issue with html-aria package]
-role/roles.tentative.html:
-  "role: sectionheader": [fail, upstream issue with html-aria package]
-  "role: sectionfooter": [fail, upstream issue with html-aria package]
 role/tab-roles.tentative.html:
   "orphan button with tab role": [fail, upstream issue with html-aria package]
   "orphan span with tab role": [fail, upstream issue with html-aria package]

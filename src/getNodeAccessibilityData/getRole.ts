@@ -1,10 +1,4 @@
-import {
-  type AncestorList,
-  getRole as getImplicitRole,
-  roles,
-  type TagName,
-  type VirtualElement,
-} from "html-aria";
+import { getRole as getHtmlAriaRole, roles } from "html-aria";
 import { roles as backupRoles } from "aria-query";
 import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
@@ -181,74 +175,6 @@ function getExplicitRole({
   return filteredRoles?.[0] ?? "";
 }
 
-// TODO: upstream update to `html-aria` to support supplying a jsdom element in
-// a Node environment. Appears their check for `element instanceof HTMLElement`
-// fails the `test/int/nodeEnvironment.int.test.ts` suite.
-function virtualizeElement(element: HTMLElement): VirtualElement {
-  const tagName = getLocalName(element) as TagName;
-  const attributes: Record<string, string | null> = {};
-
-  for (let i = 0; i < element.attributes.length; i++) {
-    const { name } = element.attributes[i]!;
-
-    attributes[name] = element.getAttribute(name);
-  }
-
-  return { tagName, attributes };
-}
-
-const rolesDependentOnHierarchy = new Set([
-  "aside",
-  "footer",
-  "header",
-  "li",
-  "td",
-  "th",
-  "tr",
-]);
-const ignoredAncestors = new Set(["body", "document"]);
-
-// TODO: Thought needed if the `getAncestors()` can limit the number of parents
-// it enumerates? Presumably as ancestors only matter for a limited number of
-// roles, there might be a ceiling to the amount of nesting that is even valid,
-// and therefore put an upper bound on how far to backtrack without having to
-// stop at the document level for every single element.
-//
-// Another thought is that we special case each element so the backtracking can
-// exit early if an ancestor with a relevant role has already been found.
-//
-// Alternatively see if providing an element that is part of a DOM can be
-// traversed by the `html-aria` library itself so these concerns are
-// centralised.
-function getAncestors(node: HTMLElement): AncestorList | undefined {
-  if (!rolesDependentOnHierarchy.has(getLocalName(node))) {
-    return undefined;
-  }
-
-  const ancestors: AncestorList = [];
-
-  let target: HTMLElement | null = node;
-  let targetLocalName: string;
-
-  while (true) {
-    target = target.parentElement;
-
-    if (!target) {
-      break;
-    }
-
-    targetLocalName = getLocalName(target);
-
-    if (ignoredAncestors.has(targetLocalName)) {
-      break;
-    }
-
-    ancestors.push({ tagName: targetLocalName as TagName });
-  }
-
-  return ancestors;
-}
-
 export function getRole({
   accessibleName,
   allowedAccessibilityRoles,
@@ -264,12 +190,11 @@ export function getRole({
     return { explicitRole: "", implicitRole: "", role: "" };
   }
 
-  const target = node.cloneNode() as HTMLElement;
   const baseExplicitRole = getExplicitRole({
     accessibleName,
     allowedAccessibilityRoles,
     inheritedImplicitPresentational,
-    node: target,
+    node,
   });
   const explicitRole = mapAliasedRoles(baseExplicitRole);
 
@@ -283,16 +208,12 @@ export function getRole({
     return { explicitRole, implicitRole: role, role };
   }
 
-  target.removeAttribute("role");
-
   // Backwards compatibility
-  const isBodyElement = getLocalName(target) === "body";
+  const isBodyElement = getLocalName(node) === "body";
 
   const baseImplicitRole = isBodyElement
     ? "document"
-    : getImplicitRole(virtualizeElement(target), {
-        ancestors: getAncestors(node),
-      }) ?? "";
+    : getHtmlAriaRole(node, { ignoreRoleAttribute: true })?.name ?? "";
 
   const implicitRole = mapAliasedRoles(baseImplicitRole);
 

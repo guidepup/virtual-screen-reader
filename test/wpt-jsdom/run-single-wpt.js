@@ -9,6 +9,10 @@ const { resolveReason } = require("./utils.js");
 const {
   createAccessibilityTree,
 } = require("../../src/createAccessibilityTree");
+const {
+  END_OF_ROLE_PREFIX,
+  END_OF_NO_ROLE_PREFIX,
+} = require("../../src/flattenTree");
 const { observeDOM } = require("../../src/observeDOM");
 const {
   getAccessibleAttributeLabels,
@@ -138,6 +142,7 @@ function createJSDOM(urlPrefix, testPath, expectFail) {
     storageQuota: 100000, // Filling the default quota takes about a minute between two WPTs
   }).then((dom) => {
     const { window } = dom;
+    globalThis.Element = window.Element;
 
     return new Promise((resolve, reject) => {
       const errors = [];
@@ -177,7 +182,9 @@ function createJSDOM(urlPrefix, testPath, expectFail) {
           ),
           {
             ...treeNodeWithAttributeLabels,
-            spokenRole: `end of ${treeNodeWithAttributeLabels.spokenRole}`,
+            spokenRole: treeNodeWithAttributeLabels.spokenRole
+              ? `${END_OF_ROLE_PREFIX} ${treeNodeWithAttributeLabels.spokenRole}`
+              : END_OF_NO_ROLE_PREFIX,
           },
         ];
       };
