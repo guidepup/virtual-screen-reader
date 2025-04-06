@@ -4,6 +4,7 @@ import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
 import { getAccessibleValue } from "./getAccessibleValue";
 import { getLocalName } from "../getLocalName";
+import { isDialogRole } from "../isDialogRole";
 import { isElement } from "../isElement";
 
 // TODO: swap out with the html-aria package once it supports `dpub-aam` /
@@ -93,7 +94,7 @@ const getIsInert = ({
     getLocalName(node) === "dialog" && node.hasAttribute("open");
 
   const isNonNativeModalDialog =
-    role === "dialog" && node.hasAttribute("aria-modal");
+    isDialogRole(role) && node.hasAttribute("aria-modal");
 
   const isModalDialog = isNonNativeModalDialog || isNativeModalDialog;
   const isExplicitInert = node.hasAttribute("inert");
