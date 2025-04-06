@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-require-imports */
 (window.MutationObserver as unknown) = undefined;
 const { virtual } = require("../../src");
