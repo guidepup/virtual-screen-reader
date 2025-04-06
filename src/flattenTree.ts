@@ -57,10 +57,11 @@ export function flattenTree(
   };
 
   const isAnnounced =
-    !!treeNodeWithAttributeLabels.accessibleName ||
-    !!treeNodeWithAttributeLabels.accessibleDescription ||
-    treeNodeWithAttributeLabels.accessibleAttributeLabels.length > 0 ||
-    !!treeNodeWithAttributeLabels.spokenRole;
+    !treeNodeWithAttributeLabels.isInert &&
+    (!!treeNodeWithAttributeLabels.accessibleName ||
+      !!treeNodeWithAttributeLabels.accessibleDescription ||
+      treeNodeWithAttributeLabels.accessibleAttributeLabels.length > 0 ||
+      !!treeNodeWithAttributeLabels.spokenRole);
 
   const ignoreChildren = shouldIgnoreChildren(tree);
 
