@@ -61,7 +61,10 @@ describe("web-platform-tests", () => {
   for (const toRunDoc of toRunDocs) {
     describe(toRunDoc.DIR, () => {
       for (const testFilePath of possibleTestFilePaths) {
-        if (testFilePath.startsWith(toRunDoc.DIR + "/")) {
+        if (
+          testFilePath.startsWith(toRunDoc.DIR + "/") &&
+          !testFilePath.includes(".tentative.")
+        ) {
           const matchingPattern = expectationsInDoc(toRunDoc).find(
             (pattern) => {
               const matcher = minimatchers.get(toRunDoc.DIR + "/" + pattern);
