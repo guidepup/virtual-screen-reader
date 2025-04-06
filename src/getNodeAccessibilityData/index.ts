@@ -3,6 +3,7 @@ import { getRole, presentationRoles, synonymRolesMap } from "./getRole";
 import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
 import { getAccessibleValue } from "./getAccessibleValue";
+import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
 
 // TODO: swap out with the html-aria package once it supports `dpub-aam` /
@@ -62,14 +63,52 @@ const getSpokenRole = ({
   return role;
 };
 
+/**
+ * Nodes that are [inert](https://html.spec.whatwg.org/multipage/interaction.html#inert)
+ * are not exposed to an accessibility API.
+ *
+ * Note: an inert node can have descendants that are not inert. For example,
+ * a [modal dialog](https://html.spec.whatwg.org/multipage/interaction.html#modal-dialogs-and-inert-subtrees)
+ * can escape an inert subtree.
+ *
+ * REF: https://www.w3.org/TR/html-aam-1.0/#att-inert
+ */
+const getIsInert = ({
+  inheritedImplicitInert,
+  node,
+  role,
+}: {
+  inheritedImplicitInert: boolean;
+  node: Node;
+  role: string;
+}) => {
+  if (!isElement(node)) {
+    return inheritedImplicitInert;
+  }
+
+  // TODO: this doesn't cater to `<dialog>` elements which are model if opened
+  // by `show()` vs `showModal()`.
+  // REF: https://html.spec.whatwg.org/multipage/interaction.html#modal-dialogs-and-inert-subtrees
+  const isNativeModalDialog =
+    getLocalName(node) === "dialog" && node.hasAttribute("open");
+
+  const isNonNativeModalDialog =
+    role === "dialog" && node.hasAttribute("aria-modal");
+
+  const isModalDialog = isNonNativeModalDialog || isNativeModalDialog;
+  const isExplicitInert = node.hasAttribute("inert");
+
+  return isExplicitInert || (inheritedImplicitInert && !isModalDialog);
+};
+
 export function getNodeAccessibilityData({
   allowedAccessibilityRoles,
+  inheritedImplicitInert,
   inheritedImplicitPresentational,
   node,
 }: {
   allowedAccessibilityRoles: string[][];
-  alternateReadingOrderParents: Node[];
-  container: Node;
+  inheritedImplicitInert: boolean;
   inheritedImplicitPresentational: boolean;
   node: Node;
 }) {
@@ -147,6 +186,12 @@ export function getNodeAccessibilityData({
     isChildrenPresentationalRole ||
     childrenInheritPresentationExceptAllowedRoles;
 
+  const isInert = getIsInert({
+    inheritedImplicitInert,
+    node,
+    role,
+  });
+
   return {
     accessibleDescription: amendedAccessibleDescription,
     accessibleName,
@@ -154,6 +199,7 @@ export function getNodeAccessibilityData({
     allowedAccessibilityChildRoles,
     childrenPresentational,
     isExplicitPresentational,
+    isInert,
     role,
     spokenRole,
   };

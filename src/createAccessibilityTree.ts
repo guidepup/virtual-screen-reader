@@ -4,7 +4,7 @@ import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index";
 import { getNodeByIdRef } from "./getNodeByIdRef";
 import { isDialogRole } from "./isDialogRole";
 import { isElement } from "./isElement";
-import { isInaccessible } from "dom-accessibility-api";
+import { isHiddenFromAccessibilityTree } from "./isHiddenFromAccessibilityTree";
 
 export interface AccessibilityNode {
   accessibleAttributeLabels: string[];
@@ -15,6 +15,7 @@ export interface AccessibilityNode {
   allowedAccessibilityChildRoles: string[][];
   alternateReadingOrderParents: Node[];
   childrenPresentational: boolean;
+  isInert: boolean;
   node: Node;
   parentAccessibilityNodeTree: AccessibilityNodeTree | null;
   parent: Node | null;
@@ -125,33 +126,6 @@ function getOwnedNodes(node: Node, container: Node) {
   return ownedNodes;
 }
 
-const TEXT_NODE = 3;
-
-function isHiddenFromAccessibilityTree(node: Node | null): node is null {
-  if (!node) {
-    return true;
-  }
-
-  // `node.textContent` is only `null` for `document` and `doctype`.
-   
-  if (node.nodeType === TEXT_NODE && node.textContent!.trim()) {
-    return false;
-  }
-
-  if (!isElement(node)) {
-    return true;
-  }
-
-  try {
-    return isInaccessible(node);
-  } catch {
-    // Some elements aren't supported by DOM implementations such as JSDOM.
-    // E.g. `<math>`, see https://github.com/jsdom/jsdom/issues/3515
-    // We ignore these nodes at the moment as we can't support them.
-    return true;
-  }
-}
-
 function growTree(
   node: Node,
   tree: Omit<
@@ -198,7 +172,7 @@ function growTree(
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
       ? // `alternateReadingOrderMap.has(childNode)` null guards here.
-         
+
         Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 
@@ -209,14 +183,14 @@ function growTree(
       allowedAccessibilityChildRoles,
       childrenPresentational,
       isExplicitPresentational,
+      isInert,
       role,
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
-      alternateReadingOrderParents,
-      container,
-      node: childNode,
+      inheritedImplicitInert: tree.isInert,
       inheritedImplicitPresentational: tree.childrenPresentational,
+      node: childNode,
     });
 
     const childTree = growTree(
@@ -229,6 +203,7 @@ function growTree(
         alternateReadingOrderParents,
         children: [],
         childrenPresentational,
+        isInert,
         node: childNode,
         parentAccessibilityNodeTree: null, // Added during flattening
         parent: node,
@@ -266,7 +241,7 @@ function growTree(
 
     const alternateReadingOrderParents = alternateReadingOrderMap.has(childNode)
       ? // `alternateReadingOrderMap.has(childNode)` null guards here.
-         
+
         Array.from(alternateReadingOrderMap.get(childNode)!)
       : [];
 
@@ -276,15 +251,15 @@ function growTree(
       accessibleValue,
       allowedAccessibilityChildRoles,
       childrenPresentational,
+      isInert,
       isExplicitPresentational,
       role,
       spokenRole,
     } = getNodeAccessibilityData({
       allowedAccessibilityRoles: tree.allowedAccessibilityChildRoles,
-      alternateReadingOrderParents,
-      container,
-      node: childNode,
+      inheritedImplicitInert: tree.isInert,
       inheritedImplicitPresentational: tree.childrenPresentational,
+      node: childNode,
     });
 
     const childTree = growTree(
@@ -297,6 +272,7 @@ function growTree(
         alternateReadingOrderParents,
         children: [],
         childrenPresentational,
+        isInert,
         node: childNode,
         parentAccessibilityNodeTree: null, // Added during flattening
         parent: node,
@@ -334,14 +310,14 @@ export function createAccessibilityTree(
     accessibleValue,
     allowedAccessibilityChildRoles,
     childrenPresentational,
+    isInert,
     role,
     spokenRole,
   } = getNodeAccessibilityData({
     allowedAccessibilityRoles: [],
-    alternateReadingOrderParents: [],
-    container: node,
     node,
     inheritedImplicitPresentational: false,
+    inheritedImplicitInert: false,
   });
 
   const tree = growTree(
@@ -354,6 +330,7 @@ export function createAccessibilityTree(
       alternateReadingOrderParents: [],
       children: [],
       childrenPresentational,
+      isInert,
       node,
       parentAccessibilityNodeTree: null,
       parent: null,
