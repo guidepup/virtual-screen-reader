@@ -1,4 +1,4 @@
-import { StartOptions, Virtual } from "./Virtual";
+import { type StartOptions, Virtual } from "./Virtual";
 
 /**
  * [API Reference](https://www.guidepup.dev/docs/api/class-virtual)
@@ -72,4 +72,4 @@ import { StartOptions, Virtual } from "./Virtual";
  */
 export const virtual = new Virtual();
 
-export type { StartOptions, Virtual };
+export { type StartOptions, Virtual };
