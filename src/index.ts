@@ -72,4 +72,4 @@ import { StartOptions, Virtual } from "./Virtual";
  */
 export const virtual = new Virtual();
 
-export { StartOptions, Virtual };
+export type { StartOptions, Virtual };
