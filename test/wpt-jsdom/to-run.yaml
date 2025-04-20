@@ -352,18 +352,13 @@ DIR: graphics-aria
 DIR: html-aam
 
 roles-contextual.html:
-  "el-aside-in-section-title": [fail, upstream issue with html-aria package]
-  "el-img-no-name": [fail, upstream issue with html-aria package]
-  "el-section-title": [fail, upstream issue with html-aria package]
-  "el-aside-in-section-aria-label-whitespace":
-    [fail, upstream issue with html-aria package]
   "el-aside-in-section-aria-labelledby-non-existing":
     [fail, upstream issue with html-aria package]
   "el-aside-in-section-aria-labelledby-empty":
     [fail, upstream issue with html-aria package]
   "el-aside-in-section-aria-labelledby-whitespace":
     [fail, upstream issue with html-aria package]
-  "el-img-empty-alt-aria-label-whitespace":
+  "el-aside-in-section-title-whitespace":
     [fail, upstream issue with html-aria package]
   "el-img-empty-alt-aria-labelledby-non-existing":
     [fail, upstream issue with html-aria package]
@@ -371,14 +366,13 @@ roles-contextual.html:
     [fail, upstream issue with html-aria package]
   "el-img-empty-alt-aria-labelledby-whitespace":
     [fail, upstream issue with html-aria package]
-  "el-section-aria-label-whitespace":
-    [fail, upstream issue with html-aria package]
   "el-section-aria-labelledby-non-existing":
     [fail, upstream issue with html-aria package]
   "el-section-aria-labelledby-empty":
     [fail, upstream issue with html-aria package]
   "el-section-aria-labelledby-whitespace":
     [fail, upstream issue with html-aria package]
+  "el-section-title-whitespace": [fail, upstream issue with html-aria package]
 table-roles.html:
   "el-th-in-row": [fail, upstream issue with html-aria package]
 

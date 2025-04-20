@@ -1,6 +1,6 @@
 {
   "name": "@guidepup/virtual-screen-reader",
-  "version": "0.31.0",
+  "version": "0.31.1",
   "description": "Virtual Screen Reader driver for unit test automation.",
   "author": "Craig Morten <craig.morten@hotmail.co.uk>",
   "license": "MIT",
@@ -67,7 +67,7 @@
     "@testing-library/user-event": "^14.6.1",
     "aria-query": "^5.3.2",
     "dom-accessibility-api": "^0.7.0",
-    "html-aria": "^0.4.0"
+    "html-aria": "^0.5.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",

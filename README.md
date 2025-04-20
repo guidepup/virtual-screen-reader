@@ -57,7 +57,7 @@ The current status of the WPT coverage is:
 
 | Passing Test Suites | Failing Tests | Skipped Tests |
 | :-----------------: | :-----------: | :-----------: |
-|         395         |      86       |      338      |
+|         395         |      82       |      338      |
 
 The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml) with reasons as to skips and expected failures. "Tentative" tests are excluded as their behaviour is often not yet confirmed.
 
