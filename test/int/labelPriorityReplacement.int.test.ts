@@ -22,7 +22,7 @@ describe("Label Priority Replacement", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Pandemic Size:, current value small, max value 3, min value 1"
+      "progressbar, Pandemic Size:, max value 3, min value 1, current value small"
     );
 
     await virtual.stop();

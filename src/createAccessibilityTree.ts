@@ -12,7 +12,7 @@ export interface AccessibilityNode {
   accessibleDescription: string;
   accessibleName: string;
   accessibleValue: string;
-  allowedAccessibilityChildRoles: string[][];
+  allowedAccessibilityChildRoles: string[];
   alternateReadingOrderParents: Node[];
   childrenPresentational: boolean;
   isInert: boolean;

@@ -1,7 +1,15 @@
-import { ARIARoleDefinitionKey, roles } from "aria-query";
-import { globalStatesAndProperties, reverseSynonymRolesMap } from "../getRole";
+import { ARIAAttribute, ARIARole, roles } from "html-aria";
+import { globalStatesAndProperties } from "../getRole";
 
 const ignoreAttributesWithAccessibleValue = new Set(["aria-placeholder"]);
+
+const nonSpecCompliantAttributeMap: Record<
+  string,
+  Record<string, boolean | number | string | null>
+> = {
+  listitem: { "aria-level": null },
+  option: { "aria-selected": false },
+};
 
 export const getAttributesByRole = ({
   accessibleValue,
@@ -10,29 +18,27 @@ export const getAttributesByRole = ({
   accessibleValue: string;
   role: string;
 }): [string, string | null][] => {
-  // TODO: temporary solution until aria-query is updated with WAI-ARIA 1.3
-  // synonym roles, or the html-aria package supports implicit attribute
-  // values.
-  const reverseSynonymRole = (reverseSynonymRolesMap[role] ??
-    role) as ARIARoleDefinitionKey;
-
-  // TODO: swap out with the html-aria package if implicit role attributes
-  // become supported.
   const {
-    props: implicitRoleAttributes = {},
-    prohibitedProps: prohibitedAttributes = [],
-  } = (roles.get(reverseSynonymRole) ?? {}) as {
-    props: Record<string, string | undefined>;
-    prohibitedProps: string[];
+    supported: supportedAttributes = [],
+    defaultAttributeValues = {},
+    prohibited: prohibitedAttributes = [],
+  } = roles[role as ARIARole] ?? {};
+
+  const implicitRoleAttributes = {
+    ...defaultAttributeValues,
+    ...nonSpecCompliantAttributeMap[role],
   };
 
   const uniqueAttributes = Array.from(
     new Set([
       ...Object.keys(implicitRoleAttributes),
+      ...supportedAttributes,
       ...globalStatesAndProperties,
     ])
   )
-    .filter((attribute) => !prohibitedAttributes.includes(attribute))
+    .filter(
+      (attribute) => !prohibitedAttributes.includes(attribute as ARIAAttribute)
+    )
     .filter(
       (attribute) =>
         !accessibleValue || !ignoreAttributesWithAccessibleValue.has(attribute)
@@ -40,6 +46,9 @@ export const getAttributesByRole = ({
 
   return uniqueAttributes.map((attribute) => [
     attribute,
-    implicitRoleAttributes[attribute] ?? null,
+    attribute in implicitRoleAttributes &&
+    implicitRoleAttributes[attribute] !== null
+      ? implicitRoleAttributes[attribute].toString()
+      : null,
   ]);
 };

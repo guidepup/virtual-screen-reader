@@ -231,7 +231,9 @@ describe("Checked Attribute State", () => {
     await virtual.start({ container: document.body });
     await virtual.next();
 
-    expect(await virtual.lastSpokenPhrase()).toBe("checkbox, Some text");
+    expect(await virtual.lastSpokenPhrase()).toBe(
+      "checkbox, Some text, not checked"
+    );
 
     await virtual.stop();
   });

@@ -23,7 +23,7 @@ describe("Aria Active Descendant Menu Button", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "button, Actions, has popup menu, 1 control",
+      "button, Actions, 1 control, has popup menu",
       "menu, Actions, orientated vertically, active descendant Action 1",
       "menu, Actions, orientated vertically, active descendant Action 2",
       "menu, Actions, orientated vertically, active descendant Action 3",

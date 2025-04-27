@@ -111,7 +111,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "combobox, second, not expanded, has popup listbox"
+      "combobox, second, has popup listbox, not expanded"
     );
 
     await virtual.stop();
@@ -130,7 +130,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "listbox, second; third, multi-selectable, orientated vertically"
+      "listbox, second; third, orientated vertically, multi-selectable"
     );
 
     await virtual.stop();
@@ -150,7 +150,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "combobox, not expanded, has popup listbox"
+      "combobox, has popup listbox, not expanded"
     );
 
     await virtual.stop();
@@ -167,7 +167,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Loading:, 23, max value 100, current value 23%"
+      "progressbar, Loading:, 23, max value 100, min value 0, current value 23%"
     );
 
     await virtual.stop();
@@ -184,7 +184,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Loading:, max value 100, current value 23%"
+      "progressbar, Loading:, max value 100, min value 0, current value 23%"
     );
 
     await virtual.stop();
@@ -201,7 +201,7 @@ describe("Placeholder Attribute Property", () => {
     await virtual.next();
 
     expect(await virtual.lastSpokenPhrase()).toBe(
-      "progressbar, Loading:, current value massive, max value 100"
+      "progressbar, Loading:, max value 100, min value 0, current value massive"
     );
 
     await virtual.stop();

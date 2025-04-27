@@ -24,10 +24,10 @@ describe("Aria Active Descendant", () => {
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
       "State",
-      "combobox, State, autocomplete in list, not expanded, has popup listbox, 1 control",
-      "combobox, State, autocomplete in list, expanded, has popup listbox, 1 control",
-      "combobox, State, nebr, autocomplete in list, expanded, has popup listbox, 1 control",
-      "combobox, State, nebr, active descendant Nebraska, autocomplete in list, expanded, has popup listbox, 1 control",
+      "combobox, State, has popup listbox, not expanded, autocomplete in list, 1 control",
+      "combobox, State, has popup listbox, expanded, autocomplete in list, 1 control",
+      "combobox, State, nebr, has popup listbox, expanded, autocomplete in list, 1 control",
+      "combobox, State, nebr, has popup listbox, expanded, active descendant Nebraska, autocomplete in list, 1 control",
     ]);
   });
 });
