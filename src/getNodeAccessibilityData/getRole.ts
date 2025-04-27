@@ -1,5 +1,4 @@
-import { getRole as getHtmlAriaRole, roles } from "html-aria";
-import { roles as backupRoles } from "aria-query";
+import { ALL_ROLES, ARIARole, getRole as getHtmlAriaRole } from "html-aria";
 import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
 
@@ -11,22 +10,7 @@ export const synonymRolesMap: Record<string, string> = {
   directory: "list",
 };
 
-export const reverseSynonymRolesMap: Record<string, string> =
-  Object.fromEntries(
-    Object.entries(synonymRolesMap).map(([key, value]) => [value, key])
-  );
-
-const allowedNonAbstractRoles = new Set([
-  ...(Object.entries(roles)
-    .filter(([, { type }]) => !type.includes("abstract"))
-    .map(([key]) => key) as string[]),
-  // TODO: remove once the `html-aria` package supports `dpub-aam` /
-  // `dpub-aria` specifications.
-  ...(backupRoles
-    .entries()
-    .filter(([, { abstract }]) => !abstract)
-    .map(([key]) => key) as string[]),
-]);
+const allowedNonAbstractRoles = new Set(ALL_ROLES);
 
 const rolesRequiringName = new Set(["form", "region"]);
 
@@ -84,7 +68,7 @@ function getExplicitRole({
   node,
 }: {
   accessibleName: string;
-  allowedAccessibilityRoles: string[][];
+  allowedAccessibilityRoles: string[];
   inheritedImplicitPresentational: boolean;
   node: HTMLElement;
 }) {
@@ -99,7 +83,7 @@ function getExplicitRole({
      *
      * REF: https://www.w3.org/TR/wai-aria-1.2/#document-handling_author-errors_roles
      */
-    .filter((role) => allowedNonAbstractRoles.has(role))
+    .filter((role) => allowedNonAbstractRoles.has(role as ARIARole))
     /**
      * Certain landmark roles require names from authors. In situations where
      * an author has not specified names for these landmarks, it is
@@ -133,7 +117,7 @@ function getExplicitRole({
    */
 
   const isExplicitAllowedChildElement = allowedAccessibilityRoles.some(
-    ([allowedExplicitRole]) =>
+    (allowedExplicitRole) =>
       authorErrorFilteredRoles?.[0] === allowedExplicitRole
   );
 
@@ -182,7 +166,7 @@ export function getRole({
   node,
 }: {
   accessibleName: string;
-  allowedAccessibilityRoles: string[][];
+  allowedAccessibilityRoles: string[];
   inheritedImplicitPresentational: boolean;
   node: Node;
 }): { explicitRole: string; implicitRole: string; role: string } {

@@ -23,7 +23,7 @@ describe("Label Priority Replacement", () => {
       await virtual.next();
 
       expect(await virtual.lastSpokenPhrase()).toBe(
-        "progressbar, Label, current value 1%"
+        "progressbar, Label, max value 100, min value 0, current value 1%"
       );
 
       await virtual.stop();
@@ -32,7 +32,7 @@ describe("Label Priority Replacement", () => {
     it("should announce aria-valuenow on progressbar roles as a percentage when only aria-valuemin is provided", async () => {
       document.body.innerHTML = `
       <span id="element1">Label</span>
-      <span role="progressbar" aria-labelledby="element1" aria-valuenow="1" aria-valuemin="1">
+      <span role="progressbar" aria-labelledby="element1" aria-valuenow="50" aria-valuemin="50">
         <svg width="300" height="10">
           <rect height="10" width="100" stroke="black" fill="red" />
           <rect height="10" width="200" fill="white" />
@@ -45,7 +45,7 @@ describe("Label Priority Replacement", () => {
       await virtual.next();
 
       expect(await virtual.lastSpokenPhrase()).toBe(
-        "progressbar, Label, min value 1, current value 1%"
+        "progressbar, Label, max value 100, min value 50, current value 0%"
       );
 
       await virtual.stop();
@@ -67,7 +67,7 @@ describe("Label Priority Replacement", () => {
       await virtual.next();
 
       expect(await virtual.lastSpokenPhrase()).toBe(
-        "progressbar, Label, max value 3, current value 1%"
+        "progressbar, Label, max value 3, min value 0, current value 33.33%"
       );
 
       await virtual.stop();
@@ -76,7 +76,7 @@ describe("Label Priority Replacement", () => {
     it("should announce aria-valuenow on progressbar roles as a percentage when only min is provided", async () => {
       document.body.innerHTML = `
       <span id="element1">Label</span>
-      <progress aria-labelledby="element1" aria-valuenow="1" min="1">
+      <progress aria-labelledby="element1" aria-valuenow="0" min="0">
       </progress>
     `;
 
@@ -85,7 +85,7 @@ describe("Label Priority Replacement", () => {
       await virtual.next();
 
       expect(await virtual.lastSpokenPhrase()).toBe(
-        "progressbar, Label, min value 1, current value 1%"
+        "progressbar, Label, max value 100, min value 0, current value 0%"
       );
 
       await virtual.stop();
@@ -103,7 +103,7 @@ describe("Label Priority Replacement", () => {
       await virtual.next();
 
       expect(await virtual.lastSpokenPhrase()).toBe(
-        "progressbar, Label, max value 3, current value 1%"
+        "progressbar, Label, max value 3, min value 0, current value 33.33%"
       );
 
       await virtual.stop();

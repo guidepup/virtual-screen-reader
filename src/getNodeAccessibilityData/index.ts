@@ -1,5 +1,5 @@
-import { ARIARoleDefinition, ARIARoleDefinitionKey, roles } from "aria-query";
-import { getRole, presentationRoles, synonymRolesMap } from "./getRole";
+import { ARIARole, roles } from "html-aria";
+import { getRole, presentationRoles } from "./getRole";
 import { getAccessibleDescription } from "./getAccessibleDescription";
 import { getAccessibleName } from "./getAccessibleName";
 import { getAccessibleValue } from "./getAccessibleValue";
@@ -7,25 +7,11 @@ import { getLocalName } from "../getLocalName";
 import { isDialogRole } from "../isDialogRole";
 import { isElement } from "../isElement";
 
-// TODO: swap out with the html-aria package once it supports `dpub-aam` /
-// `dpub-aria` specifications.
-const childrenPresentationalRoles = new Set([
-  ...(roles
-    .entries()
+const childrenPresentationalRoles = new Set(
+  Object.entries(roles)
     .filter(([, { childrenPresentational }]) => childrenPresentational)
-    .map(([key]) => key) as string[]),
-  // TODO: temporary catering to WAI-ARIA 1.3 synonym roles that aria-query
-  // doesn't handle.
-  ...(Object.entries(synonymRolesMap)
-    .map(
-      ([from, to]) =>
-        [to, roles.get(from as ARIARoleDefinitionKey)] as
-          | [ARIARoleDefinitionKey, ARIARoleDefinition]
-          | [ARIARoleDefinitionKey, undefined]
-    )
-    .filter(([, role]) => role?.childrenPresentational)
-    .map(([key]) => key) as string[]),
-]);
+    .map(([key]) => key) as string[]
+);
 
 const getSpokenRole = ({
   isGeneric,
@@ -108,7 +94,7 @@ export function getNodeAccessibilityData({
   inheritedImplicitPresentational,
   node,
 }: {
-  allowedAccessibilityRoles: string[][];
+  allowedAccessibilityRoles: string[];
   inheritedImplicitInert: boolean;
   inheritedImplicitPresentational: boolean;
   node: Node;
@@ -138,16 +124,17 @@ export function getNodeAccessibilityData({
     role,
   });
 
-  const { requiredOwnedElements: allowedAccessibilityChildRoles } = (roles.get(
-    role as ARIARoleDefinitionKey
-  ) as unknown as {
-    requiredOwnedElements: string[][];
-  }) ?? { requiredOwnedElements: [] };
+  const { allowedChildRoles: allowedAccessibilityChildRoles } = roles[
+    role as ARIARole
+  ] ?? {
+    allowedChildRoles: [],
+  };
 
-  const { requiredOwnedElements: implicitAllowedAccessibilityChildRoles } =
-    (roles.get(implicitRole as ARIARoleDefinitionKey) as unknown as {
-      requiredOwnedElements: string[][];
-    }) ?? { requiredOwnedElements: [] };
+  const { allowedChildRoles: implicitAllowedAccessibilityChildRoles } = roles[
+    implicitRole as ARIARole
+  ] ?? {
+    allowedChildRoles: [],
+  };
 
   /**
    * Any descendants of elements that have the characteristic "Children

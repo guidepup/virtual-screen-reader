@@ -25,7 +25,7 @@ describe("Aria Active Descendant", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "combobox, active descendant California, autocomplete in list, read only, not expanded, has popup listbox",
+      "combobox, has popup listbox, not expanded, active descendant California, autocomplete in list, read only",
     ]);
 
     await virtual.stop();
@@ -50,7 +50,7 @@ describe("Aria Active Descendant", () => {
 
     expect(await virtual.spokenPhraseLog()).toEqual([
       "document",
-      "combobox, autocomplete in list, read only, not expanded, has popup listbox",
+      "combobox, has popup listbox, not expanded, autocomplete in list, read only",
     ]);
 
     await virtual.stop();
