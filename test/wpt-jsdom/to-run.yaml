@@ -373,8 +373,6 @@ roles-contextual.html:
   "el-section-aria-labelledby-whitespace":
     [fail, upstream issue with html-aria package]
   "el-section-title-whitespace": [fail, upstream issue with html-aria package]
-table-roles.html:
-  "el-th-in-row": [fail, upstream issue with html-aria package]
 
 ---
 DIR: svg-aam
