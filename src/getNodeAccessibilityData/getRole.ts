@@ -4,18 +4,11 @@ import { isElement } from "../isElement";
 
 export const presentationRoles = new Set(["presentation", "none"]);
 
-// TODO: is this used?
 export const synonymRolesMap: Record<string, string> = {
   img: "image",
   presentation: "none",
   directory: "list",
 };
-
-// TODO: is this used?
-export const reverseSynonymRolesMap: Record<string, string> =
-  Object.fromEntries(
-    Object.entries(synonymRolesMap).map(([key, value]) => [value, key])
-  );
 
 const allowedNonAbstractRoles = new Set(ALL_ROLES);
 
