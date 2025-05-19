@@ -205,6 +205,7 @@ export class Virtual {
   #spokenPhraseLog: string[] = [];
   #treeCache: AccessibilityNode[] | null = null;
   #disconnectDOMObserver: (() => void) | null = null;
+  #boundHandleFocusChange: ((event: Event) => Promise<void>) | null = null;
 
   #checkContainer() {
     if (!this.#container) {
@@ -257,8 +258,6 @@ export class Virtual {
 
       this.#treeCache =
         this.#container && tree ? flattenTree(this.#container, tree, null) : [];
-
-      this.#attachFocusListeners();
     }
 
     return this.#treeCache;
@@ -290,26 +289,7 @@ export class Virtual {
   }
 
   #invalidateTreeCache() {
-    this.#detachFocusListeners();
     this.#treeCache = null;
-  }
-
-  #attachFocusListeners() {
-    this.#getAccessibilityTree().forEach((treeNode) => {
-      treeNode.node.addEventListener(
-        "focus",
-        this.#handleFocusChange.bind(this)
-      );
-    });
-  }
-
-  #detachFocusListeners() {
-    this.#getAccessibilityTree().forEach((treeNode) => {
-      treeNode.node.removeEventListener(
-        "focus",
-        this.#handleFocusChange.bind(this)
-      );
-    });
   }
 
   async #handleFocusChange({ target }: Event) {
@@ -322,10 +302,13 @@ export class Virtual {
       return;
     }
 
-    // We've covered the tree having no length so there must be at least one
-    // index or we default back to the beginning of the tree.
-    const newActiveNode =
-      tree.find(({ node }) => node === target) ?? tree.at(0)!;
+    // We've covered the tree having no length so there should be at least one
+    // matching node, but if not we will not update the state
+    const newActiveNode = tree.find(({ node }) => node === target);
+
+    if (!newActiveNode) {
+      return;
+    }
 
     this.#updateState(newActiveNode, true);
   }
@@ -619,6 +602,10 @@ export class Virtual {
       return;
     }
 
+    this.#boundHandleFocusChange = this.#handleFocusChange.bind(this);
+
+    this.#container.addEventListener("focusin", this.#boundHandleFocusChange);
+
     this.#updateState(tree[0]);
 
     return;
@@ -647,6 +634,7 @@ export class Virtual {
    */
   async stop() {
     this.#disconnectDOMObserver?.();
+    this.#container?.removeEventListener("focusin", this.#boundHandleFocusChange);
     this.#invalidateTreeCache();
 
     if (this.#cursor) {
@@ -658,7 +646,7 @@ export class Virtual {
     this.#container = null;
     this.#itemTextLog = [];
     this.#spokenPhraseLog = [];
-
+    this.#boundHandleFocusChange = null;
     return;
   }
 
