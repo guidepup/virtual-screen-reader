@@ -205,6 +205,7 @@ export class Virtual {
   #spokenPhraseLog: string[] = [];
   #treeCache: AccessibilityNode[] | null = null;
   #disconnectDOMObserver: (() => void) | null = null;
+  #boundHandleFocusChange: ((event: Event) => Promise<void>) | null = null;
 
   #checkContainer() {
     if (!this.#container) {
@@ -601,7 +602,9 @@ export class Virtual {
       return;
     }
 
-    this.#container.addEventListener("focusin", this.#handleFocusChange.bind(this));
+    this.#boundHandleFocusChange = this.#handleFocusChange.bind(this);
+
+    this.#container.addEventListener("focusin", this.#boundHandleFocusChange);
 
     this.#updateState(tree[0]);
 
@@ -631,6 +634,7 @@ export class Virtual {
    */
   async stop() {
     this.#disconnectDOMObserver?.();
+    this.#container?.removeEventListener("focusin", this.#boundHandleFocusChange);
     this.#invalidateTreeCache();
 
     if (this.#cursor) {
@@ -642,7 +646,7 @@ export class Virtual {
     this.#container = null;
     this.#itemTextLog = [];
     this.#spokenPhraseLog = [];
-
+    this.#boundHandleFocusChange = null;
     return;
   }
 
