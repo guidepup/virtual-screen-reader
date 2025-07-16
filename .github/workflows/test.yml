@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn ci
 
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn ci
 
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/commonjs
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/typescript-bundler
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/typescript-legacy
@@ -72,7 +72,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/typescript-nodenext
@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/vue
@@ -98,7 +98,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
       - run: yarn install --frozen-lockfile
         working-directory: ./examples/web-test-runner
@@ -113,7 +113,7 @@ jobs:
           submodules: recursive
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
       - uses: actions/setup-python@v5
         with:
           # REF: https://github.com/web-platform-tests/wpt/issues/44427
