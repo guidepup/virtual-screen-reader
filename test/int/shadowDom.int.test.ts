@@ -158,6 +158,116 @@ describe("Shadow DOM", () => {
     expect(log).toContain("end of document");
   });
 
+  it("should resolve aria-owns referencing an element inside shadow DOM", async () => {
+    // Container with aria-owns pointing to an ID inside a shadow root
+    const owner = document.createElement("div");
+    owner.setAttribute("role", "listbox");
+    owner.setAttribute("aria-label", "Owner");
+    owner.setAttribute("aria-owns", "shadow-option");
+    document.body.appendChild(owner);
+
+    const host = document.createElement("div");
+    document.body.appendChild(host);
+
+    const shadow = host.attachShadow({ mode: "open" });
+    const option = document.createElement("div");
+    option.setAttribute("role", "option");
+    option.setAttribute("id", "shadow-option");
+    option.textContent = "Shadow Option";
+    shadow.appendChild(option);
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    const log = await virtual.spokenPhraseLog();
+
+    // The owned element inside shadow DOM should be found and reparented.
+    // Listbox and option roles include extra ARIA attribute announcements.
+    const hasListbox = log.some((p) => p.includes("listbox, Owner"));
+    const hasOption = log.some(
+      (p) => p.includes("option, Shadow Option") && p.includes("position 1")
+    );
+    expect(hasListbox).toBe(true);
+    expect(hasOption).toBe(true);
+  });
+
+  it("should resolve aria-flowto referencing an element inside shadow DOM", async () => {
+    const host = document.createElement("div");
+    document.body.appendChild(host);
+
+    const shadow = host.attachShadow({ mode: "open" });
+    const target = document.createElement("div");
+    target.setAttribute("id", "flow-target");
+    target.setAttribute("role", "region");
+    target.setAttribute("aria-label", "Target Region");
+    target.textContent = "Flow target content";
+    shadow.appendChild(target);
+
+    // Source element with aria-flowto pointing into shadow DOM
+    const source = document.createElement("button");
+    source.setAttribute("aria-flowto", "flow-target");
+    source.textContent = "Source";
+    document.body.appendChild(source);
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    const log = await virtual.spokenPhraseLog();
+
+    // Both the source and the shadow DOM target should be in the tree.
+    // aria-flowto adds "alternate reading order" annotations to spoken output.
+    const hasSource = log.some((p) => p.includes("button, Source"));
+    const hasTarget = log.some((p) => p.includes("region, Target Region"));
+    expect(hasSource).toBe(true);
+    expect(hasTarget).toBe(true);
+  });
+
+  it("should resolve aria-owns referencing an element nested two shadow levels deep", async () => {
+    const owner = document.createElement("div");
+    owner.setAttribute("role", "listbox");
+    owner.setAttribute("aria-label", "Deep Owner");
+    owner.setAttribute("aria-owns", "deep-option");
+    document.body.appendChild(owner);
+
+    // Level 1: outer shadow host
+    const outerHost = document.createElement("div");
+    document.body.appendChild(outerHost);
+    const outerShadow = outerHost.attachShadow({ mode: "open" });
+
+    // Level 2: inner shadow host inside outer shadow
+    const innerHost = document.createElement("div");
+    outerShadow.appendChild(innerHost);
+    const innerShadow = innerHost.attachShadow({ mode: "open" });
+
+    // The target element is inside the innermost shadow root
+    const option = document.createElement("div");
+    option.setAttribute("role", "option");
+    option.setAttribute("id", "deep-option");
+    option.textContent = "Deep Option";
+    innerShadow.appendChild(option);
+
+    await virtual.start({ container: document.body });
+
+    while ((await virtual.lastSpokenPhrase()) !== "end of document") {
+      await virtual.next();
+    }
+
+    const log = await virtual.spokenPhraseLog();
+
+    const hasListbox = log.some((p) => p.includes("listbox, Deep Owner"));
+    const hasOption = log.some(
+      (p) => p.includes("option, Deep Option") && p.includes("position 1")
+    );
+    expect(hasListbox).toBe(true);
+    expect(hasOption).toBe(true);
+  });
+
   it("should not traverse closed shadow roots", async () => {
     const host = document.createElement("div");
     document.body.appendChild(host);
