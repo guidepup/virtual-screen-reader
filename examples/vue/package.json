@@ -20,8 +20,8 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.14.0",
-    "@vitejs/plugin-vue": "^5.2.3",
-    "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vitejs/plugin-vue-jsx": "^5.1.5",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/test-utils": "^2.4.6",
@@ -31,8 +31,8 @@
     "jsdom": "^26.0.0",
     "prettier": "^3.5.3",
     "typescript": "~5.8.3",
-    "vite": "^6.4.2",
-    "vitest": "^4.1.0",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8",
     "vue-tsc": "^2.2.8"
   },
   "resolutions": {
