@@ -39,6 +39,66 @@ interface AccessibilityContext {
   visitedNodes: Set<Node>;
 }
 
+/**
+ * Returns the child nodes to traverse for building the flattened
+ * accessibility tree, handling shadow DOM and slot projection:
+ *
+ * 1. If the node has an open shadow root → return shadow root's children
+ * 2. If the node is a <slot> → return assigned nodes (or default content)
+ * 3. Otherwise → return the node's direct children
+ */
+function getAccessibleChildNodes(node: Node): Node[] {
+  // Shadow host: traverse into the shadow tree
+  if (isElement(node) && node.shadowRoot) {
+    return Array.from(node.shadowRoot.childNodes);
+  }
+
+  // Slot element: traverse assigned (projected) content, or default content
+  if (isElement(node) && node.localName === "slot") {
+    const slot = node as HTMLSlotElement;
+    const assigned = slot.assignedNodes({ flatten: true });
+
+    if (assigned.length > 0) {
+      return assigned;
+    }
+
+    // No assigned content — fall through to default slot content (childNodes)
+  }
+
+  return Array.from(node.childNodes);
+}
+
+/**
+ * Shadow-aware querySelectorAll: searches the node and all descendant
+ * shadow roots for elements matching the selector.
+ */
+function deepQuerySelectorAll(
+  node: Node,
+  selector: string
+): Element[] {
+  if (!isElement(node)) {
+    return [];
+  }
+
+  const results: Element[] = Array.from(node.querySelectorAll(selector));
+
+  // Also search inside shadow roots
+  const searchShadowRoots = (root: Element) => {
+    if (root.shadowRoot) {
+      results.push(
+        ...Array.from(root.shadowRoot.querySelectorAll(selector))
+      );
+      root.shadowRoot.querySelectorAll("*").forEach(searchShadowRoots);
+    }
+  };
+
+  // Search the node itself and all its descendants
+  searchShadowRoots(node);
+  node.querySelectorAll("*").forEach(searchShadowRoots);
+
+  return results;
+}
+
 function addAlternateReadingOrderNodes(
   node: Element,
   alternateReadingOrderMap: Map<Node, Set<Node>>,
@@ -72,11 +132,9 @@ function mapAlternateReadingOrder(node: Node) {
     return alternateReadingOrderMap;
   }
 
-  node
-    .querySelectorAll("[aria-flowto]")
-    .forEach((parentNode) =>
-      addAlternateReadingOrderNodes(parentNode, alternateReadingOrderMap, node)
-    );
+  deepQuerySelectorAll(node, "[aria-flowto]").forEach((parentNode) =>
+    addAlternateReadingOrderNodes(parentNode, alternateReadingOrderMap, node)
+  );
 
   return alternateReadingOrderMap;
 }
@@ -107,9 +165,9 @@ function getAllOwnedNodes(node: Node) {
     return ownedNodes;
   }
 
-  node
-    .querySelectorAll("[aria-owns]")
-    .forEach((owningNode) => addOwnedNodes(owningNode, ownedNodes, node));
+  deepQuerySelectorAll(node, "[aria-owns]").forEach((owningNode) =>
+    addOwnedNodes(owningNode, ownedNodes, node)
+  );
 
   return ownedNodes;
 }
@@ -160,7 +218,23 @@ function growTree(
     tree.parentDialog = parentDialog;
   }
 
-  node.childNodes.forEach((childNode) => {
+  /**
+   * Determine which child nodes to traverse based on the flattened tree:
+   *
+   * - If the node has an open shadow root, traverse the shadow tree instead
+   *   of the light DOM children (shadow DOM replaces light DOM in the
+   *   accessibility tree).
+   * - If a child is a <slot>, traverse its assigned nodes (the projected
+   *   light DOM content). If no nodes are assigned, fall back to the slot's
+   *   default content (its own childNodes).
+   * - Otherwise, traverse the node's direct childNodes (standard light DOM).
+   *
+   * REF: https://www.w3.org/TR/wai-aria-1.2/#accessibility_tree
+   * REF: https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes
+   */
+  const childNodes = getAccessibleChildNodes(node);
+
+  childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
     }
