@@ -6,7 +6,7 @@
 
 ## [Documentation](https://www.guidepup.dev/docs/virtual) | [API Reference](https://www.guidepup.dev/docs/api/class-guidepup-virtual-screen-reader)
 
-Virtual Screen Reader is a screen reader simulator for unit tests.
+Virtual Screen Reader is a screen reader simulator for testing.
 
 This package aims to supplement your testing by enabling you to automate a Virtual Screen Reader for unit test workflows the same as you would for mouse or keyboard based scenarios.
 
