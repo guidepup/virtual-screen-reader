@@ -37,7 +37,6 @@ describe("type", () => {
   });
 
   it("should handle requests to type on hidden container gracefully", async () => {
-     
     const container = document.querySelector("#hidden")!;
 
     await virtual.start({ container });
@@ -46,6 +45,25 @@ describe("type", () => {
 
     expect(await virtual.itemTextLog()).toEqual([]);
     expect(await virtual.spokenPhraseLog()).toEqual([]);
+
+    await virtual.stop();
+  });
+
+  it("should support custom advanceTimers implementations", async () => {
+    const advanceTimers = jest.fn();
+    const container = document.body;
+
+    await virtual.start({ container, advanceTimers });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.type("Hello World!");
+    expect(getByRole(container, "textbox")).toHaveValue("Hello World!");
+    expect(await virtual.itemText()).toEqual("Input Some Text, Hello World!");
+    expect(advanceTimers).toHaveBeenCalled();
 
     await virtual.stop();
   });

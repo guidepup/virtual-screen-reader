@@ -10,10 +10,8 @@ function setupButtonPage() {
   const button = document.createElement("button");
 
   button.addEventListener("click", function (event) {
-     
-    document.getElementById(
-      "status"
-    )!.innerHTML = `Clicked ${event.detail} Time(s)`;
+    document.getElementById("status")!.innerHTML =
+      `Clicked ${event.detail} Time(s)`;
   });
 
   button.innerHTML = "Click Me";
@@ -21,7 +19,6 @@ function setupButtonPage() {
   document.body.appendChild(button);
 
   document.body.addEventListener("contextmenu", () => {
-     
     document.getElementById("status")!.innerHTML = "Right Clicked";
   });
 }
@@ -128,7 +125,6 @@ describe("click", () => {
   });
 
   it("should handle requests to click on hidden container gracefully", async () => {
-     
     const container = document.querySelector("#hidden")!;
 
     await virtual.start({ container });
@@ -137,6 +133,33 @@ describe("click", () => {
 
     expect(await virtual.itemTextLog()).toEqual([]);
     expect(await virtual.spokenPhraseLog()).toEqual([]);
+
+    await virtual.stop();
+  });
+
+  it("should support custom advance timers implementations", async () => {
+    const container = document.body;
+
+    const advanceTimers = jest.fn();
+
+    await virtual.start({ container, advanceTimers });
+
+    expect(getByText(container, "Not Clicked")).toBeInTheDocument();
+
+    while ((await virtual.itemText()) !== "Click Me") {
+      await virtual.next();
+    }
+
+    await virtual.click();
+
+    expect(queryByText(container, "Not Clicked")).not.toBeInTheDocument();
+    expect(getByText(container, "Clicked 1 Time(s)")).toBeInTheDocument();
+    expect(advanceTimers).toHaveBeenCalled();
+
+    await virtual.previous();
+    await virtual.previous();
+
+    expect(await virtual.lastSpokenPhrase()).toEqual("Clicked 1 Time(s)");
 
     await virtual.stop();
   });
