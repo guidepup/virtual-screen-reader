@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/guidepup/virtual-screen-reader"
+    "url": "git+https://github.com/guidepup/virtual-screen-reader.git"
   },
   "bugs": {
     "url": "https://github.com/guidepup/virtual-screen-reader/issues"
