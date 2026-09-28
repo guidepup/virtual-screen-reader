@@ -897,9 +897,21 @@ export class Virtual {
       }
     });
 
+    const isShiftPressed = modifiers.some(
+      (modifier) =>
+        MacOSModifiers[modifier] === "shift" ||
+        WindowsModifiers[modifier] === "shift"
+    );
+
     const keyboardCommand = [
       ...modifiers.map((modifier) => `{${modifier}>}`),
-      ...keys.map((key) => `{${key}}`),
+      ...keys.map((key) => {
+        if (key.length === 1) {
+          return isShiftPressed ? key.toUpperCase() : key;
+        }
+
+        return `{${key}}`;
+      }),
       ...modifiers.reverse().map((modifier) => `{/${modifier}}`),
     ].join("");
 

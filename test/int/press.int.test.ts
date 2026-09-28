@@ -35,9 +35,8 @@ describe("press", () => {
     expect(await virtual.itemText()).toEqual("Input Some Text");
 
     await virtual.press("Shift+a+b+c");
-    // TODO: FAIL Testing Library user-event doesn't support modification yet, this should be "ABC"
-    expect(getByRole(container, "textbox")).toHaveValue("abc");
-    expect(await virtual.itemText()).toEqual("Input Some Text, abc");
+    expect(getByRole(container, "textbox")).toHaveValue("ABC");
+    expect(await virtual.itemText()).toEqual("Input Some Text, ABC");
 
     await virtual.stop();
   });
@@ -80,9 +79,8 @@ describe("press", () => {
     expect(await virtual.itemText()).toEqual("Input Some Text");
 
     await virtual.press("Shift+a+b+c");
-    // TODO: FAIL Testing Library user-event doesn't support modification yet, this should be "ABC"
-    expect(getByRole(container, "textbox")).toHaveValue("abc");
-    expect(await virtual.itemText()).toEqual("Input Some Text, abc");
+    expect(getByRole(container, "textbox")).toHaveValue("ABC");
+    expect(await virtual.itemText()).toEqual("Input Some Text, ABC");
     expect(advanceTimers).toHaveBeenCalled();
 
     await virtual.stop();
