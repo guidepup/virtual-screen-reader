@@ -85,4 +85,87 @@ describe("press", () => {
 
     await virtual.stop();
   });
+
+  it("should capitalise single character keys when Shift is pressed", async () => {
+    const container = document.body;
+
+    await virtual.start({ container });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.press("Shift+a");
+    expect(getByRole(container, "textbox")).toHaveValue("A");
+    expect(await virtual.itemText()).toEqual("Input Some Text, A");
+
+    await virtual.stop();
+  });
+
+  it("should preserve uppercase for single character keys already uppercase when Shift is pressed", async () => {
+    const container = document.body;
+
+    await virtual.start({ container });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.press("Shift+A");
+    expect(getByRole(container, "textbox")).toHaveValue("A");
+    expect(await virtual.itemText()).toEqual("Input Some Text, A");
+
+    await virtual.stop();
+  });
+
+  it("should not capitalise single character keys when Shift is not pressed", async () => {
+    const container = document.body;
+
+    await virtual.start({ container });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.press("a");
+    expect(getByRole(container, "textbox")).toHaveValue("a");
+    expect(await virtual.itemText()).toEqual("Input Some Text, a");
+
+    await virtual.stop();
+  });
+
+  it("should handle non-shift modifiers when pressing single character keys", async () => {
+    const container = document.body;
+
+    await virtual.start({ container });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.press("Control+a");
+    expect(getByRole(container, "textbox")).toHaveValue("");
+
+    await virtual.stop();
+  });
+
+  it("should handle multi-character keys when Shift is pressed", async () => {
+    const container = document.body;
+
+    await virtual.start({ container });
+
+    await virtual.next();
+    await virtual.next();
+
+    expect(await virtual.itemText()).toEqual("Input Some Text");
+
+    await virtual.press("Shift+Enter");
+    expect(getByRole(container, "textbox")).toHaveValue("");
+
+    await virtual.stop();
+  });
 });

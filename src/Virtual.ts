@@ -898,9 +898,7 @@ export class Virtual {
     });
 
     const isShiftPressed = modifiers.some(
-      (modifier) =>
-        MacOSModifiers[modifier] === "shift" ||
-        WindowsModifiers[modifier] === "shift"
+      (modifier) => MacOSModifiers[modifier] === "shift"
     );
 
     const keyboardCommand = [
