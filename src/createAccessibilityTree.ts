@@ -1,5 +1,6 @@
 import { AccessibleAttributeToLabelMap } from "./getNodeAccessibilityData/getAccessibleAttributeLabels/index";
 import { getIdRefsByAttribute } from "./getIdRefsByAttribute";
+import { getLocalName } from "./getLocalName";
 import { getNodeAccessibilityData } from "./getNodeAccessibilityData/index";
 import { getNodeByIdRef } from "./getNodeByIdRef";
 import { isDialogRole } from "./isDialogRole";
@@ -39,10 +40,46 @@ interface AccessibilityContext {
   visitedNodes: Set<Node>;
 }
 
+function querySelectorAllDeep(root: Node, selector: string): Element[] {
+  const results: Element[] = [];
+
+  if (!isElement(root) && root.nodeType !== 9 && root.nodeType !== 11) {
+    return results;
+  }
+
+  const container = root as Element | Document | DocumentFragment;
+
+  if (
+    isElement(container) &&
+    typeof container.matches === "function" &&
+    container.matches(selector)
+  ) {
+    results.push(container);
+  }
+
+  if (typeof container.querySelectorAll === "function") {
+    results.push(...Array.from(container.querySelectorAll(selector)));
+
+    const allDescendants = container.querySelectorAll("*");
+
+    for (const el of allDescendants) {
+      if (el.shadowRoot) {
+        results.push(...querySelectorAllDeep(el.shadowRoot, selector));
+      }
+    }
+  }
+
+  if (isElement(container) && container.shadowRoot) {
+    results.push(...querySelectorAllDeep(container.shadowRoot, selector));
+  }
+
+  return Array.from(new Set(results));
+}
+
 function addAlternateReadingOrderNodes(
   node: Element,
   alternateReadingOrderMap: Map<Node, Set<Node>>,
-  container: Element
+  container: Node
 ) {
   const idRefs = getIdRefsByAttribute({
     attributeName: "aria-flowto",
@@ -68,15 +105,9 @@ function addAlternateReadingOrderNodes(
 function mapAlternateReadingOrder(node: Node) {
   const alternateReadingOrderMap = new Map<Node, Set<Node>>();
 
-  if (!isElement(node)) {
-    return alternateReadingOrderMap;
-  }
-
-  node
-    .querySelectorAll("[aria-flowto]")
-    .forEach((parentNode) =>
-      addAlternateReadingOrderNodes(parentNode, alternateReadingOrderMap, node)
-    );
+  querySelectorAllDeep(node, "[aria-flowto]").forEach((parentNode) =>
+    addAlternateReadingOrderNodes(parentNode, alternateReadingOrderMap, node)
+  );
 
   return alternateReadingOrderMap;
 }
@@ -84,7 +115,7 @@ function mapAlternateReadingOrder(node: Node) {
 function addOwnedNodes(
   node: Element,
   ownedNodes: Set<Node>,
-  container: Element
+  container: Node
 ) {
   const idRefs = getIdRefsByAttribute({
     attributeName: "aria-owns",
@@ -103,13 +134,9 @@ function addOwnedNodes(
 function getAllOwnedNodes(node: Node) {
   const ownedNodes = new Set<Node>();
 
-  if (!isElement(node)) {
-    return ownedNodes;
-  }
-
-  node
-    .querySelectorAll("[aria-owns]")
-    .forEach((owningNode) => addOwnedNodes(owningNode, ownedNodes, node));
+  querySelectorAllDeep(node, "[aria-owns]").forEach((owningNode) =>
+    addOwnedNodes(owningNode, ownedNodes, node)
+  );
 
   return ownedNodes;
 }
@@ -117,13 +144,37 @@ function getAllOwnedNodes(node: Node) {
 function getOwnedNodes(node: Node, container: Node) {
   const ownedNodes = new Set<Node>();
 
-  if (!isElement(node) || !isElement(container)) {
+  if (!isElement(node)) {
     return ownedNodes;
   }
 
   addOwnedNodes(node, ownedNodes, container);
 
   return ownedNodes;
+}
+
+function getChildNodes(node: Node): Node[] {
+  if (isElement(node)) {
+    if (node.shadowRoot) {
+      return Array.from(node.shadowRoot.childNodes);
+    }
+
+    if (getLocalName(node) === "slot") {
+      const slot = node as HTMLSlotElement;
+
+      if (typeof slot.assignedNodes === "function") {
+        const assignedNodes = slot.assignedNodes({ flatten: true });
+
+        if (assignedNodes.length > 0 || !node.childNodes.length) {
+          return assignedNodes;
+        }
+      }
+
+      return Array.from(node.childNodes);
+    }
+  }
+
+  return Array.from(node.childNodes);
 }
 
 function growTree(
@@ -160,7 +211,7 @@ function growTree(
     tree.parentDialog = parentDialog;
   }
 
-  node.childNodes.forEach((childNode) => {
+  getChildNodes(node).forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
     }
@@ -214,7 +265,10 @@ function growTree(
       { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
     );
 
-    if (isExplicitPresentational) {
+    if (
+      isExplicitPresentational ||
+      (isElement(childNode) && getLocalName(childNode) === "slot")
+    ) {
       tree.children.push(...childTree.children);
     } else {
       tree.children.push(childTree);
@@ -283,7 +337,10 @@ function growTree(
       { alternateReadingOrderMap, container, ownedNodes, visitedNodes }
     );
 
-    if (isExplicitPresentational) {
+    if (
+      isExplicitPresentational ||
+      (isElement(childNode) && getLocalName(childNode) === "slot")
+    ) {
       tree.children.push(...childTree.children);
     } else {
       tree.children.push(childTree);
