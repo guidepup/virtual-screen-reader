@@ -7,7 +7,11 @@ import {
   ERR_VIRTUAL_MISSING_CONTAINER,
   ERR_VIRTUAL_NOT_STARTED,
 } from "./errors";
-import { getLiveSpokenPhrase, LIVE } from "./getLiveSpokenPhrase";
+import {
+  getLiveRegionAttributes,
+  getLiveSpokenPhrase,
+  LIVE,
+} from "./getLiveSpokenPhrase";
 import { type UserEvent, userEvent } from "@testing-library/user-event";
 import { flattenTree } from "./flattenTree";
 import { getElementNode } from "./commands/getElementNode";
@@ -330,6 +334,40 @@ export class Virtual {
     target?.focus();
   }
 
+  #announceFocusedBusy(mutations: MutationRecord[]) {
+    const currentActiveElement =
+      (this.#activeNode ? getElementNode(this.#activeNode) : null) ??
+      (this.#container?.ownerDocument ?? globalThis.document)?.activeElement;
+
+    for (const mutation of mutations) {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "aria-busy" &&
+        mutation.target === currentActiveElement
+      ) {
+        const targetElement = mutation.target as HTMLElement;
+        const { live } = getLiveRegionAttributes({
+          container: this.#container,
+          target: targetElement,
+        });
+
+        if (live !== LIVE.OFF) {
+          continue;
+        }
+
+        const isBusy = targetElement.getAttribute("aria-busy") === "true";
+        const isExplicitNotBusy =
+          targetElement.getAttribute("aria-busy") === "false";
+
+        if (isBusy) {
+          this.#spokenPhraseLog.push("busy");
+        } else if (isExplicitNotBusy) {
+          this.#spokenPhraseLog.push("not busy");
+        }
+      }
+    }
+  }
+
   async #announceLiveRegions(mutations: MutationRecord[]) {
     await tick();
 
@@ -340,12 +378,15 @@ export class Virtual {
         getLiveSpokenPhrase({
           container,
           mutation,
+          mutations,
         }),
       )
       .filter(Boolean)
       .forEach((spokenPhrase) => {
         this.#spokenPhraseLog.push(spokenPhrase);
       });
+
+    this.#announceFocusedBusy(mutations);
   }
 
   #spokenPhraseLogWithoutLiveRegions() {
