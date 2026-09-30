@@ -19,7 +19,9 @@ export interface AccessibilityNode {
   node: Node;
   parentAccessibilityNodeTree: AccessibilityNodeTree | null;
   parent: Node | null;
+  parentArticle: HTMLElement | null;
   parentDialog: HTMLElement | null;
+  parentFeed: HTMLElement | null;
   role: string;
   spokenRole: string;
 }
@@ -160,6 +162,29 @@ function growTree(
     tree.parentDialog = parentDialog;
   }
 
+  const parentFeed =
+    tree.role === "feed" && isElement(tree.node)
+      ? (tree.node as HTMLElement)
+      : tree.parentFeed ??
+        (isElement(tree.node)
+          ? ((tree.node as HTMLElement).closest?.('[role~="feed"]') as HTMLElement ?? null)
+          : null);
+
+  if (parentFeed) {
+    tree.parentFeed = parentFeed;
+  }
+
+  const parentArticle =
+    parentFeed && tree.role === "article" && isElement(tree.node)
+      ? (tree.node as HTMLElement)
+      : parentFeed
+        ? tree.parentArticle
+        : null;
+
+  if (parentArticle) {
+    tree.parentArticle = parentArticle;
+  }
+
   node.childNodes.forEach((childNode) => {
     if (isHiddenFromAccessibilityTree(childNode)) {
       return;
@@ -207,7 +232,9 @@ function growTree(
         node: childNode,
         parentAccessibilityNodeTree: null, // Added during flattening
         parent: node,
+        parentArticle,
         parentDialog,
+        parentFeed,
         role,
         spokenRole,
       },
@@ -276,7 +303,9 @@ function growTree(
         node: childNode,
         parentAccessibilityNodeTree: null, // Added during flattening
         parent: node,
+        parentArticle,
         parentDialog,
+        parentFeed,
         role,
         spokenRole,
       },
@@ -334,7 +363,9 @@ export function createAccessibilityTree(
       node,
       parentAccessibilityNodeTree: null,
       parent: null,
+      parentArticle: null,
       parentDialog: null,
+      parentFeed: null,
       role,
       spokenRole,
     },
