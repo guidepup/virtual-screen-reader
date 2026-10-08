@@ -10,6 +10,7 @@ import {
 import { getLiveSpokenPhrase, LIVE } from "./getLiveSpokenPhrase";
 import { type UserEvent, userEvent } from "@testing-library/user-event";
 import { flattenTree } from "./flattenTree";
+import { FOCUSABLE_SELECTOR } from "./isFocusable";
 import { getElementNode } from "./commands/getElementNode";
 import { getItemText } from "./getItemText";
 import { getSpokenPhrase } from "./getSpokenPhrase";
@@ -124,7 +125,7 @@ const defaultUserEventOptions = {
  */
 
 /**
- * TODO: When an assistive technology reading cursor moves from one article to
+ * When an assistive technology reading cursor moves from one article to
  * another, assistive technologies SHOULD set user agent focus on the article
  * that contains the reading cursor. If the reading cursor lands on a focusable
  * element inside the article, the assistive technology MAY set focus on that
@@ -216,6 +217,7 @@ export class Virtual {
   #disconnectDOMObserver: (() => void) | null = null;
   #boundHandleFocusChange: ((event: Event) => Promise<void>) | null = null;
   #userEvent: UserEvent | null = null;
+  #isInternalFocusSetting = false;
 
   #checkContainer() {
     if (!this.#container) {
@@ -303,7 +305,15 @@ export class Virtual {
   }
 
   async #handleFocusChange({ target }: Event) {
+    if (this.#isInternalFocusSetting) {
+      return;
+    }
+
     await tick();
+
+    if (this.#isInternalFocusSetting) {
+      return;
+    }
 
     this.#invalidateTreeCache();
     const tree = this.#getAccessibilityTree();
@@ -323,11 +333,65 @@ export class Virtual {
     this.#updateState(newActiveNode, true);
   }
 
+  #focusElement(element: HTMLElement) {
+    if (typeof element?.focus !== "function") {
+      return;
+    }
+
+    this.#isInternalFocusSetting = true;
+
+    try {
+      element.focus();
+    } finally {
+      this.#isInternalFocusSetting = false;
+    }
+  }
+
   #focusActiveElement() {
     // Is only called following a null guard for `this.#activeNode`.
 
     const target = getElementNode(this.#activeNode!);
-    target?.focus();
+    this.#focusElement(target);
+  }
+
+  #handleFeedRoleFocus(accessibilityNode: AccessibilityNode) {
+    const article = accessibilityNode.parentArticle;
+
+    if (!article) {
+      return;
+    }
+
+    const previousArticle = this.#activeNode?.parentArticle ?? null;
+    const isArticleChange = previousArticle !== article;
+
+    const targetElement = getElementNode(accessibilityNode);
+    const focusableCandidate =
+      targetElement.matches?.(FOCUSABLE_SELECTOR)
+        ? targetElement
+        : (targetElement.closest?.(FOCUSABLE_SELECTOR) as HTMLElement | null);
+
+    const focusableElement =
+      focusableCandidate &&
+      focusableCandidate !== article &&
+      article.contains(focusableCandidate)
+        ? focusableCandidate
+        : null;
+
+    if (isArticleChange) {
+      if (focusableElement) {
+        this.#focusElement(focusableElement);
+      } else {
+        this.#focusElement(article);
+      }
+    } else if (focusableElement) {
+      const activeElement =
+        article.ownerDocument?.activeElement ??
+        globalThis.document?.activeElement;
+
+      if (activeElement !== focusableElement) {
+        this.#focusElement(focusableElement);
+      }
+    }
   }
 
   async #announceLiveRegions(mutations: MutationRecord[]) {
@@ -387,6 +451,8 @@ export class Virtual {
       this.#itemTextLog.push(itemText);
       this.#spokenPhraseLog.push(spokenPhrase);
     }
+
+    this.#handleFeedRoleFocus(accessibilityNode);
 
     this.#setActiveNode(accessibilityNode);
 
@@ -672,6 +738,7 @@ export class Virtual {
     this.#spokenPhraseLog = [];
     this.#boundHandleFocusChange = null;
     this.#userEvent = null;
+    this.#isInternalFocusSetting = false;
     return;
   }
 
