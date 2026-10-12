@@ -166,153 +166,8 @@ describe("Aria Busy State", () => {
     });
   });
 
-  describe("dynamic aria-busy changes on focused element", () => {
-    it("should announce 'busy' when aria-busy is dynamically set to true on the active element", async () => {
-      document.body.innerHTML = `
-      <button id="btn">Submit</button>
-      `;
-
-      await virtual.start({ container: document.body });
-      await virtual.next();
-
-      expect(await virtual.lastSpokenPhrase()).toBe("button, Submit");
-
-      const button = document.getElementById("btn")!;
-      button.setAttribute("aria-busy", "true");
-
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("busy");
-      });
-
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "button, Submit",
-        "busy",
-      ]);
-
-      await virtual.stop();
-    });
-
-    it("should announce 'not busy' when aria-busy is dynamically set to false on the active element", async () => {
-      document.body.innerHTML = `
-      <button id="btn" aria-busy="true">Submit</button>
-      `;
-
-      await virtual.start({ container: document.body });
-      await virtual.next();
-
-      expect(await virtual.lastSpokenPhrase()).toBe("button, Submit, busy");
-
-      const button = document.getElementById("btn")!;
-      button.setAttribute("aria-busy", "false");
-
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("not busy");
-      });
-
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "button, Submit, busy",
-        "not busy",
-      ]);
-
-      await virtual.stop();
-    });
-
-    it("should not announce aria-busy changes on an unfocused non-live element", async () => {
-      document.body.innerHTML = `
-      <button id="btn1">First</button>
-      <button id="btn2">Second</button>
-      `;
-
-      await virtual.start({ container: document.body });
-      await virtual.next();
-
-      expect(await virtual.lastSpokenPhrase()).toBe("button, First");
-
-      const button2 = document.getElementById("btn2")!;
-      button2.setAttribute("aria-busy", "true");
-
-      // Give observer time to fire
-      await new Promise((resolve) => setTimeout(resolve, 50));
-
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "button, First",
-      ]);
-
-      await virtual.stop();
-    });
-
-    it("should announce busy when an element has DOM focus without moving virtual cursor", async () => {
-      document.body.innerHTML = `
-      <button id="btn">Submit</button>
-      `;
-
-      await virtual.start({ container: document.body });
-
-      const button = document.getElementById("btn")!;
-      button.focus();
-
-      button.setAttribute("aria-busy", "true");
-
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("busy");
-      });
-
-      await virtual.stop();
-    });
-
-    it("should not announce duplicate busy from focused handler when element is also a live region", async () => {
-      document.body.innerHTML = `
-      <button id="btn" aria-live="polite">Submit</button>
-      `;
-
-      await virtual.start({ container: document.body });
-      await virtual.next();
-
-      expect(await virtual.lastSpokenPhrase()).toBe("button, Submit");
-
-      const button = document.getElementById("btn")!;
-      button.setAttribute("aria-busy", "true");
-
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("polite: busy");
-      });
-
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "button, Submit",
-        "polite: busy",
-      ]);
-
-      await virtual.stop();
-    });
-
-    it("should not announce when aria-busy is removed from focused element without setting to false", async () => {
-      document.body.innerHTML = `
-      <button id="btn" aria-busy="true">Submit</button>
-      `;
-
-      await virtual.start({ container: document.body });
-      await virtual.next();
-
-      const button = document.getElementById("btn")!;
-      button.removeAttribute("aria-busy");
-
-      await new Promise((resolve) => setTimeout(resolve, 50));
-
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "button, Submit, busy",
-      ]);
-
-      await virtual.stop();
-    });
-  });
-
   describe("live regions with aria-busy", () => {
-    it("should announce 'busy' when aria-busy is set to true on a polite live region and suppress intermediate updates", async () => {
+    it("should suppress intermediate updates when aria-busy is set to true on a polite live region and announce atomic update when busy ends", async () => {
       document.body.innerHTML = `
       <div id="live" aria-live="polite">Initial content</div>
       `;
@@ -322,10 +177,6 @@ describe("Aria Busy State", () => {
       const live = document.getElementById("live")!;
       live.setAttribute("aria-busy", "true");
 
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("polite: busy");
-      });
-
       // Update content while busy - should be suppressed
       live.textContent = "Intermediate update 1";
       live.textContent = "Intermediate update 2";
@@ -333,10 +184,7 @@ describe("Aria Busy State", () => {
       // Give observer time to fire
       await new Promise((resolve) => setTimeout(resolve, 50));
 
-      expect(await virtual.spokenPhraseLog()).toEqual([
-        "document",
-        "polite: busy",
-      ]);
+      expect(await virtual.spokenPhraseLog()).toEqual(["document"]);
 
       // Complete updates by clearing aria-busy
       live.setAttribute("aria-busy", "false");
@@ -349,14 +197,13 @@ describe("Aria Busy State", () => {
 
       expect(await virtual.spokenPhraseLog()).toEqual([
         "document",
-        "polite: busy",
         "polite: Intermediate update 2",
       ]);
 
       await virtual.stop();
     });
 
-    it("should announce 'busy' when aria-busy is set to true on an assertive live region and announce atomic update when busy ends", async () => {
+    it("should suppress intermediate updates when aria-busy is set to true on an assertive live region and announce atomic update when busy ends", async () => {
       document.body.innerHTML = `
       <div id="live" aria-live="assertive">Initial alert</div>
       `;
@@ -365,12 +212,12 @@ describe("Aria Busy State", () => {
 
       const live = document.getElementById("live")!;
       live.setAttribute("aria-busy", "true");
-
-      await waitFor(async () => {
-        expect(await virtual.lastSpokenPhrase()).toBe("assertive: busy");
-      });
-
       live.textContent = "Severe error occurred";
+
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      expect(await virtual.spokenPhraseLog()).toEqual(["document"]);
+
       live.setAttribute("aria-busy", "false");
 
       await waitFor(async () => {
@@ -381,7 +228,6 @@ describe("Aria Busy State", () => {
 
       expect(await virtual.spokenPhraseLog()).toEqual([
         "document",
-        "assertive: busy",
         "assertive: Severe error occurred",
       ]);
 

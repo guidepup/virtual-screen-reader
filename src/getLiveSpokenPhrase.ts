@@ -53,6 +53,7 @@ const RELEVANT = {
 
 const RELEVANT_VALUES = new Set(Object.values(RELEVANT));
 const DEFAULT_ATOMIC = false;
+const DEFAULT_BUSY = false;
 const DEFAULT_LIVE = LIVE.OFF;
 const DEFAULT_RELEVANT = [RELEVANT.ADDITIONS, RELEVANT.TEXT];
 
@@ -175,7 +176,7 @@ const roleToImplicitLiveRegionStatesAndPropertiesMap: Record<
   },
 };
 
-export function getLiveRegionAttributes(
+function getLiveRegionAttributes(
   {
     container,
     target,
@@ -275,7 +276,7 @@ export function getLiveRegionAttributes(
   if (target === container || targetAncestor === null) {
     return {
       atomic: atomic ?? DEFAULT_ATOMIC,
-      busy: busy ?? false,
+      busy: busy ?? DEFAULT_BUSY,
       live: live ?? DEFAULT_LIVE,
       liveTarget,
       relevant: relevant ?? DEFAULT_RELEVANT,
@@ -328,12 +329,6 @@ export function getLiveSpokenPhrase({
 
     if (!isLastAriaBusyMutationForTarget) {
       return "";
-    }
-
-    const isBusy = targetElement.getAttribute("aria-busy") === "true";
-
-    if (isBusy) {
-      return `${live}: busy`;
     }
 
     if (liveTarget.getAttribute("aria-busy") === "true") {
