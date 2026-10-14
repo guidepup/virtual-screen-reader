@@ -66,6 +66,23 @@ function getSpokenPhraseForNode(node: Node) {
   );
 }
 
+/**
+ * The element above `target`, crossing the shadow boundary when `target` is the
+ * top element inside a shadow root.
+ *
+ * A live region is often the host element itself (a component that renders its
+ * message in its own shadow root), and `parentElement` never reaches that host
+ * from inside the shadow root.
+ */
+function getTargetAncestor(target: Element): Element | null {
+  return (
+    target.assignedSlot ??
+    target.parentElement ??
+    (target.getRootNode() as ShadowRoot).host ??
+    null
+  );
+}
+
 function getAllSpokenPhrase({
   addedNodes,
   removedNodes,
@@ -261,7 +278,7 @@ function getLiveRegionAttributes(
     };
   }
 
-  const targetAncestor = target.parentElement;
+  const targetAncestor = getTargetAncestor(target);
 
   if (target === container || targetAncestor === null) {
     return {
