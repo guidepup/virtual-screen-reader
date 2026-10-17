@@ -10,21 +10,11 @@ permissions:
   contents: read
 
 jobs:
-  test-node-20:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-      - run: yarn install --frozen-lockfile
-      - run: yarn ci
-
-  test-node-22:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -33,8 +23,8 @@ jobs:
   test-commonjs-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -46,8 +36,8 @@ jobs:
   test-typescript-bundler-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -59,8 +49,8 @@ jobs:
   test-typescript-legacy-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -72,8 +62,8 @@ jobs:
   test-typescript-nodenext-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -85,8 +75,8 @@ jobs:
   test-vue-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -98,8 +88,8 @@ jobs:
   test-web-test-runner-example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - run: yarn install --frozen-lockfile
@@ -111,13 +101,13 @@ jobs:
   test-wpt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           # REF: https://github.com/web-platform-tests/wpt/issues/44427
           python-version: "3.11"
