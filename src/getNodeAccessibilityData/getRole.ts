@@ -72,7 +72,8 @@ function getExplicitRole({
   inheritedImplicitPresentational: boolean;
   node: HTMLElement;
 }) {
-  const rawRoles = node.getAttribute("role")?.trim().split(" ") ?? [];
+  const rawRoles =
+    node.getAttribute("role")?.toLowerCase().split(/[\t\n\f\r ]+/) ?? [];
 
   const authorErrorFilteredRoles = rawRoles
     /**

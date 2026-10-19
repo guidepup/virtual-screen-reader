@@ -57,7 +57,7 @@ The current status of the WPT coverage is:
 
 | Passing Test Suites | Failing Tests | Skipped Tests |
 | :-----------------: | :-----------: | :-----------: |
-|         396         |      81       |      338      |
+|         333         |      99       |      347      |
 
 The included tests, skipped tests, and expected failures can be found in the [WPT configuration file](./test/wpt-jsdom/to-run.yaml) with reasons as to skips and expected failures. "Tentative" tests are excluded as their behaviour is often not yet confirmed.
 
@@ -164,9 +164,8 @@ Virtual Screen Reader also supports ESM environments such as browsers.
 Try it out on any website in a browser of your choice by executing the following snippet in DevTools:
 
 ```ts
-const { virtual } = await import(
-  "https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js"
-);
+const { virtual } =
+  await import("https://unpkg.com/@guidepup/virtual-screen-reader/lib/esm/index.browser.js");
 
 await virtual.start({ container: document.body, displayCursor: true });
 

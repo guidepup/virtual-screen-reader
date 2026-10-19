@@ -1,5 +1,6 @@
 DIR: accname
 
+aria-owns.html: [fail, upstream issue with dom-accessibility-api package]
 manual/description_from_content_of_describedby_element-manual.html:
   [timeout, upstream issue with dom-accessibility-api package]
 manual/name_file-label-inline-block-elements-manual.html:
@@ -81,6 +82,18 @@ name/comp_labelledby_hidden_nodes.html:
   "button with aria-labelledby using span without visibility:collapse (with nested visibility:collapse sibling spans)":
     [fail, upstream issue with dom-accessibility-api package]
 name/comp_name_from_content.html:
+  "button with alt counter on ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with alt counter on ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with alt counter on ::before":
+    [fail, upstream issue with dom-accessibility-api package]
+  "button with multiple alt counters and counter increments":
+    [fail, upstream issue with dom-accessibility-api package]
+  "heading with multiple alt counters and counter increments":
+    [fail, upstream issue with dom-accessibility-api package]
+  "link with multiple alt counters and counter increments":
+    [fail, upstream issue with dom-accessibility-api package]
   "button name from content with ::before":
     [fail, upstream issue with dom-accessibility-api package]
   "heading name from content with ::before":
@@ -139,6 +152,10 @@ name/comp_name_from_content.html:
     [fail, upstream issue with dom-accessibility-api package]
   "link name from content for each child (no space, inline)":
     [fail, upstream issue with dom-accessibility-api package]
+name/comp_name_from_content_alt_counter_invalidation.html:
+  [fail, upstream issue with dom-accessibility-api package]
+name/comp_name_from_content_alt_counter_multi_instance.html:
+  [fail, upstream issue with dom-accessibility-api package]
 name/comp_text_node.html:
   "span[role=button] with text/element/text nodes, no space":
     [fail, upstream issue with dom-accessibility-api package]
@@ -188,142 +205,143 @@ name/shadowdom/slot.html:
 ---
 DIR: core-aam
 
-aria-braillelabel-manual.html: [skip, not supported]
-aria-brailleroledescription-manual.html: [skip, not supported]
-aria-busy_value_changes-manual.html:
+arianotify/*:
+  [skip, requires accessibility notifications not available in jsdom]
+manual/aria-braillelabel-manual.html: [skip, not supported]
+manual/aria-brailleroledescription-manual.html: [skip, not supported]
+manual/aria-busy_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-checked_value_changes-manual.html:
+manual/aria-checked_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-current_value_changes-manual.html:
+manual/aria-current_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-current_with_unrecognized_value-manual.html:
+manual/aria-current_with_unrecognized_value-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-disabled_value_changes-manual.html:
+manual/aria-disabled_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-dropeffect_value_changes-manual.html:
+manual/aria-dropeffect_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-expanded_value_changes-manual.html:
+manual/aria-expanded_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-grabbed_value_changes-manual.html:
+manual/aria-grabbed_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-hidden_true_when_element_is_focused_or_fires_event-manual.html:
+manual/aria-hidden_true_when_element_is_focused_or_fires_event-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-invalid_value_changes-manual.html:
+manual/aria-invalid_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-placeholder-manual.html:
+manual/aria-placeholder-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings do not reflect WAI-ARIA and screen readers,
   ]
-aria-pressed_value_changes-manual.html:
+manual/aria-pressed_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-readonly_value_changes-manual.html:
+manual/aria-readonly_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-required_value_changes-manual.html:
+manual/aria-required_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-setsize_-1-manual.html:
+manual/aria-setsize_-1-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings do not reflect WAI-ARIA and screen readers,
   ]
-aria-valuenow_value_changes-manual.html:
+manual/aria-valuenow_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-aria-valuetext_value_changes-manual.html:
+manual/aria-valuetext_value_changes-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-combobox-value-calculation-manual.html:
+manual/combobox-value-calculation-manual.html:
   [skip, value taken from text content not implemented]
-exclude_element_hidden_with_*:
+manual/exclude_element_hidden_with_*:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-form-manual.html: [skip, attribute typo error in test - fix needed in WPT]
-generic_roledescription_prohibited-manual.html:
+manual/generic_roledescription_prohibited-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-grid-level-not-supported-manual.html:
+manual/grid-level-not-supported-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-heading-no-level-manual.html:
+manual/heading-no-level-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-include_element_*:
+manual/include_element_*:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-math_role_children_are_not_presentational-manual.html:
+manual/math_role_children_are_not_presentational-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-none_used_on_*:
+manual/none_used_on_*:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-presentation_used_on_*:
+manual/presentation_used_on_*:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-progressbar-no-min-or-max-manual.html:
+manual/progressbar-no-min-or-max-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
   ]
-tablist-level-not-supported-manual.html:
+manual/tablist-level-not-supported-manual.html:
   [
     skip,
     targets accessibility APIs whose mappings have not been implemented in this test suite yet,
@@ -351,6 +369,21 @@ DIR: graphics-aria
 ---
 DIR: html-aam
 
+accname-computation-by-element/area.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/img.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/input-button-submit-reset.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/input-image.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/inputs-with-placeholders.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/phrasing-elements.html:
+  [fail, upstream issue with dom-accessibility-api package]
+accname-computation-by-element/section-and-grouping-elements.html:
+  [fail, upstream issue with dom-accessibility-api package]
+hidden-names.html: [fail, upstream issue with dom-accessibility-api package]
 roles-contextual.html:
   "el-aside-in-section-aria-labelledby-non-existing":
     [fail, upstream issue with html-aria package]
@@ -378,6 +411,8 @@ roles-contextual.html:
 DIR: svg-aam
 
 name/comp_host_language_label.html:
+  [fail, upstream issue with dom-accessibility-api package]
+name/comp_labelledby.html:
   [fail, upstream issue with dom-accessibility-api package]
 
 ---
