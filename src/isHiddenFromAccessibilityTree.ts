@@ -1,6 +1,35 @@
+import { getLocalName } from "./getLocalName";
 import { isElement } from "./isElement";
 
 const TEXT_NODE = 3;
+
+/**
+ * The content of a closed `<details>` element, other than its summary, is
+ * rendered with `content-visibility: hidden`, so its contents are skipped and
+ * must not be accessible to user-agent features (similar to `display: none`).
+ *
+ * REF:
+ * - https://html.spec.whatwg.org/multipage/rendering.html#the-details-and-summary-elements
+ * - https://www.w3.org/TR/css-contain-2/#content-visibility
+ */
+function isInClosedDetailsContent(node: Node) {
+  const parent = node.parentElement;
+
+  if (
+    !parent ||
+    getLocalName(parent) !== "details" ||
+    parent.hasAttribute("open")
+  ) {
+    return false;
+  }
+
+  // REF: https://html.spec.whatwg.org/multipage/interactive-elements.html#summary-for-its-parent-details
+  const summaryForParentDetails = Array.from(parent.children).find(
+    (child) => getLocalName(child) === "summary"
+  );
+
+  return node !== summaryForParentDetails;
+}
 
 export function isHiddenFromAccessibilityTree(node: Node | null): node is null {
   if (!node) {
@@ -8,6 +37,10 @@ export function isHiddenFromAccessibilityTree(node: Node | null): node is null {
   }
 
   // `node.textContent` is only `null` for `document` and `doctype`.
+
+  if (isInClosedDetailsContent(node)) {
+    return true;
+  }
 
   if (node.nodeType === TEXT_NODE && node.textContent!.trim()) {
     return false;
