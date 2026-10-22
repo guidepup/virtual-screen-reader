@@ -261,7 +261,12 @@ function getLiveRegionAttributes(
     };
   }
 
-  const targetAncestor = target.parentElement;
+  const targetAncestor =
+    target.parentElement ??
+    ((target.parentNode as (Node & { host?: HTMLElement }) | null)?.host as
+      | HTMLElement
+      | undefined) ??
+    null;
 
   if (target === container || targetAncestor === null) {
     return {

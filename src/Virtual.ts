@@ -302,7 +302,12 @@ export class Virtual {
     this.#treeCache = null;
   }
 
-  async #handleFocusChange({ target }: Event) {
+  async #handleFocusChange(event: Event) {
+    const target =
+      typeof event.composedPath === "function" && event.composedPath().length > 0
+        ? (event.composedPath()[0] as Node)
+        : (event.target as Node);
+
     await tick();
 
     this.#invalidateTreeCache();
@@ -314,7 +319,9 @@ export class Virtual {
 
     // We've covered the tree having no length so there should be at least one
     // matching node, but if not we will not update the state
-    const newActiveNode = tree.find(({ node }) => node === target);
+    const newActiveNode =
+      tree.find(({ node }) => node === target) ??
+      tree.find(({ node }) => node === event.target);
 
     if (!newActiveNode) {
       return;
