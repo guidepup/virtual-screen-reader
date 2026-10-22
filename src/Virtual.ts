@@ -216,11 +216,25 @@ export class Virtual {
   #disconnectDOMObserver: (() => void) | null = null;
   #boundHandleFocusChange: ((event: Event) => Promise<void>) | null = null;
   #userEvent: UserEvent | null = null;
+  #userEventOptions: Parameters<typeof userEvent.setup>[0] | null = null;
 
   #checkContainer() {
     if (!this.#container) {
       throw new Error(ERR_VIRTUAL_NOT_STARTED);
     }
+  }
+
+  /**
+   * Lazily create the userEvent session on first use so that `start()` and
+   * pure navigation do not prepare the document / focused element, which can
+   * interfere with a consumer's own (separate) userEvent session.
+   */
+  #getUserEvent() {
+    if (!this.#userEvent) {
+      this.#userEvent = userEvent.setup(this.#userEventOptions!);
+    }
+
+    return this.#userEvent;
   }
 
   #createCursor(root: Root | undefined) {
@@ -611,11 +625,12 @@ export class Virtual {
       },
     );
 
-    this.#userEvent = userEvent.setup({
+    this.#userEvent = null;
+    this.#userEventOptions = {
       ...defaultUserEventOptions,
       document: container.ownerDocument ?? globalThis.document,
       ...(advanceTimers ? { advanceTimers } : {}),
-    });
+    };
 
     const tree = this.#getAccessibilityTree();
 
@@ -672,6 +687,7 @@ export class Virtual {
     this.#spokenPhraseLog = [];
     this.#boundHandleFocusChange = null;
     this.#userEvent = null;
+    this.#userEventOptions = null;
     return;
   }
 
@@ -802,7 +818,7 @@ export class Virtual {
      *
      * REF: https://www.w3.org/TR/core-aam-1.2/#mapping_actions
      */
-    await this.#userEvent!.click(target);
+    await this.#getUserEvent().click(target);
 
     return;
   }
@@ -914,7 +930,7 @@ export class Virtual {
     ].join("");
 
     this.#focusActiveElement();
-    await this.#userEvent!.keyboard(keyboardCommand);
+    await this.#getUserEvent().keyboard(keyboardCommand);
     await this.#refreshState(true);
 
     return;
@@ -954,7 +970,7 @@ export class Virtual {
     }
 
     const target = getElementNode(this.#activeNode);
-    await this.#userEvent!.type(target, text);
+    await this.#getUserEvent().type(target, text);
     await this.#refreshState(true);
 
     return;
@@ -1059,7 +1075,7 @@ export class Virtual {
     const keys = key.repeat(clickCount);
     const target = getElementNode(this.#activeNode);
 
-    await this.#userEvent!.pointer([{ target }, { keys, target }]);
+    await this.#getUserEvent().pointer([{ target }, { keys, target }]);
 
     return;
   }
