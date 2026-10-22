@@ -86,6 +86,31 @@ describe("press", () => {
     await virtual.stop();
   });
 
+  it("should use the latest options when started again without stopping", async () => {
+    const firstAdvanceTimers = jest.fn();
+    const secondAdvanceTimers = jest.fn();
+    const container = document.body;
+
+    await virtual.start({ container, advanceTimers: firstAdvanceTimers });
+
+    await virtual.next();
+    await virtual.next();
+    await virtual.press("a");
+
+    expect(firstAdvanceTimers).toHaveBeenCalled();
+
+    await virtual.start({ container, advanceTimers: secondAdvanceTimers });
+
+    await virtual.next();
+    await virtual.next();
+    await virtual.press("b");
+
+    expect(getByRole(container, "textbox")).toHaveValue("ab");
+    expect(secondAdvanceTimers).toHaveBeenCalled();
+
+    await virtual.stop();
+  });
+
   it("should capitalise single character keys when Shift is pressed", async () => {
     const container = document.body;
 
