@@ -20,7 +20,7 @@ type ValueOf<T> = T[keyof T];
  * Live region attributes:
  *
  * - aria-atomic
- * - TODO: aria-busy
+ * - aria-busy
  * - aria-live
  * - aria-relevant
  *
@@ -53,6 +53,7 @@ const RELEVANT = {
 
 const RELEVANT_VALUES = new Set(Object.values(RELEVANT));
 const DEFAULT_ATOMIC = false;
+const DEFAULT_BUSY = false;
 const DEFAULT_LIVE = LIVE.OFF;
 const DEFAULT_RELEVANT = [RELEVANT.ADDITIONS, RELEVANT.TEXT];
 
@@ -185,17 +186,20 @@ function getLiveRegionAttributes(
   },
   {
     atomic,
+    busy,
     live,
     liveTarget,
     relevant,
   }: {
     atomic?: boolean;
+    busy?: boolean;
     live?: ValueOf<typeof LIVE>;
     liveTarget?: Element;
     relevant?: ValueOf<typeof RELEVANT>[];
   } = {}
 ): {
   atomic: boolean;
+  busy: boolean;
   live: ValueOf<typeof LIVE>;
   liveTarget?: Element;
   relevant: ValueOf<typeof RELEVANT>[];
@@ -216,6 +220,10 @@ function getLiveRegionAttributes(
 
   if (typeof atomic === "undefined" && target.hasAttribute("aria-atomic")) {
     atomic = target.getAttribute("aria-atomic") === "true";
+  }
+
+  if (typeof busy === "undefined" && target.hasAttribute("aria-busy")) {
+    busy = target.getAttribute("aria-busy") === "true";
   }
 
   if (typeof live === "undefined" && target.hasAttribute("aria-live")) {
@@ -250,11 +258,13 @@ function getLiveRegionAttributes(
 
   if (
     typeof atomic !== "undefined" &&
+    typeof busy !== "undefined" &&
     typeof live !== "undefined" &&
     typeof relevant !== "undefined"
   ) {
     return {
       atomic,
+      busy,
       live,
       liveTarget,
       relevant,
@@ -266,6 +276,7 @@ function getLiveRegionAttributes(
   if (target === container || targetAncestor === null) {
     return {
       atomic: atomic ?? DEFAULT_ATOMIC,
+      busy: busy ?? DEFAULT_BUSY,
       live: live ?? DEFAULT_LIVE,
       liveTarget,
       relevant: relevant ?? DEFAULT_RELEVANT,
@@ -276,6 +287,7 @@ function getLiveRegionAttributes(
     { container, target: targetAncestor },
     {
       atomic,
+      busy,
       live,
       liveTarget,
       relevant,
@@ -285,17 +297,62 @@ function getLiveRegionAttributes(
 
 export function getLiveSpokenPhrase({
   container,
-  mutation: { addedNodes, removedNodes, target, type },
+  mutation,
+  mutations,
 }: {
   container: Node | null;
   mutation: MutationRecord;
+  mutations: MutationRecord[];
 }): string {
-  const { atomic, live, liveTarget, relevant } = getLiveRegionAttributes({
+  const { addedNodes, attributeName, removedNodes, target, type } = mutation;
+  const targetElement = getElementFromNode(target);
+  const { atomic, busy, live, liveTarget, relevant } = getLiveRegionAttributes({
     container,
-    target: getElementFromNode(target),
+    target: targetElement,
   });
 
   if (live === LIVE.OFF || !liveTarget) {
+    return "";
+  }
+
+  if (type === "attributes" && attributeName === "aria-busy") {
+    const isLastAriaBusyMutationForTarget =
+      mutations
+        .filter(
+          (m) =>
+            m.type === "attributes" &&
+            m.attributeName === "aria-busy" &&
+            isElement(m.target) &&
+            liveTarget.contains(m.target)
+        )
+        .at(-1) === mutation;
+
+    if (!isLastAriaBusyMutationForTarget) {
+      return "";
+    }
+
+    if (liveTarget.getAttribute("aria-busy") === "true") {
+      return "";
+    }
+
+    const liveContent = getSpokenPhraseForNode(liveTarget);
+
+    if (!liveContent) {
+      return "";
+    }
+
+    return `${live}: ${liveContent}`;
+  }
+
+  const hasAriaBusyChangeInBatch = mutations.some(
+    (m) =>
+      m.type === "attributes" &&
+      m.attributeName === "aria-busy" &&
+      isElement(m.target) &&
+      liveTarget.contains(m.target)
+  );
+
+  if (hasAriaBusyChangeInBatch || busy) {
     return "";
   }
 

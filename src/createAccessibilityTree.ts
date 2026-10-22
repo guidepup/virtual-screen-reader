@@ -14,6 +14,7 @@ export interface AccessibilityNode {
   accessibleValue: string;
   allowedAccessibilityChildRoles: string[];
   alternateReadingOrderParents: Node[];
+  busy: boolean;
   childrenPresentational: boolean;
   isInert: boolean;
   node: Node;
@@ -181,6 +182,7 @@ function growTree(
       accessibleName,
       accessibleValue,
       allowedAccessibilityChildRoles,
+      busy,
       childrenPresentational,
       isExplicitPresentational,
       isInert,
@@ -201,6 +203,7 @@ function growTree(
         accessibleValue,
         allowedAccessibilityChildRoles,
         alternateReadingOrderParents,
+        busy,
         children: [],
         childrenPresentational,
         isInert,
@@ -250,6 +253,7 @@ function growTree(
       accessibleName,
       accessibleValue,
       allowedAccessibilityChildRoles,
+      busy,
       childrenPresentational,
       isInert,
       isExplicitPresentational,
@@ -270,6 +274,7 @@ function growTree(
         accessibleValue,
         allowedAccessibilityChildRoles,
         alternateReadingOrderParents,
+        busy,
         children: [],
         childrenPresentational,
         isInert,
@@ -309,6 +314,7 @@ export function createAccessibilityTree(
     accessibleName,
     accessibleValue,
     allowedAccessibilityChildRoles,
+    busy,
     childrenPresentational,
     isInert,
     role,
@@ -328,6 +334,7 @@ export function createAccessibilityTree(
       accessibleValue,
       allowedAccessibilityChildRoles,
       alternateReadingOrderParents: [],
+      busy,
       children: [],
       childrenPresentational,
       isInert,

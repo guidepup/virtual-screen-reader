@@ -340,6 +340,7 @@ export class Virtual {
         getLiveSpokenPhrase({
           container,
           mutation,
+          mutations,
         }),
       )
       .filter(Boolean)

@@ -71,4 +71,15 @@ describe("click", () => {
 
     await virtual.stop();
   });
+
+  it("should return early when focus changes in a container whose accessibility tree becomes empty", async () => {
+    const container = document.querySelector("#container")!;
+    await virtual.start({ container });
+
+    container.innerHTML = "<input id=\"hiddenInput\" aria-hidden=\"true\" />";
+    const hiddenInput = document.querySelector("#hiddenInput")! as HTMLElement;
+    hiddenInput.focus();
+
+    await virtual.stop();
+  });
 });

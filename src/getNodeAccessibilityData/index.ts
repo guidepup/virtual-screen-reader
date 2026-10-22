@@ -102,6 +102,7 @@ export function getNodeAccessibilityData({
   const accessibleDescription = getAccessibleDescription(node);
   const accessibleName = getAccessibleName(node);
   const accessibleValue = getAccessibleValue(node);
+  const busy = isElement(node) && node.getAttribute("aria-busy") === "true";
 
   const { explicitRole, implicitRole, role } = getRole({
     accessibleName,
@@ -185,6 +186,7 @@ export function getNodeAccessibilityData({
     accessibleName,
     accessibleValue,
     allowedAccessibilityChildRoles,
+    busy,
     childrenPresentational,
     isExplicitPresentational,
     isInert,
