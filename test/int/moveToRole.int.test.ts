@@ -211,6 +211,40 @@ describe("Move To Role", () => {
       });
     });
 
+    describe("when there is a form without an accessible name in the container", () => {
+      beforeEach(async () => {
+        document.body.innerHTML = `
+          <nav aria-label="Primary">Navigation content</nav>
+          <form><input aria-label="Search query" /></form>
+          <main aria-label="Content">Main content</main>
+        `;
+
+        await virtual.start({ container: document.body });
+      });
+
+      it("should skip the unnamed form when navigating to the next landmark", async () => {
+        await virtual.perform(virtual.commands.moveToNextLandmark);
+        await virtual.perform(virtual.commands.moveToNextLandmark);
+
+        expect(await virtual.spokenPhraseLog()).toEqual([
+          "document",
+          "navigation, Primary",
+          "main, Content",
+        ]);
+      });
+
+      it("should skip the unnamed form when navigating to the previous landmark", async () => {
+        await virtual.perform(virtual.commands.moveToPreviousLandmark);
+        await virtual.perform(virtual.commands.moveToPreviousLandmark);
+
+        expect(await virtual.spokenPhraseLog()).toEqual([
+          "document",
+          "main, Content",
+          "navigation, Primary",
+        ]);
+      });
+    });
+
     describe("when there are no matching roles in the container", () => {
       beforeEach(async () => {
         document.body.innerHTML = "";
