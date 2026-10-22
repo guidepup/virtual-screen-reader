@@ -1,6 +1,7 @@
 import { ALL_ROLES, ARIARole, getRole as getHtmlAriaRole } from "html-aria";
 import { getLocalName } from "../getLocalName";
 import { isElement } from "../isElement";
+import { isFocusable } from "../isFocusable";
 
 export const presentationRoles = new Set(["presentation", "none"]);
 
@@ -36,20 +37,6 @@ export const globalStatesAndProperties = [
   "aria-roledescription",
 ];
 
-const FOCUSABLE_SELECTOR = [
-  "input:not([type=hidden]):not([disabled])",
-  "button:not([disabled])",
-  "select:not([disabled])",
-  "textarea:not([disabled])",
-  '[contenteditable=""]',
-  '[contenteditable="true"]',
-  "a[href]",
-  "[tabindex]:not([disabled])",
-].join(", ");
-
-function isFocusable(node: HTMLElement) {
-  return node.matches(FOCUSABLE_SELECTOR);
-}
 
 function hasGlobalStateOrProperty(node: HTMLElement) {
   return globalStatesAndProperties.some((global) => node.hasAttribute(global));
