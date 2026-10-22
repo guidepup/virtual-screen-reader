@@ -28,3 +28,14 @@ export function matchesAccessibleAttributes(
 
   return true;
 }
+
+export function matchesAccessibleNameRequirement(
+  node: AccessibilityNode,
+  rolesRequiringAccessibleName?: Readonly<string[]>
+) {
+  if (!rolesRequiringAccessibleName?.includes(node.role)) {
+    return true;
+  }
+
+  return !!node.accessibleName;
+}

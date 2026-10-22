@@ -81,6 +81,16 @@ const quickLandmarkNavigationRoles = [
   "search",
 ] as const;
 
+/**
+ * A form is not exposed as a landmark region unless it has been provided an
+ * accessible name. An unnamed form keeps the form role, but is not a landmark.
+ *
+ * REF:
+ * - https://www.w3.org/TR/html-aam-1.0/#el-form
+ * - https://www.w3.org/TR/wai-aria-1.3/#form
+ */
+const landmarkRolesRequiringAccessibleName = ["form"] as const;
+
 const quickAriaRoleNavigationRoles = [
   ...quickLandmarkNavigationRoles,
   /**
@@ -1013,6 +1023,7 @@ export const commands = {
    */
   moveToNextLandmark: getNextIndexByRoleAndAttributes({
     roles: quickLandmarkNavigationRoles,
+    rolesRequiringAccessibleName: landmarkRolesRequiringAccessibleName,
   }),
   /**
    * Move to the previous element with any [`landmark`](https://www.w3.org/TR/wai-aria-1.2/#landmark)
@@ -1046,6 +1057,7 @@ export const commands = {
    */
   moveToPreviousLandmark: getPreviousIndexByRoleAndAttributes({
     roles: quickLandmarkNavigationRoles,
+    rolesRequiringAccessibleName: landmarkRolesRequiringAccessibleName,
   }),
   ...headingLevelNavigationCommands,
 };

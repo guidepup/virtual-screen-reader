@@ -1,4 +1,8 @@
-import { matchesAccessibleAttributes, matchesRoles } from "./nodeMatchers";
+import {
+  matchesAccessibleAttributes,
+  matchesAccessibleNameRequirement,
+  matchesRoles,
+} from "./nodeMatchers";
 import { AccessibilityNode } from "../createAccessibilityTree";
 import type { AriaAttributes } from "./types";
 import { END_OF_ROLE_PREFIX } from "../flattenTree";
@@ -9,6 +13,9 @@ export interface GetIndexFilters {
 
   /** Matches a node only if the node has **all** of these aria attributes */
   ariaAttributes?: Readonly<AriaAttributes>;
+
+  /** Matches a node with any of these roles only if it has an accessible name */
+  rolesRequiringAccessibleName?: Readonly<string[]>;
 }
 
 export function getIndexByRoleAndAttributes({
@@ -24,7 +31,11 @@ export function getIndexByRoleAndAttributes({
     (node) =>
       !node.spokenRole.startsWith(END_OF_ROLE_PREFIX) &&
       matchesRoles(node, filters.roles) &&
-      matchesAccessibleAttributes(node, filters.ariaAttributes)
+      matchesAccessibleAttributes(node, filters.ariaAttributes) &&
+      matchesAccessibleNameRequirement(
+        node,
+        filters.rolesRequiringAccessibleName
+      )
   );
 
   if (!accessibilityNode) {
